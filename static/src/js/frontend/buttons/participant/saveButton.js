@@ -3,6 +3,13 @@ const saveButton = `<button id="saveCAM" onclick="saveCam()" class="material-ico
 var target = document.getElementById("rightButton");
 target.innerHTML += saveButton;
 
+const configToastr = {
+  closeButton: true,
+  timeOut: 2000,
+  positionClass: "toast-top-center",
+  preventDuplicates: true,
+}
+
 // language file
 $(function () {
   document.getElementById("saveCAM").title = languageFileOut.btr_02; // buttons top right (btr)
@@ -32,12 +39,7 @@ function saveCam() {
     toastr.warning(
       languageFileOut.popSave_01emptyNodes,
       CAMnodesNoText.length + languageFileOut.popSave_02emptyNodes,
-      {
-        closeButton: true,
-        timeOut: 2000,
-        positionClass: "toast-top-center",
-        preventDuplicates: true,
-      }
+      configToastr
     );
     return false;
   }
@@ -46,12 +48,7 @@ function saveCam() {
     toastr.warning(
       languageFileOut.popSave_01numNodes,
       languageFileOut.popSave_02numNodes + config.ConNumNodes + languageFileOut.popSave_03numNodes,
-      {
-        closeButton: true,
-        timeOut: 2000,
-        positionClass: "toast-top-center",
-        preventDuplicates: true,
-      }
+      configToastr
     );
     return false;
   } else if (CAMnodes.length - 1 > CAMconnectors.length) {
@@ -67,12 +64,7 @@ function saveCam() {
     toastr.warning(
       languageFileOut.popSave_01unconnectedA,
       languageFileOut.popSave_02unconnectedA,
-      {
-        closeButton: true,
-        timeOut: 2000,
-        positionClass: "toast-top-center",
-        preventDuplicates: true,
-      }
+      configToastr
     );
 
     return false;
@@ -87,12 +79,7 @@ function saveCam() {
         languageFileOut.popSave_02unconnectedB + " " + 
           ResbfsAl +
           languageFileOut.popSave_03unconnectedB,
-        {
-          closeButton: true,
-          timeOut: 2000,
-          positionClass: "toast-top-center",
-          preventDuplicates: true,
-        }
+          configToastr
       );
 
       return false;
@@ -109,12 +96,7 @@ function saveCam() {
 function saveCAMsuccess(){
   toastr.success(
     languageFileOut.popSave_01savedData,
-    {
-      closeButton: true,
-      timeOut: 4000,
-      positionClass: "toast-top-center",
-      preventDuplicates: true,
-    }
+    configToastr
   );
 
   // after 4 seconds
@@ -167,8 +149,8 @@ function saveCAMsuccess(){
     }
 
     /* if server is >>> MangoDB <<< */
-    console.log("usingMangoDB: ", usingMangoDB);
-    if (usingMangoDB) {
+    console.log("usingMongoDB: ", usingMongoDB);
+    if (usingMongoDB) {
       async function pushData() {
         let info = {
           method: "POST",
@@ -200,15 +182,10 @@ function saveCAMsuccess(){
     } 
     
     /* if NO server >>> <<< */
-    if(!usingJATOS &&  !usingMangoDB){
+    if(!usingJATOS &&  !usingMongoDB){
       toastr.success(
         languageFileOut.popSave_01notSavedData,
-        {
-          closeButton: true,
-          timeOut: 4000,
-          positionClass: "toast-top-center",
-          preventDuplicates: true,
-        }
+        configToastr
       );
     }
 

@@ -1,4 +1,4 @@
-if(usingMangoDB){
+if(usingMongoDB){
     async function fetchData(URL) {
         const dataRaw = await fetch(URL);
         if(dataRaw.status != 200){
@@ -6,7 +6,7 @@ console.log(dataRaw.status)
             return;
         }
 
-        usingMangoDB = true;
+        usingMongoDB = true;
         const data = await dataRaw.json()
     
         config = JSON.parse(data.config);
