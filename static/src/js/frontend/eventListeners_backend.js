@@ -123,7 +123,6 @@ $(document).on("mouseup", ".node", function (event) {
 
     newArrayPositions.push(arrayPositions[arrayPositions.length - 1]);
 
-
     CAM.readyToMove = false;
     if (CAM.hasElementMoved) {
         resetConnectorSelection();
@@ -155,8 +154,6 @@ $(document).on("click", ".outer-connector", function (event) {
 
 $(document).on("mousedown", ".connector, .outer-connector", function (event) {
     /* if double click */
-
-    // console.log($(this)[0].id);
 
     if (event.detail == 2) {
         resetConnectorSelection();
@@ -255,7 +252,6 @@ $(document).on("mousemove", "#CAMSVG", function (event) {
         y: (event.clientY - $("#CAMSVG").position().top), // / zoomScale
     }
 
-
     if (CAM.readyToMove) {
         CAM.hasElementMoved = true;
         CAM.updateElement("Node", "position", positionClick);
@@ -267,7 +263,6 @@ $(document).on("mousemove", "#CAMSVG", function (event) {
         });
 
     }
-
 
     CAM.draw();
 });
@@ -295,10 +290,6 @@ function resetNodeSelection() {
     }
     return false;
 }
-
-
-
-
 
 /* Add camera feature */
 if(config.cameraFeature){

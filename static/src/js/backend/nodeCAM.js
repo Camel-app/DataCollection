@@ -40,7 +40,6 @@ class NodeCAM {
         this.isTextChangeable = node.isTextChangeable;
     }
 
-    /* set functions */
     setValue(newValue) {
         this.value = newValue;
     }
@@ -71,10 +70,6 @@ class NodeCAM {
     setIsTextChangeable(val) {
         this.isTextChangeable = val;
     }
-
-
-
-    /* get functions */
 
     getValue() {
         return this.value;
@@ -110,9 +105,6 @@ class NodeCAM {
         return this.isTextChangeable;
     }
 
-
-
-
     updateNode(field, value) {
         if (field === "text") this.setText(value);
         if (field === "position") this.setPosition(value);
@@ -142,7 +134,4 @@ class NodeCAM {
     isNode() {
         return true;
     }
-
 }
-
-

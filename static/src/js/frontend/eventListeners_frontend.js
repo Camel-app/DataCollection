@@ -143,13 +143,7 @@ $(function () {
         draggable: true,
         width: 400,
         maxWidth: 400,
-        /*
-        buttons: {
-            Close: function () {
-                $(this).dialog("close");
-            }
-        },
-        */
+
         open: function (event, ui) {
             $(".ui-dialog-titlebar").show(); // show titlebar            
             console.log('dialog got open');
@@ -325,10 +319,6 @@ $(function () {
         }
     });
 });
-
-
-
-
 
 /* interactive components: INFORMATION */
 // > open single div using navigation bar

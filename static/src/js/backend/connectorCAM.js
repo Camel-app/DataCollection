@@ -163,6 +163,4 @@ class ConnectorCAM {
             value: log.value
         });
     }
-
-
 }

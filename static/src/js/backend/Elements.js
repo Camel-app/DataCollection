@@ -25,13 +25,11 @@ class Elements {
                 var {
                     success, node
                 } = this.addNode(newElement);
-                if (success & WEBSOCKET) sendMessage("Add", null, "Node", null, node);
                 break;
             case "Connector":
                 var {
                     success, connector
                 } = this.addConnector(newElement);
-                if (success & WEBSOCKET) sendMessage("Add", null, "Connector", null, connector);
                 break;
         }
     }
@@ -49,22 +47,16 @@ class Elements {
                 }
                 break;
         }
-        if (WEBSOCKET) sendMessage("Update", this.currentID, kind, field, value);
         this.draw();
     }
 
     deleteElement() {
         if (this.hasSelectedNode) {
-            const tmp_id = this.currentID;
             var success = this.deleteNode();
-            if (success & WEBSOCKET) sendMessage("Update", tmp_id, "Node", "active", false);
         }
 
         if (this.hasSelectedConnector) {
-            const tmp_id = this.currentID;
             var success = this.deleteConnector();
-            if (success & WEBSOCKET) sendMessage("Update", tmp_id, "Connector", "active", false);
-
         }
         this.draw();
     }
@@ -173,8 +165,6 @@ class Elements {
         return true;
     }
 
-
-
     getIndex(id, kind) {
         switch (kind) {
             case "Node":
@@ -189,9 +179,6 @@ class Elements {
         }
         return -1;
     }
-
-
-
 
     selecteNode(id) {
         const index = this.getIndex(id, "Node");
@@ -224,8 +211,6 @@ class Elements {
         }
         return null;
     }
-
-
 
     selectConnection(id) {
         const index = this.getIndex(id, "Connector");

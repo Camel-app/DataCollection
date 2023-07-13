@@ -4,8 +4,6 @@
 
 function draw(CAM) {
 
-
-
     const board = document.querySelector("#CAMSVG");
     board.innerHTML = "";
 
@@ -13,21 +11,6 @@ function draw(CAM) {
 
     board.appendChild(arrowRight);
     board.appendChild(arrowLeft);
-
-
-    /*
-    var newLine = document.createElementNS(svgns,'line');
-    newLine.setAttribute('id','line2');
-    newLine.setAttribute('x1','650');
-    newLine.setAttribute('y1','0');
-    newLine.setAttribute('x2','650');
-    newLine.setAttribute('y2','1300');
-    newLine.setAttribute("stroke", "black")
-    newLine.setAttribute("stroke-dasharray", "10")
-    
-    board.appendChild(newLine);
-    */
-
 
     CAM.connectors.forEach(connector => {
         if (connector.getIsActive()) {
@@ -38,19 +21,12 @@ function draw(CAM) {
         }
     });
 
-
-
-
     CAM.nodes.forEach(node => {
         if (node.getIsActive()) {
             const currentNode = drawNode(node);
             board.appendChild(currentNode);
         }
     });
-
-
-
-
 }
 
 function drawBackground() {
@@ -61,8 +37,6 @@ function drawBackground() {
     background.setAttribute("width", "100%");
     background.setAttribute("height", "100%");
     background.setAttribute("fill", COLOUR.background);
-
-
 
     return background;
 }
@@ -236,27 +210,8 @@ function drawAmbivalent(node) {
         outsideShape.setAttribute("fill", COLOUR.adjacent);
     }
 
-    /*
-    let positiveNode = document.createElementNS(svgns, "ellipse");
-    positiveNode.setAttribute("id", node.id);
-    positiveNode.setAttribute("class", "node");
-    positiveNode.setAttribute(null, "cx", 0);
-    positiveNode.setAttribute(null, "cy", 0);
-    positiveNode.setAttribute("rx", "120");
-    positiveNode.setAttribute("ry", "80");
-    positiveNode.setAttribute("transform", "translate(0,0)"); // scale(0.1)
-    positiveNode.setAttribute("fill", "white");
-    positiveNode.setAttribute("stroke", "black");
-    positiveNode.setAttribute("stroke-width", 7);
-
-    ambivalentNode.appendChild(positiveNode);
-    */
     ambivalentNode.appendChild(outsideShape);
     ambivalentNode.appendChild(innerEllipse);
-
-
-
-
 
     return ambivalentNode;
 }
@@ -316,40 +271,6 @@ function drawLine(connector, motherD, position, angle, dist, compensation) {
 
 
 function drawCross(connector, motherD, position, angle, dist, compensation, mother, daughter) {
-
-    /*
-let lineConnector = document.createElementNS(svgns, "line");
-lineConnector.setAttribute("class", "connector");
-lineConnector.setAttribute("id", connector.id);
-lineConnector.setAttribute("transform", `translate(${position.x},${position.y}) scale(1,1) `) // ${zoomScaleConnector}
-lineConnector.setAttribute("x1", (motherD + dist * .5 + 30 * compensation * Math.cos(angle)) * Math.cos(angle) * compensation);
-lineConnector.setAttribute("y1", (motherD + dist * .5 + 0) * Math.sin(angle) * compensation);
-lineConnector.setAttribute("x2", (dist - dist * .5 + 0) * Math.cos(angle) * compensation);
-lineConnector.setAttribute("y2", (dist - dist * .5 + 0) * Math.sin(angle) * compensation);
-lineConnector.setAttribute("stroke", "red");
-lineConnector.setAttribute("stroke-width", "5");
-*/
-
-
-/*
-const vec = {
-    x: (mother.position.x - daughter.position.x),
-    y: (mother.position.y - daughter.position.y),
-};
-
-var x1 = (motherD + DistanceArrows) * Math.cos(angle) * compensation;
-var y1 = (motherD + DistanceArrows) * Math.sin(angle) * compensation;
-var x2 = (dist - DistanceArrows) * Math.cos(angle) * compensation;
-var y2 = (dist - DistanceArrows) * Math.sin(angle) * compensation;
-
-let drawCross = document.createElementNS(svgns, "circle");
-drawCross.setAttribute("cx", vec.x + DistanceArrows * Math.cos(angle) * compensation );
-drawCross.setAttribute("cy", vec.y  + DistanceArrows * Math.sin(angle) * compensation);
-drawCross.setAttribute("r", "22");
-drawCross.setAttribute("fill", "red");
-*/
-
-
     return drawCross;
 }
 
@@ -382,7 +303,6 @@ function drawSelected(daughter, dist, angle, compensation) {
 
 function drawConnector(connector, mother, daughter) {
 
-
     const vec = {
         x: (mother.position.x - daughter.position.x),
         y: (mother.position.y - daughter.position.y),
@@ -414,11 +334,6 @@ function drawConnector(connector, mother, daughter) {
 
     const outer = this.drawOuter(connector, daughter, dist, angle, compensation);
     group.appendChild(outer);
-
-    //const drawCross = this.drawCross(connector, motherD, position, angle, dist, compensation, mother, daughter);
-    //group.appendChild(drawCross);
-
-    
 
     return group;
 }

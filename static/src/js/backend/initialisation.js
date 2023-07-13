@@ -2,7 +2,6 @@ if(usingMongoDB){
     async function fetchData(URL) {
         const dataRaw = await fetch(URL);
         if(dataRaw.status != 200){
-console.log(dataRaw.status)
             defaultCAM() 
             return;
         }
@@ -13,7 +12,6 @@ console.log(dataRaw.status)
         linkRedirect = data.link;
         token = data.token
     
-        console.log(linkRedirect);
         camMother.nodes.forEach(element => {
             element.kind = "Node";
             element.comment = "";
@@ -30,7 +28,6 @@ console.log(dataRaw.status)
             CAM.importElement(element);
         });
         CAM.draw();
-    
     }
     
     const queryString = window.location.search;
@@ -38,20 +35,12 @@ console.log(dataRaw.status)
     const link = urlParams.get('link');
     const participantID = urlParams.get('participantID');
     CAM.creator = participantID;
-    
-    
-    
     fetchData(link + "&participantID=" + participantID);
-}else{
-    console.log("default CAM drawn - MongoDB is not used")
+
+} else {
 
     async function getDefaultCAM() {
         defaultCAM();
     }
-
     getDefaultCAM();
 }
-
-
-
-
