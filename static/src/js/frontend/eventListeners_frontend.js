@@ -194,7 +194,7 @@ $(function () {
             });
 
             CAM.currentConnector.enterLog({
-                type: "selected",
+                type: "isSelected",
                 value: true
             });
         },
@@ -219,7 +219,7 @@ $(function () {
                 }
 
                 CAM.currentConnector.enterLog({
-                    type: "selected",
+                    type: "isSelected",
                     value: false
                 });
             }
@@ -251,14 +251,14 @@ $(function () {
             CAM.currentNode.isSelected = true;
 
             CAM.currentNode.enterLog({
-                type: "selected",
+                type: "isSelected",
                 value: true
             });
 
             // only add to event log if value has been changed:
-            currentText = CAM.currentNode.getText();
-            currentValue = CAM.currentNode.getValue();
-            currentComment = CAM.currentNode.getComment();
+            currentText = CAM.currentNode.text;
+            currentValue = CAM.currentNode.value;
+            currentComment = CAM.currentNode.comment;
 
 
             console.log('dialog got open');
@@ -280,29 +280,29 @@ $(function () {
                 CAM.draw();
 
                 // adjust event Log
-                if (currentText !== CAM.currentNode.getText()) {
+                if (currentText !== CAM.currentNode.text) {
                     CAM.currentNode.enterLog({
                         type: "text",
-                        value: CAM.currentNode.getText()
+                        value: CAM.currentNode.text
                     });
                 }
 
-                if (currentValue !== CAM.currentNode.getValue()) {
+                if (currentValue !== CAM.currentNode.value) {
                     CAM.currentNode.enterLog({
                         type: "value",
-                        value: CAM.currentNode.getValue()
+                        value: CAM.currentNode.value
                     });
                 }
 
-                if (currentComment !== CAM.currentNode.getComment()) {
+                if (currentComment !== CAM.currentNode.comment) {
                     CAM.currentNode.enterLog({
                         type: "comment",
-                        value: CAM.currentNode.getComment()
+                        value: CAM.currentNode.comment
                     });
                 }
 
                 CAM.currentNode.enterLog({
-                    type: "selected",
+                    type: "isSelected",
                     value: false
                 });
 

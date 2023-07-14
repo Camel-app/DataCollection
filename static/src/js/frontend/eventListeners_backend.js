@@ -6,9 +6,9 @@ $(document).on("mousedown", ".node", function (event) {
 
         if (CAM.currentNode != null) {
             // get text of current node
-            document.getElementById("inptextnode").value = CAM.currentNode.getText();
+            document.getElementById("inptextnode").value = CAM.currentNode.text;
             // get comment of current node
-            document.getElementById("inpcommentnode").value = CAM.currentNode.getComment();
+            document.getElementById("inpcommentnode").value = CAM.currentNode.comment;
             // get value slider, hide / show graphics / change colors
             var backendGreenColorNodeSlider = document.querySelector('.greenColorNodeSlider');
             var backendRedColorNodeSlider = document.querySelector('.redColorNodeSlider');

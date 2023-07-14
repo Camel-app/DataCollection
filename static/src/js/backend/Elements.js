@@ -19,7 +19,7 @@ class Elements {
 
 
     addElement(newElement) {
-        const kind = newElement.getKind();
+        const kind = newElement.kind;
         switch (kind) {
             case "Node":
                 var {
@@ -101,7 +101,7 @@ class Elements {
     }
 
     deleteConnector() {
-        if (!this.currentConnector.getIsDeletable()) {
+        if (!this.currentConnector.isDeletable) {
             console.log("This element cannot be deleted.");
 
             toastr.info(languageFileOut.edw_01notDeleteConnector, languageFileOut.edw_02notDeleteConnector, {
@@ -138,7 +138,7 @@ class Elements {
     deleteNode() {
         const nodeID = this.currentNode.id;
 
-        if (!this.currentNode.getIsDeletable()) {
+        if (!this.currentNode.isDeletable) {
             console.log("This element cannot be deleted.");
 
             toastr.info(languageFileOut.edw_01notDeleteNode, languageFileOut.edw_02notDeleteNode, {
@@ -157,7 +157,7 @@ class Elements {
             }
         });
 
-        this.currentNode.updateNode("active", false);
+        this.currentNode.updateNode("isActive", false);
         this.unselectNode();
 
         this.currentNode = null;
@@ -193,12 +193,12 @@ class Elements {
         this.hasSelectedNode = true;
         this.currentNode = this.nodes[index];
         this.currentID = this.currentNode.id;
-        this.currentNode.updateNode("selected", !this.currentNode.isSelected);
+        this.currentNode.updateNode("isSelected", !this.currentNode.isSelected);
     }
 
     unselectNode() {
         this.nodes.map((node) => {
-            node.updateNode("selected", false)
+            node.updateNode("isSelected", false)
         })
         this.currentNode = null;
         this.currentID = null;
@@ -222,8 +222,8 @@ class Elements {
         const source = this.getNodeById(this.currentConnector.source);
         const target = this.getNodeById(this.currentConnector.target);
 
-        target.updateNode("connector", true);
-        source.updateNode("connector", true);
+        target.updateNode("isConnectorSelected", true);
+        source.updateNode("isConnectorSelected", true);
 
     }
 
@@ -232,8 +232,8 @@ class Elements {
         const source = this.getNodeById(this.currentConnector.source);
         const target = this.getNodeById(this.currentConnector.target);
 
-        target.updateNode("connector", false);
-        source.updateNode("connector", false);
+        target.updateNode("isConnectorSelected", false);
+        source.updateNode("isConnectorSelected", false);
 
         this.currentConnector.isSelected = false;
 

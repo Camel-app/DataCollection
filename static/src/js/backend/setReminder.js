@@ -60,6 +60,3 @@ function getRemainingTime(){
 if(config.setReminder){
   startTimer();
 }
-
-
-

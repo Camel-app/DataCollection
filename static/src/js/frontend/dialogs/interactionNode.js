@@ -246,10 +246,10 @@ $(function () {
     $("#ResErasabilityNode").on("click", (evt) => {
         if (CAM.currentNode != null) {
             if (CAM.currentNode.isDeletable == true) {
-                CAM.currentNode.setIsDeletable(false);
+                CAM.currentNode.isDeletable = false;
                 toastr.info('The node is now not deletable.');
             } else if (CAM.currentNode.isDeletable == false) {
-                CAM.currentNode.setIsDeletable(true);
+                CAM.currentNode.isDeletable = true;
                 toastr.info('The node is now deletable.');
             }
         }
@@ -258,10 +258,10 @@ $(function () {
     $("#ResManoeuvrability").on("click", (evt) => {
         if (CAM.currentNode != null) {
             if (CAM.currentNode.isDraggable == true) {
-                CAM.currentNode.setIsDraggable(false);
+                CAM.currentNode.isDraggable = false;
                 toastr.info('The node is now not draggable.');
             } else if (CAM.currentNode.isDraggable == false) {
-                CAM.currentNode.setIsDraggable(true);
+                CAM.currentNode.isDraggable = true;
                 toastr.info('The node is now draggable.');
             }
         }
@@ -270,10 +270,10 @@ $(function () {
     $("#TextChangeableNode").on("click", (evt) => {
         if (CAM.currentNode != null) {
             if (CAM.currentNode.isTextChangeable == true) {
-                CAM.currentNode.setIsTextChangeable(false);
+                CAM.currentNode.isTextChangeable = false;
                 toastr.info('The text of the node is now not changeable.');
             } else if (CAM.currentNode.isTextChangeable == false) {
-                CAM.currentNode.setIsTextChangeable(true);
+                CAM.currentNode.isTextChangeable = true;
                 toastr.info('The text of the node is now changeable.');
             }
         }

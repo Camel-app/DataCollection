@@ -235,13 +235,13 @@ function setConfigCAMfile() {
         // console.log(elementNode);
 
         if(elementNode.isActive){
-            currentNode.id = elementNode.getId();
-            currentNode.value = elementNode.getValue();
-            currentNode.text = elementNode.getText();
-            currentNode.position = elementNode.getPosition()
-            currentNode.isDeletable = elementNode.getIsDeletable()
-            currentNode.isDraggable = elementNode.getIsDraggable()
-            currentNode.isTextChangeable = elementNode.getIsTextChangeable()
+            currentNode.id = elementNode.id;
+            currentNode.value = elementNode.value;
+            currentNode.text = elementNode.text;
+            currentNode.position = elementNode.position
+            currentNode.isDeletable = elementNode.isDeletable
+            currentNode.isDraggable = elementNode.isDraggable
+            currentNode.isTextChangeable = elementNode.isTextChangeable
             saveNodes.push(currentNode);
         }
     }
@@ -256,13 +256,13 @@ function setConfigCAMfile() {
         // console.log(elementNode);
 
         if(elementConnector.isActive){
-            currentConnector.id = elementConnector.getId();
+            currentConnector.id = elementConnector.id;
             currentConnector.intensity = elementConnector.getIntensity();
             currentConnector.agreement = elementConnector.agreement;
             currentConnector.isBidirectional = elementConnector.isBidirectional;
             currentConnector.source = elementConnector.source;
             currentConnector.target = elementConnector.target;
-            currentConnector.isDeletable = elementConnector.getIsDeletable() 
+            currentConnector.isDeletable = elementConnector.isDeletable 
 
             saveConnectors.push(currentConnector);
         }

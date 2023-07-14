@@ -61,48 +61,9 @@ class NodeCAM {
     setIsConnectorSelected(val) {
         this.isConnectorSelected = val;
     }
-    setIsDeletable(val) {
-        this.isDeletable = val;
-    }
-    setIsDraggable(val) {
-        this.isDraggable = val;
-    }
+
     setIsTextChangeable(val) {
         this.isTextChangeable = val;
-    }
-
-    getValue() {
-        return this.value;
-    }
-    getText() {
-        return this.text;
-    }
-    getComment() {
-        return this.comment;
-    }
-    getPosition() {
-        return this.position;
-    }
-    getIsActive() {
-        return this.isActive;
-    }
-    getIsSelected() {
-        return this.isSelected;
-    }
-    getIsConnectorSelected() {
-        return this.isConnectorSelected;
-    }
-    getKind() {
-        return this.kind;
-    }
-    getIsDeletable() {
-        return this.isDeletable;
-    }
-    getIsDraggable() {
-        return this.isDraggable;
-    }
-    getIsTextChangeable() {
-        return this.isTextChangeable;
     }
 
     updateNode(field, value) {
@@ -110,9 +71,9 @@ class NodeCAM {
         if (field === "position") this.setPosition(value);
         if (field === "value") this.setValue(value);
         if (field === "comment") this.setComment(value);
-        if (field === "active") this.setIsActive(value);
-        if (field === "selected") this.setIsSelected(value);
-        if (field === "connector") this.setIsConnectorSelected(value);
+        if (field === "isActive") this.setIsActive(value);
+        if (field === "isSelected") this.setIsSelected(value);
+        if (field === "isConnectorSelected") this.setIsConnectorSelected(value);
     }
 
     enterLog(log) {
@@ -125,10 +86,6 @@ class NodeCAM {
 
     deletenode() {
         this.active = false;
-    }
-
-    getId() {
-        return this.id;
     }
 
     isNode() {

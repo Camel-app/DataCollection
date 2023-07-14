@@ -13,7 +13,7 @@ function draw(CAM) {
     board.appendChild(arrowLeft);
 
     CAM.connectors.forEach(connector => {
-        if (connector.getIsActive()) {
+        if (connector.isActive) {
             const mother = CAM.getNodeById(connector.source);
             const daughter = CAM.getNodeById(connector.target);
             const currentConnector = drawConnector(connector, mother, daughter);
@@ -22,7 +22,7 @@ function draw(CAM) {
     });
 
     CAM.nodes.forEach(node => {
-        if (node.getIsActive()) {
+        if (node.isActive) {
             const currentNode = drawNode(node);
             board.appendChild(currentNode);
         }

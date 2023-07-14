@@ -28,20 +28,8 @@ class ConnectorCAM {
         return this.intensity;
     }
 
-    getKind() {
-        return this.kind;
-    }
-
     setIsSelected(val) {
         this.isSelected = val;
-    }
-
-    getSelected() {
-        return this.isSelected;
-    }
-
-    getIsActive() {
-        return this.isActive;
     }
 
     setIsActive(val) {
@@ -52,10 +40,6 @@ class ConnectorCAM {
 
     setAgreement(val) {
         this.agreement = val;
-    }
-
-    setIsDeletable(val) { 
-        this.isDeletable = val;
     }
 
     setBidirectional(val) { 
@@ -70,14 +54,6 @@ class ConnectorCAM {
         this.target = tmp_source;
     }
 
-    getId() {
-        return this.id;
-    }
-
-    getIsDeletable() {
-        return this.isDeletable;
-    }
-
     setShape() {
         if (this.value < 0) this.shape = "negative";
         if (this.value > 0) this.shape = "positive";
@@ -90,8 +66,8 @@ class ConnectorCAM {
             value: value
         });
         if (field === "value") this.setValue(value);
-        if (field === "active") this.setIsActive(value);
-        if (field === "selected") this.setIsSelected(value);
+        if (field === "isActive") this.setIsActive(value);
+        if (field === "isSelected") this.setIsSelected(value);
         if (field === "agreement") this.setAgreement(value);
         if (field === "bidirection") this.setBidirectional(value);
         if (field === "direction") this.setDirectional();
@@ -146,7 +122,7 @@ class ConnectorCAM {
 
     deleteConnection() {
         this.enterLog({
-            type: "active",
+            type: "isActive",
             value: false
         });
 

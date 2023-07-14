@@ -207,10 +207,10 @@ $(function () {
     $("#ResErasabilityConnector").on("click", (evt) => {
         if (CAM.currentConnector != null) {
             if (CAM.currentConnector.isDeletable == true) {
-                CAM.currentConnector.setIsDeletable(false);
+                CAM.currentConnector.isDeletable = false;
                 toastr.info('The connector is now not deletable.');
             } else if (CAM.currentConnector.isDeletable == false) {
-                CAM.currentConnector.setIsDeletable(true);
+                CAM.currentConnector.isDeletable = true;
                 toastr.info('The connector is now deletable.');
             }
         }

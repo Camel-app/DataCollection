@@ -65,16 +65,16 @@ function addElementsCy() {
     // add nodes
     CAM.nodes.forEach(elt => { //  CAM.nodes -> only active nodes here
         //(new Node(elt))
-        if (elt.getIsActive()) {
+        if (elt.isActive) {
             cy.add([{
                 group: 'nodes',
                 data: {
                     id: elt.id,
-                    weight: elt.getValue()
+                    weight: elt.value
                 },
                 position: {
-                    x: elt.getPosition().x,
-                    y: elt.getPosition().y
+                    x: elt.position.x,
+                    y: elt.position.y
                 }
             }]);
         }
@@ -84,7 +84,7 @@ function addElementsCy() {
     var h = 0;
     CAM.connectors.forEach(elt => { //   CAM.connectors -> only active connectors here
         //(new Node(elt))
-        if (elt.getIsActive()) {
+        if (elt.isActive) {
             cy.add([{
                 group: 'edges',
                 data: {

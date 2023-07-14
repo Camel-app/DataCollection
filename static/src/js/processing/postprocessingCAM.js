@@ -8,10 +8,10 @@ function getActiveListNodes(){
     var listOfNodes = [];
     CAM.nodes.forEach(elt => {
         //(new Node(elt))
-        if(elt.getIsActive()){
+        if(elt.isActive){
         listOfNodes.push({"id": elt.id, 
-        "text": elt.getText(), "value": elt.getValue(), "comment": elt.getComment(),
-        "isDeletable": elt.getIsDeletable(), 
+        "text": elt.text, "value": elt.value, "comment": elt.comment,
+        "isDeletable": elt.isDeletable, 
         "connectedTo": elt.connectedTo}); // adjust connectedTo using daughter / mother
         }
     })
