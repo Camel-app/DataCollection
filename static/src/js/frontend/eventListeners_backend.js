@@ -172,7 +172,7 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
                 backendRedColorSlider.style.backgroundColor = "white";
                 backendRedColorTick.style.backgroundColor = "white";
 
-                document.getElementById("edgeSlider").value = CAM.currentConnector.getIntensity() / IncreaseSliderIntensity + 3;
+                document.getElementById("edgeSlider").value = CAM.currentConnector.intensity / IncreaseSliderIntensity + 3;
                 if (document.getElementById("edgeSlider").value == 4) {
                     backendGreenColorSlider.style.backgroundColor = "hsl(110, 100%, 70%)";
                     backendGreenColorTick.style.backgroundColor = "hsl(110, 100%, 70%)";
@@ -188,15 +188,15 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
                 backendGreenColorSlider.style.backgroundColor = "white";
                 backendGreenColorTick.style.backgroundColor = "white";
 
-                if (CAM.currentConnector.getIntensity() == IncreaseSliderIntensity) {
+                if (CAM.currentConnector.intensity == IncreaseSliderIntensity) {
                     document.getElementById("edgeSlider").value = 3;
                     backendRedColorSlider.style.backgroundColor = "hsl(0, 100%, 70%)";
                     backendRedColorTick.style.backgroundColor = "hsl(0, 100%, 70%)";
-                } else if (CAM.currentConnector.getIntensity() == IncreaseSliderIntensity * 2) {
+                } else if (CAM.currentConnector.intensity == IncreaseSliderIntensity * 2) {
                     document.getElementById("edgeSlider").value = 2;
                     backendRedColorSlider.style.backgroundColor = "hsl(0, 100%, 50%)";
                     backendRedColorTick.style.backgroundColor = "hsl(0, 100%, 50%)";
-                } else if (CAM.currentConnector.getIntensity() == IncreaseSliderIntensity * 3) {
+                } else if (CAM.currentConnector.intensity == IncreaseSliderIntensity * 3) {
                     document.getElementById("edgeSlider").value = 1;
                     backendRedColorSlider.style.backgroundColor = "hsl(0, 100%, 40%)";
                     backendRedColorTick.style.backgroundColor = "hsl(0, 100%, 40%)";

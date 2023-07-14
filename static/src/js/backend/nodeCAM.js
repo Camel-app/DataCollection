@@ -4,18 +4,18 @@ class NodeCAM {
         this.id = uuid.v4();
         this.value = value;
         this.text = text;
-        this.comment = "";
         this.position = position;
+        this.isDraggable = isDraggable;
+        this.isDeletable = isDeletable;
+        this.isTextChangeable = isTextChangeable;
+        this.comment = "";
         this.isActive = true;
         this.date = (new Date).getTime(); // representing the milliseconds elapsed between 1 January 1970 00:00:00 UTC and the given date
         this.kind = "Node";
         this.isSelected = false;
         this.isConnectorSelected = false;
-        this.isDraggable = isDraggable;
-        this.isDeletable = isDeletable;
         this.hasElementMoved = false;
         this.eventLog = [];
-        this.isTextChangeable = isTextChangeable;
 
         this.enterLog({
             type: "create node",
