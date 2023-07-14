@@ -91,205 +91,204 @@ var target = document.getElementById("dialogInteractionNode");
 target.innerHTML += interaction;
 
 // language file
-$(function () {
-    document.getElementById("deleteNode").title = languageFileOut.nd_05buttonDelete;
-  });
+document.getElementById("deleteNode").title = languageFileOut.nd_05buttonDelete;
 
+$("#inptextnode").on("input", function () {
+	var MaxLengthWords = config.MaxLengthWords; // allow not more than X words
+	var MaxLengthChars = config.MaxLengthChars; // allow not more than X characters
 
-$(function () {
+	// console.log("CAM.currentNode.isTextChangeable:", CAM.currentNode.isTextChangeable)
 
-    $('#inptextnode').on("input", function () {
-        var MaxLengthWords = config.MaxLengthWords; // allow not more than X words
-        var MaxLengthChars = config.MaxLengthChars; // allow not more than X characters
+	if (CAM.currentNode.isTextChangeable) {
+		var numWords = this.value.split(" ").filter((word) => word != "");
+		numWords = numWords.length;
+		// console.log("length chars: ", this.value.length, this.value.length <= MaxLengthChars);
+		// console.log("numWords: ", numWords, numWords <= MaxLengthWords);
 
-        // console.log("CAM.currentNode.isTextChangeable:", CAM.currentNode.isTextChangeable)
+		if (numWords <= MaxLengthWords && this.value.length <= MaxLengthChars) {
+			//console.log("show me:", this.value);
+			CAM.updateElement("Node", "text", this.value);
+			CAM.draw();
+		} else if (numWords > MaxLengthWords) {
+			toastr.warning(
+				languageFileOut.ndw_01tooManyWords,
+				languageFileOut.ndw_02tooManyWords +
+					MaxLengthWords +
+					languageFileOut.ndw_03tooManyWords,
+				{
+					closeButton: true,
+					timeOut: 2000,
+					positionClass: "toast-top-center",
+					preventDuplicates: true,
+				}
+			);
 
-        if(CAM.currentNode.isTextChangeable){
-            var numWords = this.value.split(' ').filter(word => word != "");
-            numWords = numWords.length;
-            // console.log("length chars: ", this.value.length, this.value.length <= MaxLengthChars);
-            // console.log("numWords: ", numWords, numWords <= MaxLengthWords);
-    
-            if (numWords <= MaxLengthWords && this.value.length <= MaxLengthChars) {
-                //console.log("show me:", this.value);
-                CAM.updateElement("Node", "text", this.value);
-                CAM.draw();
-            } else if (numWords > MaxLengthWords) {
-                toastr.warning(languageFileOut.ndw_01tooManyWords, languageFileOut.ndw_02tooManyWords + MaxLengthWords + languageFileOut.ndw_03tooManyWords, {
-                    closeButton: true,
-                    timeOut: 2000,
-                    positionClass: "toast-top-center",
-                    preventDuplicates: true
-                })
-    
-                
-                // alert("Please do not use more than " + MaxLengthWords + " words for a single node!\nInstead, please draw several connected nodes.");
-            } else if (this.value.length > MaxLengthChars) {
-                toastr.warning(languageFileOut.ndw_01tooManyWords, languageFileOut.ndw_02tooManyWords + MaxLengthChars + languageFileOut.ndw_03tooManyWordsA, {
-                    closeButton: true,
-                    timeOut: 2000,
-                    positionClass: "toast-top-center",
-                    preventDuplicates: true
-                })
-            }
-        }else{
-            toastr.info(languageFileOut.ndw_01predefinedConcept, languageFileOut.ndw_02predefinedConcept, {
-                closeButton: true,
-                timeOut: 2000,
-                positionClass: "toast-top-center",
-                preventDuplicates: true
-            })
-        }
+			// alert("Please do not use more than " + MaxLengthWords + " words for a single node!\nInstead, please draw several connected nodes.");
+		} else if (this.value.length > MaxLengthChars) {
+			toastr.warning(
+				languageFileOut.ndw_01tooManyWords,
+				languageFileOut.ndw_02tooManyWords +
+					MaxLengthChars +
+					languageFileOut.ndw_03tooManyWordsA,
+				{
+					closeButton: true,
+					timeOut: 2000,
+					positionClass: "toast-top-center",
+					preventDuplicates: true,
+				}
+			);
+		}
+	} else {
+		toastr.info(
+			languageFileOut.ndw_01predefinedConcept,
+			languageFileOut.ndw_02predefinedConcept,
+			{
+				closeButton: true,
+				timeOut: 2000,
+				positionClass: "toast-top-center",
+				preventDuplicates: true,
+			}
+		);
+	}
+});
 
-    });
+$("#nodeSlider").on("input", function () {
+	var valenceValue = document.querySelector("#nodeSlider");
 
+	var myGreenColorNodeSlider = document.querySelector(
+		".greenColorNodeSlider"
+	);
+	var myRedColorNodeSlider = document.querySelector(".redColorNodeSlider");
 
-    $('#nodeSlider').on("input", function () {
-        var valenceValue = document.querySelector('#nodeSlider');
+	switch (true) {
+		case valenceValue.value == 4:
+			myRedColorNodeSlider.style.backgroundColor = COLOUR.red3;
+			myGreenColorNodeSlider.style.backgroundColor = COLOUR.green3;
+			CAM.updateElement("Node", "value", 0);
+			break;
 
-        var myGreenColorNodeSlider = document.querySelector('.greenColorNodeSlider');
-        var myRedColorNodeSlider = document.querySelector('.redColorNodeSlider');
+		case valenceValue.value <= 3:
+			const colourPaletteRed = [
+				"white",
+				COLOUR.red1,
+				COLOUR.red2,
+				COLOUR.red3,
+			];
+			myRedColorNodeSlider.style.backgroundColor =
+				colourPaletteRed[valenceValue.value];
+			CAM.updateElement("Node", "value", valenceValue.value - 4);
+			break;
 
-        switch (true) {
-            case (valenceValue.value == 4):
-                myRedColorNodeSlider.style.backgroundColor = COLOUR.red3;
-                myGreenColorNodeSlider.style.backgroundColor = COLOUR.green3;
-                CAM.updateElement("Node", "value", 0);
-                break;
+		case valenceValue.value >= 5:
+			const colourPaletteGreen = [
+				"white",
+				COLOUR.green3,
+				COLOUR.green2,
+				COLOUR.green1,
+			];
+			myGreenColorNodeSlider.style.backgroundColor =
+				colourPaletteGreen[valenceValue.value - 4];
+			CAM.updateElement("Node", "value", valenceValue.value - 4);
+			break;
+	}
 
-            case (valenceValue.value <= 3):
-                const colourPaletteRed = ["white", COLOUR.red1, COLOUR.red2, COLOUR.red3];
-                myRedColorNodeSlider.style.backgroundColor = colourPaletteRed[valenceValue.value];
-                CAM.updateElement("Node", "value", valenceValue.value - 4);
-                break;
+	CAM.draw();
+});
 
-            case (valenceValue.value >= 5):
-                const colourPaletteGreen = ["white", COLOUR.green3, COLOUR.green2, COLOUR.green1];
-                myGreenColorNodeSlider.style.backgroundColor = colourPaletteGreen[valenceValue.value - 4];
-                CAM.updateElement("Node", "value", valenceValue.value - 4);
-                break;
-        }
+$("#checkboxAmbivalent").on("click", function (event) {
+	var myValueCheckbox = document.querySelector("#checkboxAmbivalent").checked;
 
-        CAM.draw();
-    });
+	if (myValueCheckbox === true) {
+		toastr.info(languageFileOut.ndw_01ambivalentConcept);
+		CounterChangeAmbiConcept++;
+		if (CounterChangeAmbiConcept == 2) {
+			$(this).off(event);
+		}
+	}
+});
 
-    $('#checkboxAmbivalent').on("click", function (event) {
-        var myValueCheckbox = document.querySelector('#checkboxAmbivalent').checked;
+$("#checkboxAmbivalent").on("input", function () {
+	var myValueCheckbox = document.querySelector("#checkboxAmbivalent").checked;
+	document.getElementById("nodeSlider").value = 4;
 
-        if (myValueCheckbox === true) {
-            toastr.info(languageFileOut.ndw_01ambivalentConcept);
-            CounterChangeAmbiConcept++;
-            if (CounterChangeAmbiConcept == 2) {
-                $(this).off(event);
-            }
-        }
-    });
+	if (myValueCheckbox === true) {
+		document.getElementById("nodeSlider").disabled = true;
+		CAM.updateElement("Node", "value", 10);
+	} else {
+		document.getElementById("nodeSlider").disabled = false;
+		CAM.updateElement("Node", "value", 0);
+	}
+	CAM.draw();
+});
 
+// > comment
+$("#inpcommentnode").on("input", function () {
+	CAM.updateElement("Node", "comment", this.value);
+	CAM.draw();
+});
 
-    $('#checkboxAmbivalent').on("input", function () {
+// > delete
+$("#deleteNode").on("click", (evt) => {
+	var success = CAM.deleteElement();
+	if (!success) {
+		CAM.currentNode.enterLog({
+			type: "node was deleted",
+			value: -99,
+		});
+		toastr.info(
+			languageFileOut.edw_01notDeleteNode,
+			languageFileOut.edw_02notDeleteNode,
+			{
+				closeButton: true,
+				timeOut: 2000,
+				positionClass: "toast-top-center",
+				preventDuplicates: true,
+			}
+		);
+	}
+	$("#dialogInteractionNode").dialog("close");
+	CAM.draw();
+});
 
-        var myValueCheckbox = document.querySelector('#checkboxAmbivalent').checked;
-        document.getElementById("nodeSlider").value = 4;
+$("#ResErasabilityNode").on("click", (evt) => {
+	if (CAM.currentNode != null) {
+		if (CAM.currentNode.isDeletable == true) {
+			CAM.currentNode.isDeletable = false;
+			toastr.info("The node is now not deletable.");
+		} else if (CAM.currentNode.isDeletable == false) {
+			CAM.currentNode.isDeletable = true;
+			toastr.info("The node is now deletable.");
+		}
+	}
+});
 
-        if (myValueCheckbox === true) {
-            document.getElementById("nodeSlider").disabled = true;
-            CAM.updateElement("Node", "value", 10);
-        } else {
-            document.getElementById("nodeSlider").disabled = false;
-            CAM.updateElement("Node", "value", 0);
-        }
-        CAM.draw();
-    });
+$("#ResManoeuvrability").on("click", (evt) => {
+	if (CAM.currentNode != null) {
+		if (CAM.currentNode.isDraggable == true) {
+			CAM.currentNode.isDraggable = false;
+			toastr.info("The node is now not draggable.");
+		} else if (CAM.currentNode.isDraggable == false) {
+			CAM.currentNode.isDraggable = true;
+			toastr.info("The node is now draggable.");
+		}
+	}
+});
 
-
-    // > comment
-    $('#inpcommentnode').on("input", function () {
-        CAM.updateElement("Node", "comment", this.value);
-        CAM.draw();
-    });
-
-    // > delete
-    $("#deleteNode").on("click", (evt) => {
-        console.log("Deleted using botton");
-        CAM.currentNode.enterLog({
-            type: "node was deleted",
-            value: -99
-        });
-        CAM.deleteElement();
-
-        $("#dialogInteractionNode").dialog('close');
-    });
-
-    $(document).keyup(function(e){
-        if(e.keyCode == 46) {
-            if(CAM.currentNode != null){
-                console.log("Deleted using keypress");
-                CAM.currentNode.enterLog({
-                    type: "node was deleted",
-                    value: -77
-                });
-                CAM.deleteElement();  
-                $("#dialogInteractionNode").dialog('close');
-            }else if(CAM.currentConnector != null){
-                console.log("Deleted using keypress");
-                CAM.currentConnector.enterLog({
-                    type: "connector was deleted",
-                    value: -77
-                });
-                CAM.deleteElement();
-                $("#dialogInteractionEdge").dialog('close');
-            }
-        }
-    });
-
-
-    $("#ResErasabilityNode").on("click", (evt) => {
-        if (CAM.currentNode != null) {
-            if (CAM.currentNode.isDeletable == true) {
-                CAM.currentNode.isDeletable = false;
-                toastr.info('The node is now not deletable.');
-            } else if (CAM.currentNode.isDeletable == false) {
-                CAM.currentNode.isDeletable = true;
-                toastr.info('The node is now deletable.');
-            }
-        }
-    });
-
-    $("#ResManoeuvrability").on("click", (evt) => {
-        if (CAM.currentNode != null) {
-            if (CAM.currentNode.isDraggable == true) {
-                CAM.currentNode.isDraggable = false;
-                toastr.info('The node is now not draggable.');
-            } else if (CAM.currentNode.isDraggable == false) {
-                CAM.currentNode.isDraggable = true;
-                toastr.info('The node is now draggable.');
-            }
-        }
-    });
-
-    $("#TextChangeableNode").on("click", (evt) => {
-        if (CAM.currentNode != null) {
-            if (CAM.currentNode.isTextChangeable == true) {
-                CAM.currentNode.isTextChangeable = false;
-                toastr.info('The text of the node is now not changeable.');
-            } else if (CAM.currentNode.isTextChangeable == false) {
-                CAM.currentNode.isTextChangeable = true;
-                toastr.info('The text of the node is now changeable.');
-            }
-        }
-    });
-})
-
+$("#TextChangeableNode").on("click", (evt) => {
+	if (CAM.currentNode != null) {
+		if (CAM.currentNode.isTextChangeable == true) {
+			CAM.currentNode.isTextChangeable = false;
+			toastr.info("The text of the node is now not changeable.");
+		} else if (CAM.currentNode.isTextChangeable == false) {
+			CAM.currentNode.isTextChangeable = true;
+			toastr.info("The text of the node is now changeable.");
+		}
+	}
+});
 
 // hide ambivalent node
-if(config.hideAmbivalent){
-    $('#hideAmvivalentNode').hide();
-    $(function () {
-        $('#hideAmvivalentNode').hide();
-    });
-}else{
-    $('#hideAmvivalentNode').show();
-    $(function () {
-        $('#hideAmvivalentNode').show();
-    });
+if (config.hideAmbivalent) {
+	$("#hideAmvivalentNode").hide();
+} else {
+	$("#hideAmvivalentNode").show();
 }
