@@ -6,7 +6,6 @@ const createConfigSave = `
 var target = document.getElementById("hideResearcherButtonsTop");
 target.innerHTML += createConfigSave;
 
-
 /* add dialog window */
 const interactionSetUpStudy = `
 <div class="properties">
@@ -140,54 +139,51 @@ const interactionSetUpStudy = `
 var target = document.getElementById("dialogSetUpStudy");
 target.innerHTML += interactionSetUpStudy;
 
-
 /* function to copy text */
 function copyText() {
-    /* Get the text field */
-    var copyText = document.getElementById("createdConfigPlusCAM");
-  
-    /* Select the text field */
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); /* For mobile devices */
-  
-    /* Copy the text inside the text field */
-    navigator.clipboard.writeText(copyText.value);
-    
-    /* Alert the copied text */
-    alert("Copied the text: " + copyText.value);
-  }
+	/* Get the text field */
+	var copyText = document.getElementById("createdConfigPlusCAM");
 
+	/* Select the text field */
+	copyText.select();
+	copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+	/* Copy the text inside the text field */
+	navigator.clipboard.writeText(copyText.value);
+
+	/* Alert the copied text */
+	alert("Copied the text: " + copyText.value);
+}
 
 /* function to set text file*/
 function setConfigCAMfile() {
-    var setCAMConfig = {
-        config: {
-            ConNumNodes: $('#setConNumNodes').val(), // number of nodes necessary to draw
-            MaxLengthWords: $('#setMaxLengthWords').val(), // maximum number of words for each concept
-            MaxLengthChars: $('#setMaxLengthChars').val(), // maximum number of characters for each concept
-    
-            hideArrows: null, // if false = possible to draw arrows
-            showOnlyPosSlid: null, // if true show only slider for agreement (+1 - +3)
-    
-            hideAmbivalent: null,  // if false = possible to draw ambivalent node
-            cameraFeature: null, // if true include camera / splotlight feature to move screen
-            fullScreen: null, // if true = study in fullscreen mode + paradata
+	var setCAMConfig = {
+		config: {
+			ConNumNodes: $("#setConNumNodes").val(), // number of nodes necessary to draw
+			MaxLengthWords: $("#setMaxLengthWords").val(), // maximum number of words for each concept
+			MaxLengthChars: $("#setMaxLengthChars").val(), // maximum number of characters for each concept
 
-            setLanguage: $('#setLanguage').val(),  // set language of your CAM study
-    
-            /* default: */
-            LengthSentence: 16, // include breaklines if >= X characters
-            LengthWords: 12, // include breaklines after each word with cumsum >= X characters
-            ShowResearcherButtons: false // if true = show researcher functionalities
-        },
-        CAM: {
-            nodes: null,
-            connectors: null
-        }
+			hideArrows: null, // if false = possible to draw arrows
+			showOnlyPosSlid: null, // if true show only slider for agreement (+1 - +3)
 
-}
+			hideAmbivalent: null, // if false = possible to draw ambivalent node
+			cameraFeature: null, // if true include camera / splotlight feature to move screen
+			fullScreen: null, // if true = study in fullscreen mode + paradata
 
-    /* missing values
+			setLanguage: $("#setLanguage").val(), // set language of your CAM study
+
+			/* default: */
+			LengthSentence: 16, // include breaklines if >= X characters
+			LengthWords: 12, // include breaklines after each word with cumsum >= X characters
+			ShowResearcherButtons: false, // if true = show researcher functionalities
+		},
+		CAM: {
+			nodes: null,
+			connectors: null,
+		},
+	};
+
+	/* missing values
     var MISSING = {
         CAMproject: "proj_" + uuid.v4(), // necessary for server (see ERM)
         AdaptiveStudy: false, // run as adaptive study 
@@ -195,143 +191,153 @@ function setConfigCAMfile() {
     }
      */
 
-    /* set up the config */
-    if($('#sethideArrows').is(":checked")){
-        setCAMConfig.config.hideArrows = false;
-    }else{
-        setCAMConfig.config.hideArrows = true;
-    }
+	/* set up the config */
+	if ($("#sethideArrows").is(":checked")) {
+		setCAMConfig.config.hideArrows = false;
+	} else {
+		setCAMConfig.config.hideArrows = true;
+	}
 
-    if($('#sethideAmbivalent').is(":checked")){
-        setCAMConfig.config.hideAmbivalent = false;
-    }else{
-        setCAMConfig.config.hideAmbivalent = true;
-    }
+	if ($("#sethideAmbivalent").is(":checked")) {
+		setCAMConfig.config.hideAmbivalent = false;
+	} else {
+		setCAMConfig.config.hideAmbivalent = true;
+	}
 
-    if($('#setshowOnlyPosSlid').is(":checked")){
-        setCAMConfig.config.showOnlyPosSlid = false;
-    }else{
-        setCAMConfig.config.showOnlyPosSlid = true;
-    }
+	if ($("#setshowOnlyPosSlid").is(":checked")) {
+		setCAMConfig.config.showOnlyPosSlid = false;
+	} else {
+		setCAMConfig.config.showOnlyPosSlid = true;
+	}
 
-    if($('#setcameraFeature').is(":checked")){
-        setCAMConfig.config.cameraFeature = true;
-    }else{
-        setCAMConfig.config.cameraFeature = false;
-    }
+	if ($("#setcameraFeature").is(":checked")) {
+		setCAMConfig.config.cameraFeature = true;
+	} else {
+		setCAMConfig.config.cameraFeature = false;
+	}
 
-    if($('#setfullScreen').is(":checked")){
-        setCAMConfig.config.fullScreen = true;
-    }else{
-        setCAMConfig.config.fullScreen = false;
-    }
+	if ($("#setfullScreen").is(":checked")) {
+		setCAMConfig.config.fullScreen = true;
+	} else {
+		setCAMConfig.config.fullScreen = false;
+	}
 
-    /* set up the CAM */
-    // nodes
-    saveNodes = [];
-    for (var i = 0; i < CAM.nodes.length; i++) {
-        var elementNode = CAM.nodes[i];
-        var currentNode = {id: null, value: null, text: null, position: null, isDeletable: null, isDraggable: null, isTextChangeable: null}
-        // console.log(elementNode);
+	/* set up the CAM */
+	// nodes
+	saveNodes = [];
+	for (var i = 0; i < CAM.nodes.length; i++) {
+		var elementNode = CAM.nodes[i];
+		var currentNode = {
+			id: null,
+			value: null,
+			text: null,
+			position: null,
+			isDeletable: null,
+			isDraggable: null,
+			isTextChangeable: null,
+		};
+		// console.log(elementNode);
 
-        if(elementNode.isActive){
-            currentNode.id = elementNode.id;
-            currentNode.value = elementNode.value;
-            currentNode.text = elementNode.text;
-            currentNode.position = elementNode.position
-            currentNode.isDeletable = elementNode.isDeletable
-            currentNode.isDraggable = elementNode.isDraggable
-            currentNode.isTextChangeable = elementNode.isTextChangeable
-            saveNodes.push(currentNode);
-        }
-    }
-    //console.log(saveNodes)
-    setCAMConfig.CAM.nodes = saveNodes;
+		if (elementNode.isActive) {
+			currentNode.id = elementNode.id;
+			currentNode.value = elementNode.value;
+			currentNode.text = elementNode.text;
+			currentNode.position = elementNode.position;
+			currentNode.isDeletable = elementNode.isDeletable;
+			currentNode.isDraggable = elementNode.isDraggable;
+			currentNode.isTextChangeable = elementNode.isTextChangeable;
+			saveNodes.push(currentNode);
+		}
+	}
+	//console.log(saveNodes)
+	setCAMConfig.CAM.nodes = saveNodes;
 
-    // connectors
-    saveConnectors = [];
-    for (var i = 0; i < CAM.connectors.length; i++) {
-        var elementConnector = CAM.connectors[i];
-        var currentConnector = {id: null, intensity: null, agreement: null, isBidirectional: null, source: null, target: null, isDeletable: null}
-        // console.log(elementNode);
+	// connectors
+	saveConnectors = [];
+	for (var i = 0; i < CAM.connectors.length; i++) {
+		var elementConnector = CAM.connectors[i];
+		var currentConnector = {
+			id: null,
+			intensity: null,
+			agreement: null,
+			isBidirectional: null,
+			source: null,
+			target: null,
+			isDeletable: null,
+		};
+		// console.log(elementNode);
 
-        if(elementConnector.isActive){
-            currentConnector.id = elementConnector.id;
-            currentConnector.intensity = elementConnector.getIntensity();
-            currentConnector.agreement = elementConnector.agreement;
-            currentConnector.isBidirectional = elementConnector.isBidirectional;
-            currentConnector.source = elementConnector.source;
-            currentConnector.target = elementConnector.target;
-            currentConnector.isDeletable = elementConnector.isDeletable 
+		if (elementConnector.isActive) {
+			currentConnector.id = elementConnector.id;
+			currentConnector.intensity = elementConnector.intensity;
+			currentConnector.agreement = elementConnector.agreement;
+			currentConnector.isBidirectional = elementConnector.isBidirectional;
+			currentConnector.source = elementConnector.source;
+			currentConnector.target = elementConnector.target;
+			currentConnector.isDeletable = elementConnector.isDeletable;
 
-            saveConnectors.push(currentConnector);
-        }
-    }
-    //console.log(saveConnectors)
-    setCAMConfig.CAM.connectors = saveConnectors;
+			saveConnectors.push(currentConnector);
+		}
+	}
+	//console.log(saveConnectors)
+	setCAMConfig.CAM.connectors = saveConnectors;
 
-
-    $('#createdConfigPlusCAM').text(JSON.stringify(setCAMConfig, null, 1))
-    // console.log(JSON.parse(JSON.stringify(setConfig, null, 1)))
+	$("#createdConfigPlusCAM").text(JSON.stringify(setCAMConfig, null, 1));
+	// console.log(JSON.parse(JSON.stringify(setConfig, null, 1)))
 }
 
-
 $(function () {
-/* set up dialog */
-    $("#dialogSetUpStudy").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 460,
-        maxWidth: 460,
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").hide(); // hide titlebar
-            $(this).dialog({
-                draggable: false
-            }).parent().draggable();
+	/* set up dialog */
+	$("#dialogSetUpStudy").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 460,
+		maxWidth: 460,
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").hide(); // hide titlebar
+			$(this)
+				.dialog({
+					draggable: false,
+				})
+				.parent()
+				.draggable();
 
-            console.log('dialog got open');
+			console.log("dialog got open");
 
-            //setTimeout("$('#dialogSetUpStudy').dialog('close')",5000);
+			//setTimeout("$('#dialogSetUpStudy').dialog('close')",5000);
 
-            $('.ui-widget-overlay').on('click', function () {
-                $("#dialogSetUpStudy").dialog('close');
-            });
+			$(".ui-widget-overlay").on("click", function () {
+				$("#dialogSetUpStudy").dialog("close");
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
+		},
+		position: {
+			my: "center", // add percentage offsets
+			at: "center",
+			of: $(".boxCAMSVG"),
+		},
+	});
 
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
+	$("#createConfigSave").on("click", (evt) => {
+		$("#dialogSetUpStudy").dialog("open");
+		setConfigCAMfile();
+	});
 
+	$(
+		"#sethideArrows,#setfullScreen, #sethideAmbivalent, #setshowOnlyPosSlid, #setcameraFeature"
+	).click(function () {
+		setConfigCAMfile();
+	});
 
-
-        },
-        position: {
-            my: "center", // add percentage offsets
-            at: "center",
-            of: $(".boxCAMSVG")
-        }
-    });
-
-
-    $("#createConfigSave").on("click", (evt) => {
-       $("#dialogSetUpStudy").dialog("open");
-       setConfigCAMfile();
-    });
-
-    $('#sethideArrows,#setfullScreen, #sethideAmbivalent, #setshowOnlyPosSlid, #setcameraFeature').click(function () {
-        setConfigCAMfile();
-    });
-
-    $('#setConNumNodes,#setMaxLengthWords, #setMaxLengthChars, #setLanguage').change(function () {
-        setConfigCAMfile();
-    });
-
-
-})
-
-
-
-
+	$(
+		"#setConNumNodes,#setMaxLengthWords, #setMaxLengthChars, #setLanguage"
+	).change(function () {
+		setConfigCAMfile();
+	});
+});
