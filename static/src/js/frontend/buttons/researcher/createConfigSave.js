@@ -283,61 +283,57 @@ function setConfigCAMfile() {
 	setCAMConfig.CAM.connectors = saveConnectors;
 
 	$("#createdConfigPlusCAM").text(JSON.stringify(setCAMConfig, null, 1));
-	// console.log(JSON.parse(JSON.stringify(setConfig, null, 1)))
 }
 
-$(function () {
-	/* set up dialog */
-	$("#dialogSetUpStudy").dialog({
-		autoOpen: false,
-		modal: true,
-		show: "fade",
-		hide: false,
-		resizable: false,
-		draggable: true,
-		width: 460,
-		maxWidth: 460,
-		open: function (event, ui) {
-			$(".ui-dialog-titlebar").hide(); // hide titlebar
-			$(this)
-				.dialog({
-					draggable: false,
-				})
-				.parent()
-				.draggable();
+$("#dialogSetUpStudy").dialog({
+	autoOpen: false,
+	modal: true,
+	show: "fade",
+	hide: false,
+	resizable: false,
+	draggable: true,
+	width: 460,
+	maxWidth: 460,
+	open: function (event, ui) {
+		$(".ui-dialog-titlebar").hide(); // hide titlebar
+		$(this)
+			.dialog({
+				draggable: false,
+			})
+			.parent()
+			.draggable();
 
-			console.log("dialog got open");
+		console.log("dialog got open");
 
-			//setTimeout("$('#dialogSetUpStudy').dialog('close')",5000);
+		//setTimeout("$('#dialogSetUpStudy').dialog('close')",5000);
 
-			$(".ui-widget-overlay").on("click", function () {
-				$("#dialogSetUpStudy").dialog("close");
-			});
-		},
-		close: function (event, ui) {
-			console.log("dialog got closed");
-		},
-		position: {
-			my: "center", // add percentage offsets
-			at: "center",
-			of: $(".boxCAMSVG"),
-		},
-	});
+		$(".ui-widget-overlay").on("click", function () {
+			$("#dialogSetUpStudy").dialog("close");
+		});
+	},
+	close: function (event, ui) {
+		console.log("dialog got closed");
+	},
+	position: {
+		my: "center", // add percentage offsets
+		at: "center",
+		of: $(".boxCAMSVG"),
+	},
+});
 
-	$("#createConfigSave").on("click", (evt) => {
-		$("#dialogSetUpStudy").dialog("open");
-		setConfigCAMfile();
-	});
+$("#createConfigSave").on("click", (evt) => {
+	$("#dialogSetUpStudy").dialog("open");
+	setConfigCAMfile();
+});
 
-	$(
-		"#sethideArrows,#setfullScreen, #sethideAmbivalent, #setshowOnlyPosSlid, #setcameraFeature"
-	).click(function () {
-		setConfigCAMfile();
-	});
+$(
+	"#sethideArrows,#setfullScreen, #sethideAmbivalent, #setshowOnlyPosSlid, #setcameraFeature"
+).click(function () {
+	setConfigCAMfile();
+});
 
-	$(
-		"#setConNumNodes,#setMaxLengthWords, #setMaxLengthChars, #setLanguage"
-	).change(function () {
-		setConfigCAMfile();
-	});
+$(
+	"#setConNumNodes,#setMaxLengthWords, #setMaxLengthChars, #setLanguage"
+).change(function () {
+	setConfigCAMfile();
 });

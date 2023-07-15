@@ -50,7 +50,7 @@ class Elements {
 	addConnector(connector) {
 		if (this.isConnectorIn(connector) == false) {
 			if (config.BidirectionalDefault) {
-				connector.setBidirectional(true);
+				connector.bidirection = true;
 			}
 			this.connectors.push(connector);
 			console.log("Connector has been added.");
@@ -220,18 +220,8 @@ class Elements {
 
 	importElement(element) {
 		if (element.kind === "Node") {
-			var node = new NodeCAM(
-				0,
-				"",
-				{
-					x: 0,
-					y: 0,
-				},
-				false,
-				false
-			);
+			var node = new NodeCAM(0, "");
 			node.setNodeImport(element);
-			console.log("A node has been imported.");
 			this.nodes.push(node);
 		}
 

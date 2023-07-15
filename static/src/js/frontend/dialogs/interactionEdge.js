@@ -137,7 +137,7 @@ $("#edgeSlider").on("input", function () {
 	var myRedColorTick = document.querySelector(".redColorTick");
 
 	var agreement = intensitySlider.value <= 3 ? false : true;
-	CAM.currentConnector.setAgreement(agreement);
+	CAM.currentConnector.agreement = agreement;
 
 	myRedColorSlider.style.backgroundColor =
 		intensitySlider.value <= 3
