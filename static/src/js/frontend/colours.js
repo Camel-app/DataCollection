@@ -1,14 +1,11 @@
 /* variables front end */
 // colors for highlighting selected elements
 
-
 // Text elements
 const TEXT = {
     colour: "black",
     size: "20px"
 };
-
-
 
 const COLOUR = {
     background: "white",

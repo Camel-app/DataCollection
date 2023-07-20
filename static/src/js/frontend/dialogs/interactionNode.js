@@ -87,20 +87,20 @@ const interaction = `
 </div>
 </div>`;
 
-var target = document.getElementById("dialogInteractionNode");
+let target = document.getElementById("dialogInteractionNode");
 target.innerHTML += interaction;
 
 // language file
 document.getElementById("deleteNode").title = languageFileOut.nd_05buttonDelete;
 
 $("#inptextnode").on("input", function () {
-	var MaxLengthWords = config.MaxLengthWords; // allow not more than X words
-	var MaxLengthChars = config.MaxLengthChars; // allow not more than X characters
+	let MaxLengthWords = config.MaxLengthWords; // allow not more than X words
+	let MaxLengthChars = config.MaxLengthChars; // allow not more than X characters
 
 	// console.log("CAM.currentNode.isTextChangeable:", CAM.currentNode.isTextChangeable)
 
 	if (CAM.currentNode.isTextChangeable) {
-		var numWords = this.value.split(" ").filter((word) => word != "");
+		let numWords = this.value.split(" ").filter((word) => word != "");
 		numWords = numWords.length;
 		// console.log("length chars: ", this.value.length, this.value.length <= MaxLengthChars);
 		// console.log("numWords: ", numWords, numWords <= MaxLengthWords);
@@ -153,12 +153,12 @@ $("#inptextnode").on("input", function () {
 });
 
 $("#nodeSlider").on("input", function () {
-	var valenceValue = document.querySelector("#nodeSlider");
+	let valenceValue = document.querySelector("#nodeSlider");
 
-	var myGreenColorNodeSlider = document.querySelector(
+	let myGreenColorNodeSlider = document.querySelector(
 		".greenColorNodeSlider"
 	);
-	var myRedColorNodeSlider = document.querySelector(".redColorNodeSlider");
+	let myRedColorNodeSlider = document.querySelector(".redColorNodeSlider");
 
 	switch (true) {
 		case valenceValue.value == 4:
@@ -196,7 +196,7 @@ $("#nodeSlider").on("input", function () {
 });
 
 $("#checkboxAmbivalent").on("click", function (event) {
-	var myValueCheckbox = document.querySelector("#checkboxAmbivalent").checked;
+	let myValueCheckbox = document.querySelector("#checkboxAmbivalent").checked;
 
 	if (myValueCheckbox === true) {
 		toastr.info(languageFileOut.ndw_01ambivalentConcept);
@@ -208,7 +208,7 @@ $("#checkboxAmbivalent").on("click", function (event) {
 });
 
 $("#checkboxAmbivalent").on("input", function () {
-	var myValueCheckbox = document.querySelector("#checkboxAmbivalent").checked;
+	let myValueCheckbox = document.querySelector("#checkboxAmbivalent").checked;
 	document.getElementById("nodeSlider").value = 4;
 
 	if (myValueCheckbox === true) {
@@ -229,7 +229,7 @@ $("#inpcommentnode").on("input", function () {
 
 // > delete
 $("#deleteNode").on("click", (evt) => {
-	var success = CAM.deleteElement();
+	let success = CAM.deleteElement();
 	if (!success) {
 		CAM.currentNode.enterLog({
 			type: "node was deleted",

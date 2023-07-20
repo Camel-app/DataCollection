@@ -56,7 +56,7 @@ class Elements {
 			console.log("Connector has been added.");
 			return true;
 		}
-		var connector = this.findConnector(connector);
+		let connector = this.findConnector(connector);
 		connector.isActive = true;
 		return false;
 	}
@@ -78,7 +78,7 @@ class Elements {
 		return connector1[0];
 	}
 	getConnectorById(id) {
-		for (var elt of this.connectors) {
+		for (let elt of this.connectors) {
 			if (elt.id === id) return elt;
 		}
 		return null;
@@ -134,12 +134,12 @@ class Elements {
 	getIndex(id, kind) {
 		switch (kind) {
 			case "Node":
-				for (var index = 0; index < this.nodes.length; index++) {
+				for (let index = 0; index < this.nodes.length; index++) {
 					if (this.nodes[index].id === id) return index;
 				}
 				break;
 			case "Connector":
-				for (var index = 0; index < this.connectors.length; index++) {
+				for (let index = 0; index < this.connectors.length; index++) {
 					if (this.connectors[index].id === id) return index;
 				}
 		}
@@ -152,7 +152,7 @@ class Elements {
 			this.currentNode != null &&
 			this.nodes[index].id != this.currentNode.id
 		) {
-			var connector = new ConnectorCAM();
+			let connector = new ConnectorCAM();
 			connector.establishConnection(
 				this.currentNode,
 				this.nodes[index],
@@ -180,7 +180,7 @@ class Elements {
 	}
 
 	getNodeById(id) {
-		for (var elt of this.nodes) {
+		for (let elt of this.nodes) {
 			if (elt.id === id) return elt;
 		}
 		return null;
@@ -220,7 +220,7 @@ class Elements {
 
 	importElement(element) {
 		if (element.kind === "Node") {
-			var node = new NodeCAM(0, "");
+			let node = new NodeCAM(0, "");
 			node.setNodeImport(element);
 			this.nodes.push(node);
 		}
@@ -228,7 +228,7 @@ class Elements {
 		if (element.kind === "Connector") {
 			const source = this.getNodeById(element.source);
 			const target = this.getNodeById(element.target);
-			var connector = new ConnectorCAM();
+			let connector = new ConnectorCAM();
 			connector.establishConnection(
 				source,
 				target,
