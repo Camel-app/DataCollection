@@ -1,4 +1,4 @@
-$(document).on("mousedown", ".node", function (event) {
+$(document).on("mousedown1", ".node", function (event) {
 	arrayPositions = [];
 	/* if double click */
 	if (event.detail == 2) {
@@ -88,7 +88,7 @@ $(document).on("mousedown", ".node", function (event) {
 	CAM.draw();
 });
 
-$(document).on("mouseup", ".node", function (event) {
+$(document).on("mouseup1", ".node", function (event) {
 	// save position data for only every 150px difference of X or Y
 	var newArrX = [];
 	var tmpArrayPosX = arrayPositions[0];
@@ -277,8 +277,8 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
 $(document).on("click", "#background", function (event) {
 	if (!(resetConnectorSelection() || resetNodeSelection())) {
 		const positionClick = {
-			x: event.clientX - $("#CAMSVG").position().left, // / zoomScale,
-			y: event.clientY - $("#CAMSVG").position().top, // / zoomScale
+			x: event.clientX - $("#CAMSVG").position().left - camPosition.x, // / zoomScale,
+			y: event.clientY - $("#CAMSVG").position().top - camPosition.y, // / zoomScale
 		};
 
 		CAM.addElement(new NodeCAM(0, "", positionClick, 1, 1, 1));

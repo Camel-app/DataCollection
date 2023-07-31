@@ -9,6 +9,10 @@ const moveCAMSpeed = 10;
 // stopping condition X coordinates
 let stopConX = 0;
 let stopConY = 0;
+let offsetXY = [0, 0]; // for smooth movements
+let cameraOffset = { x: 0, y: 0 };
+let camPosition = { x: 0, y: 0 };
+let zoom = 1;
 
 /* !!! partly RENAME within code !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 //let LengthSentence = config.LengthSentence; // if >= X characters
@@ -36,9 +40,5 @@ let CounterChangeAmbiConcept = 0;
 let zoomScaleNode = 0.45;
 //let zoomScaleConnector = 1;
 
-
-
 // increase slider intensity by X (thicker lines)
 const IncreaseSliderIntensity = 3;
-
-

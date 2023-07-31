@@ -1,359 +1,631 @@
+let width = 1300;
+let height = 800;
 
+function draw() {
+	var nodes = CAM.nodes;
+	var edges = CAM.connectors.map((elt) => {
+		var relt = {};
+		relt["source"] = elt.source;
+		relt["target"] = elt.target;
+		relt["value"] = elt.value;
+		relt["left"] = true;
+		return relt;
+	});
 
+	const svg = d3.select("#CAMSVG");
+	svg.selectAll("*").remove();
+	svg.attr("width", width).attr("height", height);
 
+	const subGroup = svg.append("g");
 
-function draw(CAM) {
+	subGroup
+		.append("rect")
+		.attr("x", 0)
+		.attr("y", 0)
+		.attr("width", "100%")
+		.attr("height", "100%")
+		.attr("id", "background")
+		.attr("fill", "white")
+		//.on("mousedown", (node) => {test(node)})
+		.on("mousedown", (node) => {
+			var pos = d3.pointer(node);
+			mouseDownPosition = { x: pos[0], y: pos[1] };
+		})
+		.call(d3.drag().on("drag", dragBackground));
 
-    const board = document.querySelector("#CAMSVG");
-    board.innerHTML = "";
+	subGroup
+		.append("g")
+		.selectAll("line")
+		.data(edges)
+		.enter()
+		.append("line")
+		.style("stroke", "red")
+		.style("stroke-dasharray", (d) => {
+			return d.value > 0 ? "0,0" : "5,5";
+		})
+		.attr("x1", function (d) {
+			return getPosition(d.source).x + camPosition.x;
+		})
+		.attr("y1", function (d) {
+			return getPosition(d.source).y + camPosition.y;
+		})
+		.attr("x2", function (d) {
+			return getPosition(d.target).x + camPosition.x;
+		})
+		.attr("y2", function (d) {
+			return getPosition(d.target).y + camPosition.y;
+		});
 
-    board.appendChild(this.drawBackground());
+	subGroup
+		.append("g")
+		.selectAll("dot")
+		.data(nodes)
+		.enter()
+		.append("ellipse")
+		.attr("cx", function (node) {
+			return node.position.x + camPosition.x;
+		})
+		.attr("cy", function (node) {
+			return node.position.y + camPosition.y;
+		})
+		.attr("rx", 60)
+		.attr("ry", 40)
+		.attr("id", function (node) {
+			return node.id;
+		})
+		.attr("stroke", function (node) {
+			return !node.isSelected ? getColourNodeStroke(node) : "black";
+		})
+		.attr("stroke-width", function (node) {
+			return Math.abs(node.value + 1) * 2;
+		})
+		.attr("fill", function (node) {
+			return getColourNodeFill(node);
+		})
+		.on("click", click)
+		.call(
+			d3
+				.drag()
+				.on("start", dragstarted)
+				.on("drag", dragged)
+				.on("end", dragended)
+		);
 
-    board.appendChild(arrowRight);
-    board.appendChild(arrowLeft);
+	subGroup
+		.append("g")
+		.selectAll("text")
+		.data(nodes)
+		.enter()
+		.append("text")
+		.attr("x", function (node) {
+			return node.position.x + camPosition.x;
+		})
+		.attr("y", function (node) {
+			return node.position.y + camPosition.y;
+		})
+		.attr("dx", function (node) {
+			return -100;
+		})
+		.text(function (node) {
+			return node.text;
+		})
+		.attr("id", function (node) {
+			return node.id;
+		})
+		.on("click", click);
+}
 
-    CAM.connectors.forEach(connector => {
-        if (connector.isActive) {
-            const mother = CAM.getNodeById(connector.source);
-            const daughter = CAM.getNodeById(connector.target);
-            const currentConnector = drawConnector(connector, mother, daughter);
-            board.appendChild(currentConnector);
-        }
-    });
+function dragBackground(event) {
+	const coord = d3.pointer(event);
+	const board = document.querySelector("#CAMSVG").getBoundingClientRect();
 
-    CAM.nodes.forEach(node => {
-        if (node.isActive) {
-            const currentNode = drawNode(node);
-            board.appendChild(currentNode);
-        }
-    });
+	camPosition = {
+		x: camPosition.x + event.sourceEvent.movementX,
+		y: camPosition.y + event.sourceEvent.movementY,
+	};
+	draw();
+}
+function dragstarted(event) {
+	const node = CAM.getNodeById(this.id);
+	const position = node.position;
+	offsetXY = [
+		d3.pointer(event)[0] - position.x,
+		d3.pointer(event)[1] - position.y,
+	];
+	CAM.selecteNode(this.id);
+	draw();
+}
+
+// Update the subject (dragged node) position during drag.
+function dragged(event) {
+	const coord = d3.pointer(event);
+	const board = document.querySelector("#CAMSVG").getBoundingClientRect();
+
+	event.subject.position = {
+		x: coord[0] - offsetXY[0] - board.x,
+		y: coord[1] - offsetXY[1] - board.y,
+	};
+	draw();
+}
+
+// Restore the target alpha so the simulation cools after dragging ends.
+// Unfix the subject position now that it’s no longer being dragged.
+function dragended(event) {
+	offsetXY = [0, 0];
+}
+
+function getColourNodeStroke(node) {
+	const colourPaletteRed = ["white", COLOUR.red1, COLOUR.red2, COLOUR.red3];
+	const colourPaletteGreen = [
+		"white",
+		COLOUR.green3,
+		COLOUR.green2,
+		COLOUR.green1,
+	];
+
+	if (node.value == 0) {
+		return COLOUR.neutralLine;
+	}
+	if (node.value == 10) {
+		return COLOUR.ambivalentLine;
+	}
+	if (node.value > 0) {
+		return colourPaletteGreen[node.value];
+	}
+	if (node.value < 0) {
+		return colourPaletteRed[-node.value];
+	}
+}
+
+function getColourNodeFill(node) {
+	if (node.value == 0) {
+		return COLOUR.neutralNode;
+	}
+	if (node.value == 10) {
+		return COLOUR.ambivalentNode;
+	}
+	if (node.value > 0) {
+		return COLOUR.green3;
+	}
+	if (node.value < 0) {
+		return COLOUR.red3;
+	}
+}
+
+function click(event) {
+	CAM.selecteNode(this.id);
+	//CAM.nodes.forEach((node) => {
+	//	node.selected = false;
+	//});
+	//CAM.getNodeById(this.id).selected = true;
+	draw();
+}
+
+function clickBackground(node) {}
+
+function getPosition(elt) {
+	const node = CAM.getNodeById(elt);
+	return {
+		x: node.position.x,
+		y: node.position.y,
+	};
+}
+
+function draw1(CAM) {
+	const board = document.querySelector("#CAMSVG");
+	board.innerHTML = "";
+
+	board.appendChild(this.drawBackground());
+	board.appendChild(arrowRight);
+	board.appendChild(arrowLeft);
+
+	CAM.connectors.forEach((connector) => {
+		if (connector.isActive) {
+			const mother = CAM.getNodeById(connector.source);
+			const daughter = CAM.getNodeById(connector.target);
+			const currentConnector = drawConnector(connector, mother, daughter);
+			board.appendChild(currentConnector);
+		}
+	});
+
+	CAM.nodes.forEach((node) => {
+		if (node.isActive) {
+			const currentNode = drawNode(node);
+			board.appendChild(currentNode);
+		}
+	});
 }
 
 function drawBackground() {
-    let background = document.createElementNS(svgns, "rect");
-    background.setAttribute("id", "background");
-    background.setAttribute("x", 0);
-    background.setAttribute("y", 0);
-    background.setAttribute("width", "100%");
-    background.setAttribute("height", "100%");
-    background.setAttribute("fill", COLOUR.background);
+	let background = document.createElementNS(svgns, "rect");
+	background.setAttribute("id", "background");
+	background.setAttribute("x", 0);
+	background.setAttribute("y", 0);
+	background.setAttribute("width", "100%");
+	background.setAttribute("height", "100%");
+	background.setAttribute("fill", COLOUR.background);
 
-    return background;
+	return background;
 }
 
-
 function drawNode(node) {
+	let group = document.createElementNS(svgns, "g");
+	group.setAttribute(
+		"transform",
+		`translate(${node.position.x},${node.position.y}) scale(${zoomScaleNode})`
+	);
+	group.appendChild(getShapeSVG(node));
+	group.appendChild(getTextSVG(node));
 
-    let group = document.createElementNS(svgns, "g");
-    group.setAttribute("transform", `translate(${node.position.x},${node.position.y}) scale(${zoomScaleNode})`)
-    group.appendChild(getShapeSVG(node));
-    group.appendChild(getTextSVG(node));
-
-    return group;
+	return group;
 }
 
 function getShapeSVG(node) {
-    switch (true) {
+	switch (true) {
+		case node.value == 10: // ambivalent concept
+			return drawAmbivalent(node);
 
-        case (node.value == 10): // ambivalent concept
-            return drawAmbivalent(node);
+		case node.value == 0: // neutral concept
+			return drawNeutral(node);
 
-        case (node.value == 0): // neutral concept
-            return drawNeutral(node);
+		case node.value < 0: // negative concept
+			return drawNegativeNode(node);
 
-        case (node.value < 0): // negative concept
-            return drawNegativeNode(node);
-        
-        case (node.value > 0): // positive concept
-            return drawPositiveNode(node);
-    }
+		case node.value > 0: // positive concept
+			return drawPositiveNode(node);
+	}
 }
 
 function getTextSVG(node) {
+	let nodeText = document.createElementNS(svgns, "text");
+	nodeText.setAttribute("id", node.id);
+	nodeText.setAttribute("class", "noselect node");
+	nodeText.setAttribute("x", 0);
+	nodeText.setAttribute("fill", TEXT.colour);
+	nodeText.setAttribute("alignment-baseline", "center");
+	nodeText.setAttribute("text-anchor", "middle");
+	nodeText.setAttribute("font-size", TEXT.size);
 
-    let nodeText = document.createElementNS(svgns, "text");
-    nodeText.setAttribute("id", node.id);
-    nodeText.setAttribute("class", "noselect node");
-    nodeText.setAttribute("x", 0);
-    nodeText.setAttribute("fill", TEXT.colour);
-    nodeText.setAttribute("alignment-baseline", "center");
-    nodeText.setAttribute("text-anchor", "middle")
-    nodeText.setAttribute("font-size", TEXT.size)
+	if (node.text.length >= config.LengthSentence) {
+		const cumulativeSum = (
+			(sum) => (value) =>
+				(sum += value)
+		)(0);
+		var LengthCumWords = config.LengthWords;
+		var LengthText = [];
+		var ArrayText = node.text.split(" ");
 
-    if (node.text.length >= config.LengthSentence) {
-        const cumulativeSum = (sum => value => sum += value)(0);
-        var LengthCumWords = config.LengthWords;
-        var LengthText = [];
-        var ArrayText = node.text.split(' ');
+		ArrayText.forEach((element) => LengthText.push(element.length));
 
-        ArrayText.forEach(element => LengthText.push(element.length));
+		LengthText = LengthText.map(cumulativeSum);
 
-        LengthText = LengthText.map(cumulativeSum);
+		for (var i = 0; i <= LengthText.length; i++) {
+			if (LengthText[i] > LengthCumWords) {
+				ArrayText[i] =
+					" <tspan dy='1.1em' x='0'>" + ArrayText[i] + "</tspan>";
+				LengthCumWords += config.LengthWords;
+			}
+		}
 
-        for (var i = 0; i <= LengthText.length; i++) {
-            if (LengthText[i] > LengthCumWords) {
-                ArrayText[i] = " <tspan dy='1.1em' x='0'>" + ArrayText[i] + "</tspan>";
-                LengthCumWords += config.LengthWords;
-            }
-        }
+		nodeText.setAttribute("y", -20);
 
-        nodeText.setAttribute("y", -20);
-
-        nodeText.innerHTML = ArrayText.join(" ");
-    } else {
-        nodeText.innerHTML = node.text;
-        nodeText.setAttribute("y", 0);
-    }
-    return nodeText;
+		nodeText.innerHTML = ArrayText.join(" ");
+	} else {
+		nodeText.innerHTML = node.text;
+		nodeText.setAttribute("y", 0);
+	}
+	return nodeText;
 }
 
 function drawPositiveNode(node) {
-    let positiveNode = document.createElementNS(svgns, "ellipse");
-    positiveNode.setAttribute("id", node.id);
-    positiveNode.setAttribute("class", "node");
-    positiveNode.setAttribute(null, "cx", 0);
-    positiveNode.setAttribute(null, "cy", 0);
-    positiveNode.setAttribute("rx", "100");
-    positiveNode.setAttribute("ry", "70");
-    positiveNode.setAttribute("transform", "translate(0,0)"); // scale(0.1)
-    positiveNode.setAttribute("fill", COLOUR.positiveNode);
-    positiveNode.setAttribute("stroke", COLOUR.positiveLine);
-    positiveNode.setAttribute("stroke-width", Math.abs(node.value) * 3);
+	let positiveNode = document.createElementNS(svgns, "ellipse");
+	positiveNode.setAttribute("id", node.id);
+	positiveNode.setAttribute("class", "node");
+	positiveNode.setAttribute(null, "cx", 0);
+	positiveNode.setAttribute(null, "cy", 0);
+	positiveNode.setAttribute("rx", "100");
+	positiveNode.setAttribute("ry", "70");
+	positiveNode.setAttribute("transform", "translate(0,0)"); // scale(0.1)
+	positiveNode.setAttribute("fill", COLOUR.positiveNode);
+	positiveNode.setAttribute("stroke", COLOUR.positiveLine);
+	positiveNode.setAttribute("stroke-width", Math.abs(node.value) * 3);
 
-    positiveNode.setAttribute("opacity", 1);
+	positiveNode.setAttribute("opacity", 1);
 
+	if (node.isSelected === true) {
+		positiveNode.setAttribute("fill", COLOUR.selected);
+	}
+	if (node.isConnectorSelected === true) {
+		positiveNode.setAttribute("fill", COLOUR.adjacent);
+	}
 
-    if (node.isSelected === true) {
-        positiveNode.setAttribute("fill", COLOUR.selected);
-    }
-    if (node.isConnectorSelected === true) {
-        positiveNode.setAttribute("fill", COLOUR.adjacent);
-    }
-
-    return positiveNode;
+	return positiveNode;
 }
 
 function drawNegativeNode(node) {
-    let negativeNode = document.createElementNS(svgns, "polygon");
-    negativeNode.setAttribute("id", node.id);
-    negativeNode.setAttribute("class", "node");
-    negativeNode.setAttribute("points", "-100,0 -60,-60 60,-60 100,0 60,60 -60,60");
-    negativeNode.setAttribute("transform", "translate(0,0)")
-    negativeNode.setAttribute("fill", COLOUR.negativeNode);
-    negativeNode.setAttribute("stroke", COLOUR.negativeLine);
-    negativeNode.setAttribute("stroke-width", Math.abs(node.value) * 3);
+	let negativeNode = document.createElementNS(svgns, "polygon");
+	negativeNode.setAttribute("id", node.id);
+	negativeNode.setAttribute("class", "node");
+	negativeNode.setAttribute(
+		"points",
+		"-100,0 -60,-60 60,-60 100,0 60,60 -60,60"
+	);
+	negativeNode.setAttribute("transform", "translate(0,0)");
+	negativeNode.setAttribute("fill", COLOUR.negativeNode);
+	negativeNode.setAttribute("stroke", COLOUR.negativeLine);
+	negativeNode.setAttribute("stroke-width", Math.abs(node.value) * 3);
 
-    if (node.isSelected === true) {
-        negativeNode.setAttribute("fill", COLOUR.selected);
-    }
-    if (node.isConnectorSelected === true) {
-        negativeNode.setAttribute("fill", COLOUR.adjacent);
-    }
+	if (node.isSelected === true) {
+		negativeNode.setAttribute("fill", COLOUR.selected);
+	}
+	if (node.isConnectorSelected === true) {
+		negativeNode.setAttribute("fill", COLOUR.adjacent);
+	}
 
-    return negativeNode;
+	return negativeNode;
 }
 
 function drawNeutral(node) {
-    let neutralNode = document.createElementNS(svgns, "rect");
-    neutralNode.setAttribute("id", node.id);
-    neutralNode.setAttribute("class", "node");
-    neutralNode.setAttribute("x", -100);
-    neutralNode.setAttribute("y", -60);
-    neutralNode.setAttributeNS(null, 'width', '200');
-    neutralNode.setAttributeNS(null, 'height', '120');
-    neutralNode.setAttribute("transform", "translate(0,0)")
+	let neutralNode = document.createElementNS(svgns, "rect");
+	neutralNode.setAttribute("id", node.id);
+	neutralNode.setAttribute("class", "node");
+	neutralNode.setAttribute("x", -100);
+	neutralNode.setAttribute("y", -60);
+	neutralNode.setAttributeNS(null, "width", "200");
+	neutralNode.setAttributeNS(null, "height", "120");
+	neutralNode.setAttribute("transform", "translate(0,0)");
 
-    neutralNode.setAttribute("fill", COLOUR.neutralNode);
-    neutralNode.setAttribute("stroke", COLOUR.neutralLine);
-    neutralNode.setAttribute("stroke-width", 5);
+	neutralNode.setAttribute("fill", COLOUR.neutralNode);
+	neutralNode.setAttribute("stroke", COLOUR.neutralLine);
+	neutralNode.setAttribute("stroke-width", 5);
 
-    if (node.isSelected === true) {
-        neutralNode.setAttribute("fill", COLOUR.selected);
-    }
-    if (node.isConnectorSelected === true) {
-        neutralNode.setAttribute("fill", COLOUR.adjacent);
-    }
+	if (node.isSelected === true) {
+		neutralNode.setAttribute("fill", COLOUR.selected);
+	}
+	if (node.isConnectorSelected === true) {
+		neutralNode.setAttribute("fill", COLOUR.adjacent);
+	}
 
-    return neutralNode;
+	return neutralNode;
 }
 
 function drawAmbivalent(node) {
-    let ambivalentNode = document.createElementNS(svgns, "g");
+	let ambivalentNode = document.createElementNS(svgns, "g");
 
-    let innerEllipse = document.createElementNS(svgns, "ellipse");
-    innerEllipse.setAttribute("id", node.id);
-    innerEllipse.setAttribute("class", "node");
-    innerEllipse.setAttribute(null, "cx", 0);
-    innerEllipse.setAttribute(null, "cy", 0);
-    innerEllipse.setAttribute("rx", "90");
-    innerEllipse.setAttribute("ry", "55");
-    innerEllipse.setAttribute("transform", "translate(0,0)")
-    innerEllipse.setAttribute("fill", COLOUR.ambivalentNode);
-    innerEllipse.setAttribute("stroke", COLOUR.ambivalentLine);
-    innerEllipse.setAttribute("stroke-width", 3);
+	let innerEllipse = document.createElementNS(svgns, "ellipse");
+	innerEllipse.setAttribute("id", node.id);
+	innerEllipse.setAttribute("class", "node");
+	innerEllipse.setAttribute(null, "cx", 0);
+	innerEllipse.setAttribute(null, "cy", 0);
+	innerEllipse.setAttribute("rx", "90");
+	innerEllipse.setAttribute("ry", "55");
+	innerEllipse.setAttribute("transform", "translate(0,0)");
+	innerEllipse.setAttribute("fill", COLOUR.ambivalentNode);
+	innerEllipse.setAttribute("stroke", COLOUR.ambivalentLine);
+	innerEllipse.setAttribute("stroke-width", 3);
 
-    let outsideShape = document.createElementNS(svgns, "polygon");
-    outsideShape.setAttribute("id", node.id);
-    outsideShape.setAttribute("class", "node");
-    outsideShape.setAttribute("points", "-100,0 -60,-60 60,-60 100,0 60,60 -60,60");
-    outsideShape.setAttribute("transform", "translate(0,0)")
-    outsideShape.setAttribute("fill", COLOUR.ambivalentNode);
-    outsideShape.setAttribute("stroke", COLOUR.ambivalentLine);
-    outsideShape.setAttribute("stroke-width", 5);
+	let outsideShape = document.createElementNS(svgns, "polygon");
+	outsideShape.setAttribute("id", node.id);
+	outsideShape.setAttribute("class", "node");
+	outsideShape.setAttribute(
+		"points",
+		"-100,0 -60,-60 60,-60 100,0 60,60 -60,60"
+	);
+	outsideShape.setAttribute("transform", "translate(0,0)");
+	outsideShape.setAttribute("fill", COLOUR.ambivalentNode);
+	outsideShape.setAttribute("stroke", COLOUR.ambivalentLine);
+	outsideShape.setAttribute("stroke-width", 5);
 
-    if (node.isSelected === true) {
-        innerEllipse.setAttribute("fill", COLOUR.selected);
-        outsideShape.setAttribute("fill", COLOUR.selected);
-    }
-    if (node.isConnectorSelected === true) {
-        innerEllipse.setAttribute("fill", COLOUR.adjacent);
-        outsideShape.setAttribute("fill", COLOUR.adjacent);
-    }
+	if (node.isSelected === true) {
+		innerEllipse.setAttribute("fill", COLOUR.selected);
+		outsideShape.setAttribute("fill", COLOUR.selected);
+	}
+	if (node.isConnectorSelected === true) {
+		innerEllipse.setAttribute("fill", COLOUR.adjacent);
+		outsideShape.setAttribute("fill", COLOUR.adjacent);
+	}
 
-    ambivalentNode.appendChild(outsideShape);
-    ambivalentNode.appendChild(innerEllipse);
+	ambivalentNode.appendChild(outsideShape);
+	ambivalentNode.appendChild(innerEllipse);
 
-    return ambivalentNode;
+	return ambivalentNode;
 }
-
-function distanceElement(value) {
-    if (value < 0) return 90;
-    if (value === 0) return 90;
-    if (value === 10) return 90;
-    if (value > 0) return 90;
-}
-
 
 function drawLine(connector, motherD, position, angle, dist, compensation) {
-    let lineConnector = document.createElementNS(svgns, "line");
-    lineConnector.setAttribute("class", "connector");
-    lineConnector.setAttribute("id", connector.id);
-    lineConnector.setAttribute("transform", `translate(${position.x},${position.y}) scale(1,1) `) // ${zoomScaleConnector}
-    lineConnector.setAttribute("x1", (motherD + DistanceArrows) * Math.cos(angle) * compensation);
-    lineConnector.setAttribute("y1", (motherD + DistanceArrows) * Math.sin(angle) * compensation);
-    lineConnector.setAttribute("x2", (dist - DistanceArrows) * Math.cos(angle) * compensation);
-    lineConnector.setAttribute("y2", (dist - DistanceArrows) * Math.sin(angle) * compensation);
-    lineConnector.setAttribute("stroke", COLOUR.line);
-    lineConnector.setAttribute("stroke-width", connector.intensity);
+	let lineConnector = document.createElementNS(svgns, "line");
+	lineConnector.setAttribute("class", "connector");
+	lineConnector.setAttribute("id", connector.id);
+	lineConnector.setAttribute(
+		"transform",
+		`translate(${position.x},${position.y}) scale(1,1) `
+	); // ${zoomScaleConnector}
+	lineConnector.setAttribute(
+		"x1",
+		(motherD + DistanceArrows) * Math.cos(angle) * compensation
+	);
+	lineConnector.setAttribute(
+		"y1",
+		(motherD + DistanceArrows) * Math.sin(angle) * compensation
+	);
+	lineConnector.setAttribute(
+		"x2",
+		(dist - DistanceArrows) * Math.cos(angle) * compensation
+	);
+	lineConnector.setAttribute(
+		"y2",
+		(dist - DistanceArrows) * Math.sin(angle) * compensation
+	);
+	lineConnector.setAttribute("stroke", COLOUR.line);
+	lineConnector.setAttribute("stroke-width", connector.intensity);
 
-    lineConnector.setAttribute("marker-start", "url(#arrowRight)");
+	lineConnector.setAttribute("marker-start", "url(#arrowRight)");
 
-    
-    if (connector.isBidirectional){
-        lineConnector.removeAttribute("marker-start");
-        lineConnector.setAttribute("x1", (motherD + 20) * Math.cos(angle) * compensation);
-        lineConnector.setAttribute("y1", (motherD + 20) * Math.sin(angle) * compensation);
-        lineConnector.setAttribute("x2", (dist - 20) * Math.cos(angle) * compensation);
-        lineConnector.setAttribute("y2", (dist - 20) * Math.sin(angle) * compensation);
-    }
-    // if (connector.isBidirectional) lineConnector.setAttribute("marker-end", "url(#arrowLeft)");
+	if (connector.isBidirectional) {
+		lineConnector.removeAttribute("marker-start");
+		lineConnector.setAttribute(
+			"x1",
+			(motherD + 20) * Math.cos(angle) * compensation
+		);
+		lineConnector.setAttribute(
+			"y1",
+			(motherD + 20) * Math.sin(angle) * compensation
+		);
+		lineConnector.setAttribute(
+			"x2",
+			(dist - 20) * Math.cos(angle) * compensation
+		);
+		lineConnector.setAttribute(
+			"y2",
+			(dist - 20) * Math.sin(angle) * compensation
+		);
+	}
+	// if (connector.isBidirectional) lineConnector.setAttribute("marker-end", "url(#arrowLeft)");
 
-    if (!connector.isBidirectional) { // adjust distance to element if uni-directional
-        lineConnector.setAttribute("x2", (dist - 20) * Math.cos(angle) * compensation);
-        lineConnector.setAttribute("y2", (dist - 20) * Math.sin(angle) * compensation);
-    }
+	if (!connector.isBidirectional) {
+		// adjust distance to element if uni-directional
+		lineConnector.setAttribute(
+			"x2",
+			(dist - 20) * Math.cos(angle) * compensation
+		);
+		lineConnector.setAttribute(
+			"y2",
+			(dist - 20) * Math.sin(angle) * compensation
+		);
+	}
 
-    if (connector.isSelected === true) {
-        lineConnector.setAttribute("stroke", COLOUR.selected);
+	if (connector.isSelected === true) {
+		lineConnector.setAttribute("stroke", COLOUR.selected);
+	}
 
-    }
+	if (connector.agreement === true) {
+		lineConnector.setAttribute("stroke-linecap", "butt");
+	}
 
-    if (connector.agreement === true) {
-        lineConnector.setAttribute("stroke-linecap", "butt");
-    }
+	if (connector.agreement === false) {
+		lineConnector.setAttribute("stroke-dasharray", "20,10");
+	}
 
-    if (connector.agreement === false) {
-        lineConnector.setAttribute("stroke-dasharray", "20,10");
-    }
-
-    return lineConnector;
+	return lineConnector;
 }
 
-
-function drawCross(connector, motherD, position, angle, dist, compensation, mother, daughter) {
-    return drawCross;
+function drawCross(
+	connector,
+	motherD,
+	position,
+	angle,
+	dist,
+	compensation,
+	mother,
+	daughter
+) {
+	return drawCross;
 }
 
 function drawOuter(connector, daughter, dist, angle, compensation) {
-    let outerConnector = document.createElementNS(svgns, "line");
-    outerConnector.setAttribute("transform", `translate(${daughter.position.x},${daughter.position.y}) `)
-    outerConnector.setAttribute("class", "outer-connector");
-    outerConnector.setAttribute("id", connector.id);
-    outerConnector.setAttribute("x1", 0);
-    outerConnector.setAttribute("y1", 0);
-    outerConnector.setAttribute("x2", (dist) * Math.cos(angle) * compensation);
-    outerConnector.setAttribute("y2", (dist) * Math.sin(angle) * compensation);
-    outerConnector.setAttribute("stroke", COLOUR.outerLine);
-    outerConnector.setAttribute("stroke-width", 30);
+	let outerConnector = document.createElementNS(svgns, "line");
+	outerConnector.setAttribute(
+		"transform",
+		`translate(${daughter.position.x},${daughter.position.y}) `
+	);
+	outerConnector.setAttribute("class", "outer-connector");
+	outerConnector.setAttribute("id", connector.id);
+	outerConnector.setAttribute("x1", 0);
+	outerConnector.setAttribute("y1", 0);
+	outerConnector.setAttribute("x2", dist * Math.cos(angle) * compensation);
+	outerConnector.setAttribute("y2", dist * Math.sin(angle) * compensation);
+	outerConnector.setAttribute("stroke", COLOUR.outerLine);
+	outerConnector.setAttribute("stroke-width", 30);
 
-    return outerConnector;
+	return outerConnector;
 }
 
 function drawSelected(daughter, dist, angle, compensation) {
-    let highlight = document.createElementNS(svgns, "line");
-    highlight.setAttribute("transform", `translate(${daughter.position.x},${daughter.position.y}) `)
-    highlight.setAttribute("x1", 0);
-    highlight.setAttribute("y1", 0);
-    highlight.setAttribute("x2", (dist) * Math.cos(angle) * compensation);
-    highlight.setAttribute("y2", (dist) * Math.sin(angle) * compensation);
-    highlight.setAttribute("stroke", COLOUR.selectedLine);
-    highlight.setAttribute("stroke-width", 30);
-    return highlight;
+	let highlight = document.createElementNS(svgns, "line");
+	highlight.setAttribute(
+		"transform",
+		`translate(${daughter.position.x},${daughter.position.y}) `
+	);
+	highlight.setAttribute("x1", 0);
+	highlight.setAttribute("y1", 0);
+	highlight.setAttribute("x2", dist * Math.cos(angle) * compensation);
+	highlight.setAttribute("y2", dist * Math.sin(angle) * compensation);
+	highlight.setAttribute("stroke", COLOUR.selectedLine);
+	highlight.setAttribute("stroke-width", 30);
+	return highlight;
 }
 
 function drawConnector(connector, mother, daughter) {
+	const vec = {
+		x: mother.position.x - daughter.position.x,
+		y: mother.position.y - daughter.position.y,
+	};
 
-    const vec = {
-        x: (mother.position.x - daughter.position.x),
-        y: (mother.position.y - daughter.position.y),
-    };
+	const dir = {
+		x: vec.x / Math.sqrt(vec.x ** 2 + vec.y ** 2),
+		y: vec.y / Math.sqrt(vec.x ** 2 + vec.y ** 2),
+	};
+	const angle =
+		dir.x === 0 ? Math.atan(dir.y / 0.001) : Math.atan(dir.y / dir.x);
+	const motherD = Math.sqrt(
+		(Math.cos(angle) * 40) ** 2 + (Math.sin(angle) * 20) ** 2
+	);
+	const dist = Math.sqrt(vec.x ** 2 + vec.y ** 2) - motherD;
+	const compensation = dir.x >= 0 ? 1 : -1;
+	const position = {
+		x: daughter.position.x,
+		y: daughter.position.y,
+	};
 
-    const dir = {
-        x: vec.x / Math.sqrt(vec.x ** 2 + vec.y ** 2),
-        y: vec.y / Math.sqrt(vec.x ** 2 + vec.y ** 2)
-    };
-    const angle = dir.x === 0 ? Math.atan(dir.y / 0.001) : Math.atan(dir.y / dir.x);
-    const motherD = Math.sqrt((Math.cos(angle) * 40) ** 2 + (Math.sin(angle) * 20) ** 2);
-    const dist = Math.sqrt(vec.x ** 2 + vec.y ** 2) - motherD;
-    const compensation = dir.x >= 0 ? 1 : -1;
-    const position = {
-        "x": daughter.position.x,
-        "y": daughter.position.y
-    };
+	let group = document.createElementNS(svgns, "g");
 
-    let group = document.createElementNS(svgns, "g");
+	/* change ordering to enable click on ability "node selected -> connector"*/
+	if (mother.isSelected || daughter.isSelected) {
+		const selectedDraw = this.drawSelected(
+			daughter,
+			dist,
+			angle,
+			compensation
+		);
+		group.appendChild(selectedDraw);
+	}
 
-    /* change ordering to enable click on ability "node selected -> connector"*/
-    if (mother.isSelected || daughter.isSelected) {
-        const selectedDraw = this.drawSelected(daughter, dist, angle, compensation);
-        group.appendChild(selectedDraw);
-    }
+	const line = this.drawLine(
+		connector,
+		motherD,
+		position,
+		angle,
+		dist,
+		compensation
+	);
+	group.appendChild(line);
 
-    const line = this.drawLine(connector, motherD, position, angle, dist, compensation);
-    group.appendChild(line);
+	const outer = this.drawOuter(
+		connector,
+		daughter,
+		dist,
+		angle,
+		compensation
+	);
+	group.appendChild(outer);
 
-    const outer = this.drawOuter(connector, daughter, dist, angle, compensation);
-    group.appendChild(outer);
-
-    return group;
+	return group;
 }
 
-
 function setOverlay() {
-    let background = document.createElementNS(svgns, "rect");
-    background.setAttribute("id", "overlay");
-    background.setAttribute("x", 0);
-    background.setAttribute("y", 0);
-    background.setAttribute("width", "100%");
-    background.setAttribute("height", "100%");
-    background.setAttribute("fill", "#aaaaaa");
-    background.setAttribute("opacity", .1);
-    return background;
+	let background = document.createElementNS(svgns, "rect");
+	background.setAttribute("id", "overlay");
+	background.setAttribute("x", 0);
+	background.setAttribute("y", 0);
+	background.setAttribute("width", "100%");
+	background.setAttribute("height", "100%");
+	background.setAttribute("fill", "#aaaaaa");
+	background.setAttribute("opacity", 0.1);
+	return background;
 }
 
 function drawOverlay() {
-    const svg = document.querySelector("#CAMSVG");
-    svg.innerHTML = "";
+	const svg = document.querySelector("#CAMSVG");
+	svg.innerHTML = "";
 
-    svg.appendChild(setOverlay());
+	svg.appendChild(setOverlay());
 }

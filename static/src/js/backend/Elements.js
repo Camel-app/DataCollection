@@ -56,7 +56,7 @@ class Elements {
 			console.log("Connector has been added.");
 			return true;
 		}
-		let connector = this.findConnector(connector);
+		connector = this.findConnector(connector);
 		connector.isActive = true;
 		return false;
 	}
@@ -163,11 +163,13 @@ class Elements {
 			this.unselectNode();
 			return;
 		}
-
 		this.hasSelectedNode = true;
 		this.currentNode = this.nodes[index];
 		this.currentID = this.currentNode.id;
-		this.currentNode.updateNode("isSelected", !this.currentNode.isSelected);
+		this.currentNode.updateNode("isSelected", true);
+
+		this.nodes.splice(this.nodes.indexOf(this.currentNode), 1);
+		this.nodes.push(this.currentNode);
 	}
 
 	unselectNode() {
