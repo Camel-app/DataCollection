@@ -13,6 +13,7 @@ let offsetXY = [0, 0]; // for smooth movements
 let cameraOffset = { x: 0, y: 0 };
 let camPosition = { x: 0, y: 0 };
 let zoom = 1;
+let lastClickDelta = 500;
 
 /* !!! partly RENAME within code !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 //let LengthSentence = config.LengthSentence; // if >= X characters
