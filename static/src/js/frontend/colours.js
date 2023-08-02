@@ -31,3 +31,41 @@ const COLOUR = {
     green1: "hsl(110, 100%, 40%)",
     white: "hsl(255, 100%, 100%)",
 }
+
+function getColourNodeStroke(node) {
+	const colourPaletteRed = ["white", COLOUR.red1, COLOUR.red2, COLOUR.red3];
+	const colourPaletteGreen = [
+		"white",
+		COLOUR.green3,
+		COLOUR.green2,
+		COLOUR.green1,
+	];
+
+	if (node.value == 0) {
+		return COLOUR.neutralLine;
+	}
+	if (node.value == 10) {
+		return COLOUR.ambivalentLine;
+	}
+	if (node.value > 0) {
+		return colourPaletteGreen[node.value];
+	}
+	if (node.value < 0) {
+		return colourPaletteRed[-node.value];
+	}
+}
+
+function getColourNodeFill(node) {
+	if (node.value == 0) {
+		return COLOUR.neutralNode;
+	}
+	if (node.value == 10) {
+		return COLOUR.ambivalentNode;
+	}
+	if (node.value > 0) {
+		return COLOUR.green3;
+	}
+	if (node.value < 0) {
+		return COLOUR.red3;
+	}
+}

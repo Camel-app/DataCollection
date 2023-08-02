@@ -222,6 +222,18 @@ crossorigin="anonymous"
        // processing files
       (function () {
         const script = document.createElement("script");
+        script.src = "./src/js/frontend/utils/drag.js";
+        script.async = false;
+        document.head.appendChild(script);
+      })();
+      (function () {
+        const script = document.createElement("script");
+        script.src = "./src/js/frontend/utils/click.js";
+        script.async = false;
+        document.head.appendChild(script);
+      })();
+      (function () {
+        const script = document.createElement("script");
         script.src = "./src/js/processing/preprocessingCAM.js";
         script.async = false;
         document.head.appendChild(script);
