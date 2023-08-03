@@ -3,8 +3,10 @@ const createConfigSave = `
 <span style="font-size: 12px; vertical-align: super;">to set up your study click:</span>
 <button id="createConfigSave" title="set up your config file and cope & paste the resulting code to set up the experiment" class="material-icons" style="margin-left: -5px;">settings</button>
 `;
-var target = document.getElementById("hideResearcherButtonsTop");
-target.innerHTML += createConfigSave;
+let hideResearcherButtonsTop = document.getElementById(
+	"hideResearcherButtonsTop"
+);
+hideResearcherButtonsTop.innerHTML += createConfigSave;
 
 /* add dialog window */
 const interactionSetUpStudy = `
@@ -136,8 +138,8 @@ const interactionSetUpStudy = `
 </div>
 </div>`;
 
-var target = document.getElementById("dialogSetUpStudy");
-target.innerHTML += interactionSetUpStudy;
+let dialogSetUpStudy = document.getElementById("dialogSetUpStudy");
+dialogSetUpStudy.innerHTML += interactionSetUpStudy;
 
 /* function to copy text */
 function copyText() {

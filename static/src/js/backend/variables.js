@@ -1,14 +1,7 @@
 /* initiate CAM */
 let CAM = new Elements();
 const svgns = "http://www.w3.org/2000/svg";
-const WEBSOCKET = false;
 
-/* camera option -> move SVG within broader frame*/
-// speed of CAM movement
-const moveCAMSpeed = 10;
-// stopping condition X coordinates
-let stopConX = 0;
-let stopConY = 0;
 let offsetXY = [0, 0]; // for smooth movements
 let cameraOffset = { x: 0, y: 0 };
 let camPosition = { x: 0, y: 0 };
@@ -38,7 +31,6 @@ let CounterChangeAmbiConcept = 0;
 
 /* DEFAULT values */
 // change zoom level of svg elements
-let zoomScaleNode = 0.45;
 //let zoomScaleConnector = 1;
 
 // increase slider intensity by X (thicker lines)

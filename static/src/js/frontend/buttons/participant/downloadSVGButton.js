@@ -1,7 +1,7 @@
 /* add button: */
 const dlButton = `<button id="saveCAMpicture" class="material-icons" onclick="onDownloadSVGfile()" title="Save CAM as picture" style="margin-right: 5px;">crop_original</button>`;
-var target = document.getElementById("rightButton");
-target.innerHTML += dlButton;
+var saveCAMpicture = document.getElementById("rightButton");
+saveCAMpicture.innerHTML += dlButton;
 
 // language file
 $(function () {

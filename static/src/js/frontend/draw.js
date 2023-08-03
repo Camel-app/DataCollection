@@ -104,21 +104,18 @@ function draw() {
 				.on("start", dragstarted)
 				.on("drag", dragged)
 				.on("end", dragended)
-		)
-		.on("mouseenter", function (d, i) {
-			console.log("mouseover on", this);
-			d3.select(this).transition().duration(300).attr("fill", "#ff0000");
-		})
-		.on("mouseout", function (d, i) {
-			console.log("mouseout on", this);
-
-			d3.select(this)
-				.transition()
-				.duration(300)
-				.attr("fill", (node) => {
-					return getColourNodeFill(node);
-				});
-		});
+		);
+	//		.on("mouseenter", function (d, i) {
+	//			d3.select(this).transition().duration(300).attr("fill", "#ff0000");
+	//		})
+	//		.on("mouseout", function (d, i) {
+	//			d3.select(this)
+	//				.transition()
+	//				.duration(300)
+	//				.attr("fill", (node) => {
+	//					return getColourNodeFill(node);
+	//				});
+	//		});
 
 	subGroup
 		.append("g")
