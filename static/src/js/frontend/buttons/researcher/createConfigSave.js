@@ -3,8 +3,10 @@ const createConfigSave = `
 <span style="font-size: 12px; vertical-align: super;">to set up your study click:</span>
 <button id="createConfigSave" title="set up your config file and cope & paste the resulting code to set up the experiment" class="material-icons" style="margin-left: -5px;">settings</button>
 `;
-var target = document.getElementById("hideResearcherButtonsTop");
-target.innerHTML += createConfigSave;
+let hideResearcherButtonsTopSelector = document.getElementById(
+	"hideResearcherButtonsTop"
+);
+hideResearcherButtonsTopSelector.innerHTML += createConfigSave;
 
 /* add dialog window */
 const interactionSetUpStudy = `
@@ -136,13 +138,13 @@ const interactionSetUpStudy = `
 </div>
 </div>`;
 
-var target = document.getElementById("dialogSetUpStudy");
+let target = document.getElementById("dialogSetUpStudy");
 target.innerHTML += interactionSetUpStudy;
 
 /* function to copy text */
 function copyText() {
 	/* Get the text field */
-	var copyText = document.getElementById("createdConfigPlusCAM");
+	let copyText = document.getElementById("createdConfigPlusCAM");
 
 	/* Select the text field */
 	copyText.select();
@@ -157,7 +159,7 @@ function copyText() {
 
 /* function to set text file*/
 function setConfigCAMfile() {
-	var setCAMConfig = {
+	let setCAMConfig = {
 		config: {
 			ConNumNodes: $("#setConNumNodes").val(), // number of nodes necessary to draw
 			MaxLengthWords: $("#setMaxLengthWords").val(), // maximum number of words for each concept
@@ -184,7 +186,7 @@ function setConfigCAMfile() {
 	};
 
 	/* missing values
-    var MISSING = {
+    let MISSING = {
         CAMproject: "proj_" + uuid.v4(), // necessary for server (see ERM)
         AdaptiveStudy: false, // run as adaptive study 
         ADAPTIVESTUDYurl: null // "https://studien.psychologie.uni-freiburg.de/publix/304/start?batchId=379&generalMultiple" // URL the CAM data should be append to
@@ -225,9 +227,9 @@ function setConfigCAMfile() {
 	/* set up the CAM */
 	// nodes
 	saveNodes = [];
-	for (var i = 0; i < CAM.nodes.length; i++) {
-		var elementNode = CAM.nodes[i];
-		var currentNode = {
+	for (let i = 0; i < CAM.nodes.length; i++) {
+		let elementNode = CAM.nodes[i];
+		let currentNode = {
 			id: null,
 			value: null,
 			text: null,
@@ -254,9 +256,9 @@ function setConfigCAMfile() {
 
 	// connectors
 	saveConnectors = [];
-	for (var i = 0; i < CAM.connectors.length; i++) {
-		var elementConnector = CAM.connectors[i];
-		var currentConnector = {
+	for (let i = 0; i < CAM.connectors.length; i++) {
+		let elementConnector = CAM.connectors[i];
+		let currentConnector = {
 			id: null,
 			intensity: null,
 			agreement: null,

@@ -108,18 +108,13 @@ const ref = `
     </div>
 </div>`;
 
-
-var target = document.getElementById("dialogReference");
-target.innerHTML += ref;
-
+let dialogReferenceSelector = document.getElementById("dialogReference");
+dialogReferenceSelector.innerHTML += ref;
 
 $(function () {
-    if(config.cameraFeature){
-        $('#showCameraFeature').show();
-    }else{
-        $('#showCameraFeature').hide();
-    }
+	if (config.cameraFeature) {
+		$("#showCameraFeature").show();
+	} else {
+		$("#showCameraFeature").hide();
+	}
 });
-
-
-

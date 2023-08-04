@@ -1,7 +1,7 @@
 /* add button: */
 const dlButton = `<button id="saveCAMpicture" class="material-icons" onclick="onDownloadSVGfile()" title="Save CAM as picture" style="margin-right: 5px;">crop_original</button>`;
-var target = document.getElementById("rightButton");
-target.innerHTML += dlButton;
+let rightButtonSelectordlButton = document.getElementById("rightButton");
+rightButtonSelectordlButton.innerHTML += dlButton;
 
 // language file
 $(function () {
@@ -26,10 +26,10 @@ function downloadCAMsvg(svgEl, fileName) {
 	document.getElementById("CAMSVG").setAttribute("height", "1400px");
 	document.getElementById("CAMSVG").setAttribute("width", "2400px");
 
-	var condHitX = false;
-	var condHitY = false;
+	let condHitX = false;
+	let condHitY = false;
 
-	var arrayPosX = [];
+	let arrayPosX = [];
 	CAM.nodes.forEach((element) => {
 		arrayPosX.push(element.position.x);
 	});
@@ -51,7 +51,7 @@ function downloadCAMsvg(svgEl, fileName) {
 		CAM.draw();
 	}
 
-	var arrayPosY = [];
+	let arrayPosY = [];
 	CAM.nodes.forEach((element) => {
 		arrayPosY.push(element.position.y);
 	});
@@ -73,16 +73,16 @@ function downloadCAMsvg(svgEl, fileName) {
 		CAM.draw();
 	}
 
-	var svgData = svgEl.outerHTML;
-	var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-	var svgBlob = new Blob([preface, svgData], {
+	let svgData = svgEl.outerHTML;
+	let preface = '<?xml version="1.0" standalone="no"?>\r\n';
+	let svgBlob = new Blob([preface, svgData], {
 		type: "image/svg+xml;charset=utf-8",
 	});
 	const a = document.createElement("a");
 	a.href = URL.createObjectURL(svgBlob);
 	a.download = fileName;
 
-	var img = document.createElement("img");
+	let img = document.createElement("img");
 	img.src = a.href;
 	a.click();
 

@@ -22,10 +22,19 @@ console.log("index_ConceptsCAM:", index_ConceptsCAM);
  */
 
 function defaultCAM() {
-    CAM.addElement(new NodeCAM(0, "central concept", {
-        x: 600,
-        y: 400
-    }, false, false, false));
+    CAM.addElement(
+        new NodeCAM(
+            0,
+            "central concept",
+            {
+                x: 600,
+                y: 400,
+            },
+            false,
+            false,
+            false
+        )
+    );
 
     /*
     CAM.addElement(new NodeCAM(0, ConceptsCAM[index_ConceptsCAM[0]], {
@@ -49,8 +58,7 @@ var connector = new ConnectorCAM();
 connector.establishConnection(CAM.nodes[0], CAM.nodes[2], IncreaseSliderIntensity, true);
 CAM.addElement(connector);
 CAM.connectors[1].isDeletable = false;
-*/ 
+*/
 
-
-CAM.draw();
+    CAM.draw();
 }

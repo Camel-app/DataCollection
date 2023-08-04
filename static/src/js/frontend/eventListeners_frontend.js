@@ -1,354 +1,360 @@
 // only add to event log if value has been changed:
-var currentText = null;
-var currentValue = null;
-var currentComment = null;
+let currentText = null;
+let currentValue = null;
+let currentComment = null;
 
 $(function () {
+	// starting dialog
+	$("#dialogStart").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 400,
+		maxWidth: 400,
+		height: "auto",
+		buttons: [
+			{
+				id: "CloseButton",
+				click: function () {
+					console.log("clicked close button");
+					$(this).dialog("close");
+				},
+			},
+		],
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").show(); // hide titlebar
+			$(this)
+				.dialog({
+					draggable: false,
+				})
+				.parent()
+				.draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
 
+			$(".ui-widget-overlay").on("click", function () {
+				$("#dialogStart").dialog("close");
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
+		},
+		position: {
+			my: "center", // add percentage offsets
+			at: "center",
+			of: $(".boxCAMSVG"),
+		},
+	});
+	$("#CloseButton").button("option", "label", languageFileOut.closeButton);
 
-    // starting dialog
-    $("#dialogStart").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 400,
-        maxWidth: 400,
-        height: 'auto',
-        buttons: [{
-            id: 'CloseButton',
-            click: function () {
-                console.log("clicked close button");
-                $(this).dialog("close");
-            }
-        }],
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").show(); // hide titlebar
-            $(this).dialog({
-                draggable: false
-            }).parent().draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
+	// reminder dialog
+	$("#dialogReminder").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 400,
+		maxWidth: 400,
+		height: "auto",
 
-            $('.ui-widget-overlay').on('click', function () {
-                $("#dialogStart").dialog('close');
-            });
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").show(); // hide titlebar
+			$(this)
+				.dialog({
+					draggable: false,
+				})
+				.parent()
+				.draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
 
+			$(".ui-widget-overlay").on("click", function () {
+				$("#dialogReminder").dialog("close");
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
+		},
+		position: {
+			my: "center", // add percentage offsets
+			at: "center",
+			of: $(".boxCAMSVG"),
+		},
+	});
 
-        },
-        position: {
-            my: "center", // add percentage offsets
-            at: "center",
-            of: $(".boxCAMSVG")
-        }
-    });
-    $('#CloseButton').button('option', 'label', languageFileOut.closeButton);
+	// dialog confirm save START
+	$("#dialogConfirmSave").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 400,
+		maxWidth: 400,
+		height: "auto",
 
-    // reminder dialog
-    $("#dialogReminder").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 400,
-        maxWidth: 400,
-        height: 'auto',
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").show(); // hide titlebar
+			$(this)
+				.dialog({
+					draggable: false,
+				})
+				.parent()
+				.draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
 
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").show(); // hide titlebar
-            $(this).dialog({
-                draggable: false
-            }).parent().draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
+			$(".ui-widget-overlay").on("click", function () {
+				$("#dialogConfirmSave").dialog("close");
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
+		},
+		buttons: [
+			{
+				id: "YesButtonConfirm",
+				click: function () {
+					console.log("clicked dialogConfirmSave Yes");
+					saveCAMsuccess();
+					$("#dialogConfirmSave").dialog("close");
+				},
+			},
+			{
+				id: "NoButtonConfirm",
+				click: function () {
+					console.log("clicked dialogConfirmSave No");
+					$("#dialogConfirmSave").dialog("close");
+				},
+			},
+		],
+		position: {
+			my: "center", // add percentage offsets
+			at: "center",
+			of: $(".boxCAMSVG"),
+		},
+	});
 
-            $('.ui-widget-overlay').on('click', function () {
-                $("#dialogReminder").dialog('close');
-            });
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
+	$("#YesButtonConfirm").button("option", "label", languageFileOut.yesButton);
+	$("#NoButtonConfirm").button("option", "label", languageFileOut.noButton);
+	// dialog confirm save END
 
+	$("#dialogReference").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 400,
+		maxWidth: 400,
 
-        },
-        position: {
-            my: "center", // add percentage offsets
-            at: "center",
-            of: $(".boxCAMSVG")
-        }
-    });
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").show(); // show titlebar
+			console.log("dialog got open");
 
+			$(".ui-widget-overlay").on("click", function () {
+				// .bind
+				$("#dialogReference").dialog("close");
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
+			closeTab();
+		},
+		position: {
+			my: "right-1% top+5%", // add percentage offsets
+			at: "right-1% top+5%",
+			of: $(".boxCAMSVG"),
+		},
+	});
 
-    // dialog confirm save START
-    $("#dialogConfirmSave").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 400,
-        maxWidth: 400,
-        height: 'auto',
+	// next add the onclick handler
+	$("#quickref").on("click", () => {
+		$("#dialogReference").dialog("open");
+		return false;
+	});
 
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").show(); // hide titlebar
-            $(this).dialog({
-                draggable: false
-            }).parent().draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
+	$("#dialogInteractionEdge").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 310,
+		maxWidth: 310,
+		height: "auto",
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").hide(); // hide titlebar
+			$(this)
+				.dialog({
+					draggable: false,
+				})
+				.parent()
+				.draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
 
-            $('.ui-widget-overlay').on('click', function () {
-                $("#dialogConfirmSave").dialog('close');
-            });
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
-        },
-        buttons: [{
-            id: 'YesButtonConfirm',
-            click: function () {
-                console.log("clicked dialogConfirmSave Yes");
-                saveCAMsuccess();
-                $("#dialogConfirmSave").dialog('close');
-            }
-        },
-        {
-            id: 'NoButtonConfirm',
-            click: function () {
-                console.log("clicked dialogConfirmSave No")
-                $("#dialogConfirmSave").dialog('close');
-            }
-        }],
-        position: {
-            my: "center", // add percentage offsets
-            at: "center",
-            of: $(".boxCAMSVG")
-        }
-    });
+			CAM.currentConnector.isSelected = true;
 
-    $('#YesButtonConfirm').button('option', 'label', languageFileOut.yesButton);
-    $('#NoButtonConfirm').button('option', 'label', languageFileOut.noButton);
-    // dialog confirm save END
+			console.log("dialog connector got open");
+			$(".ui-widget-overlay").on("click", function () {
+				// .bind
+				$("#dialogInteractionEdge").dialog("close");
+			});
 
+			CAM.currentConnector.enterLog({
+				type: "isSelected",
+				value: true,
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
 
-    $("#dialogReference").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 400,
-        maxWidth: 400,
+			// if connector got deleted
+			if (CAM.currentConnector !== null) {
+				CAM.currentConnector.isSelected = false;
+				CAM.draw();
 
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").show(); // show titlebar            
-            console.log('dialog got open');
+				if (CAM.currentConnector.agreement) {
+					CAM.currentConnector.enterLog({
+						type: "change intensity of connector",
+						value: CAM.currentConnector.intensity,
+					});
+				} else {
+					CAM.currentConnector.enterLog({
+						type: "change intensity of connector",
+						value: CAM.currentConnector.intensity * -1,
+					});
+				}
 
-            $('.ui-widget-overlay').on('click', function () { // .bind
-                $("#dialogReference").dialog('close');
-            });
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
-            closeTab();
-        },
-        position: {
-            my: "right-1% top+5%", // add percentage offsets
-            at: "right-1% top+5%",
-            of: $(".boxCAMSVG")
-        }
-    });
+				CAM.currentConnector.enterLog({
+					type: "isSelected",
+					value: false,
+				});
+			}
+		},
+		position: {
+			my: "right-0.5% top+3.5%", // add percentage offsets
+			at: "right-0.5% top+3.5%",
+			of: $(".boxCAMSVG"),
+		},
+	});
 
-    // next add the onclick handler
-    $("#quickref").on("click", () => {
-        $("#dialogReference").dialog("open");
-        return false;
-    });
+	$("#dialogInteractionNode").dialog({
+		autoOpen: false,
+		modal: true,
+		show: "fade",
+		hide: false,
+		resizable: false,
+		draggable: true,
+		width: 310,
+		maxWidth: 310,
+		open: function (event, ui) {
+			$(".ui-dialog-titlebar").hide(); // hide titlebar
+			$(this)
+				.dialog({
+					draggable: false,
+				})
+				.parent()
+				.draggable();
 
+			CAM.currentNode.isSelected = true;
 
-    $("#dialogInteractionEdge").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 310,
-        maxWidth: 310,
-        height: 'auto',
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").hide(); // hide titlebar
-            $(this).dialog({
-                draggable: false
-            }).parent().draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
+			CAM.currentNode.enterLog({
+				type: "isSelected",
+				value: true,
+			});
 
-            CAM.currentConnector.isSelected = true;
+			// only add to event log if value has been changed:
+			currentText = CAM.currentNode.text;
+			currentValue = CAM.currentNode.value;
+			currentComment = CAM.currentNode.comment;
 
-            console.log('dialog connector got open');
-            $('.ui-widget-overlay').on('click', function () { // .bind
-                $("#dialogInteractionEdge").dialog('close');
-            });
+			console.log("dialog got open");
 
-            CAM.currentConnector.enterLog({
-                type: "isSelected",
-                value: true
-            });
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
+			//setTimeout("$('#dialogInteractionNode').dialog('close')",5000);
 
-            // if connector got deleted
-            if (CAM.currentConnector !== null) {
-                CAM.currentConnector.isSelected = false;
-                CAM.draw();
+			$(".ui-widget-overlay").on("click", function () {
+				$("#dialogInteractionNode").dialog("close");
+			});
+		},
+		close: function (event, ui) {
+			console.log("dialog got closed");
 
-                if (CAM.currentConnector.agreement) {
-                    CAM.currentConnector.enterLog({
-                        type: "change intensity of connector",
-                        value: CAM.currentConnector.intensity
-                    });
-                } else {
-                    CAM.currentConnector.enterLog({
-                        type: "change intensity of connector",
-                        value: CAM.currentConnector.intensity * -1
-                    });
-                }
+			/*        */
+			// if node got deleted
+			if (CAM.currentNode !== null) {
+				CAM.currentNode.isSelected = false;
+				CAM.draw();
 
-                CAM.currentConnector.enterLog({
-                    type: "isSelected",
-                    value: false
-                });
-            }
+				// adjust event Log
+				if (currentText !== CAM.currentNode.text) {
+					CAM.currentNode.enterLog({
+						type: "text",
+						value: CAM.currentNode.text,
+					});
+				}
 
-        },
-        position: {
-            my: "right-0.5% top+3.5%", // add percentage offsets
-            at: "right-0.5% top+3.5%",
-            of: $(".boxCAMSVG")
-        }
-    });
+				if (currentValue !== CAM.currentNode.value) {
+					CAM.currentNode.enterLog({
+						type: "value",
+						value: CAM.currentNode.value,
+					});
+				}
 
+				if (currentComment !== CAM.currentNode.comment) {
+					CAM.currentNode.enterLog({
+						type: "comment",
+						value: CAM.currentNode.comment,
+					});
+				}
 
-    $("#dialogInteractionNode").dialog({
-        autoOpen: false,
-        modal: true,
-        show: "fade",
-        hide: false,
-        resizable: false,
-        draggable: true,
-        width: 310,
-        maxWidth: 310,
-        open: function (event, ui) {
-            $(".ui-dialog-titlebar").hide(); // hide titlebar
-            $(this).dialog({
-                draggable: false
-            }).parent().draggable();
+				CAM.currentNode.enterLog({
+					type: "isSelected",
+					value: false,
+				});
 
-            CAM.currentNode.isSelected = true;
-
-            CAM.currentNode.enterLog({
-                type: "isSelected",
-                value: true
-            });
-
-            // only add to event log if value has been changed:
-            currentText = CAM.currentNode.text;
-            currentValue = CAM.currentNode.value;
-            currentComment = CAM.currentNode.comment;
-
-
-            console.log('dialog got open');
-
-            //setTimeout("$('#dialogInteractionNode').dialog('close')",5000);
-
-            $('.ui-widget-overlay').on('click', function () {
-                $("#dialogInteractionNode").dialog('close');
-            });
-
-        },
-        close: function (event, ui) {
-            console.log('dialog got closed');
-
-            /*        */
-            // if node got deleted
-            if (CAM.currentNode !== null) {
-                CAM.currentNode.isSelected = false;
-                CAM.draw();
-
-                // adjust event Log
-                if (currentText !== CAM.currentNode.text) {
-                    CAM.currentNode.enterLog({
-                        type: "text",
-                        value: CAM.currentNode.text
-                    });
-                }
-
-                if (currentValue !== CAM.currentNode.value) {
-                    CAM.currentNode.enterLog({
-                        type: "value",
-                        value: CAM.currentNode.value
-                    });
-                }
-
-                if (currentComment !== CAM.currentNode.comment) {
-                    CAM.currentNode.enterLog({
-                        type: "comment",
-                        value: CAM.currentNode.comment
-                    });
-                }
-
-                CAM.currentNode.enterLog({
-                    type: "isSelected",
-                    value: false
-                });
-
-                // reset node selection
-                resetNodeSelection();
-            }
-
-
-        },
-        position: {
-            my: "right-0.5% top+3.5%", // add percentage offsets
-            at: "right-0.5% top+3.5%",
-            of: $(".boxCAMSVG")
-        }
-    });
+				// reset node selection
+				resetNodeSelection();
+			}
+		},
+		position: {
+			my: "right-0.5% top+3.5%", // add percentage offsets
+			at: "right-0.5% top+3.5%",
+			of: $(".boxCAMSVG"),
+		},
+	});
 });
 
 /* interactive components: INFORMATION */
 // > open single div using navigation bar
 function openTab(evt, QRname) {
-    $('#informationDefault').hide();
+	$("#informationDefault").hide();
 
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(QRname).style.display = "block";
-    evt.currentTarget.className += " active";
+	let i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent");
+	for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	document.getElementById(QRname).style.display = "block";
+	evt.currentTarget.className += " active";
 }
 
 // > closing active div clicking on cross topright
 function closeTab() {
-    $('#informationDefault').show();
+	$("#informationDefault").show();
 
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+	let i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent");
+	for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
 }
