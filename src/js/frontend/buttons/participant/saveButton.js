@@ -23,6 +23,7 @@ function updateQueryStringParameter(uri, key, value) {
     }
 }
 
+
 function saveCam() {
     var CAMnodes = CAM.nodes.filter((element) => element.isActive === true);
     var CAMconnectors = CAM.connectors.filter(
@@ -106,6 +107,23 @@ function saveCam() {
 
             return false;
         } else {
+            var countComments = [];
+                CAM.nodes.forEach((element) => {
+                    if (element.isActive === true) {
+
+                        if(element.comment.split(/\W+/).length >= 2){
+                            countComments.push(true);
+                        }else{
+                            countComments.push(false);
+                        }
+                        console.log("element.comment", element.comment.split(/\W+/));
+                        console.log("element.comment.length", element.comment.split(/\W+/).length);
+                    }
+                });
+                console.log("countComments", countComments)
+
+
+
             // confirm saving
             $("#dialogConfirmSave").dialog("open");
         }
@@ -197,7 +215,7 @@ function saveCAMsuccess() {
                 // console.log("info", info)
 
                 const res = await fetch(
-                    webAddress + "/participants/submitExperiment",
+                    webAddress + "participants/submitExperiment",
                     info
                 );
 
@@ -220,9 +238,9 @@ token +
 
         /* if NO server >>> <<< */
         if (!usingJATOS && !usingMangoDB) {
-            toastr.success(languageFileOut.popSave_01notSavedData, {
+            toastr.warning(languageFileOut.popSave_01notSavedData, {
                 closeButton: true,
-                timeOut: 4000,
+                timeOut: 5000,
                 positionClass: "toast-top-center",
                 preventDuplicates: true,
             });

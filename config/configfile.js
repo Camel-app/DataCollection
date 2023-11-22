@@ -2,7 +2,7 @@
 /* default values */
 var config = {
     CAMproject: "projectName", // "proj_" + uuid.v4(), // necessary for server (see ERM)
-    ConNumNodes: 10, // number of nodes necessary to draw
+    ConNumNodes: 1, // number of nodes necessary to draw
     
     hideArrows: false, // if false = possible to draw arrows
     BidirectionalDefault: true, // if true the default connection is bidirectional
@@ -33,7 +33,7 @@ var config = {
 }
 
 // global variable
-var usingMangoDB = true;
+var usingMangoDB = false;
 var usingJATOS = false;
 /* MAKE CHANGES: end*/
 
@@ -44,6 +44,6 @@ console.log("config config file:", config)
 
 
 // ! not change
-const webAddress = "https://drawyourminds.de/API/"; // "http://localhost:3001"; 
+const webAddress = "https://drawyourminds.de/API/"; // "https://drawyourminds.de/API/"; // "http://localhost:3001/"; 
 
 
