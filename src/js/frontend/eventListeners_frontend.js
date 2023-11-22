@@ -208,6 +208,12 @@ $(function () {
                 $("#dialogInteractionEdge").dialog("close");
             });
 
+            // only add to event log if value has been changed:
+            currentIntensity = CAM.currentConnector.intensity;
+            currentAgreement = CAM.currentConnector.agreement;
+            currentComment = CAM.currentConnector.getComment();
+            currentDirection = CAM.currentConnector.isBidirectional;
+
             CAM.currentConnector.enterLog({
                 type: "selected",
                 value: true,
@@ -221,15 +227,31 @@ $(function () {
                 CAM.currentConnector.isSelected = false;
                 CAM.draw();
 
-                if (CAM.currentConnector.agreement) {
+                if (currentIntensity !== CAM.currentConnector.intensity || currentAgreement !== CAM.currentConnector.agreement) {
+                    if (CAM.currentConnector.agreement) {
+                        CAM.currentConnector.enterLog({
+                            type: "change intensity of connector",
+                            value: CAM.currentConnector.intensity,
+                        });
+                    } else {
+                        CAM.currentConnector.enterLog({
+                            type: "change intensity of connector",
+                            value: CAM.currentConnector.intensity * -1,
+                        });
+                    }
+                }
+
+                if (currentComment !== CAM.currentConnector.getComment()) {
                     CAM.currentConnector.enterLog({
-                        type: "change intensity of connector",
-                        value: CAM.currentConnector.intensity,
+                        type: "comment",
+                        value: CAM.currentConnector.getComment(),
                     });
-                } else {
+                }
+
+                if(currentDirection !== CAM.currentConnector.isBidirectional){
                     CAM.currentConnector.enterLog({
-                        type: "change intensity of connector",
-                        value: CAM.currentConnector.intensity * -1,
+                        type: "direction",
+                        value: CAM.currentConnector.isBidirectional,
                     });
                 }
 

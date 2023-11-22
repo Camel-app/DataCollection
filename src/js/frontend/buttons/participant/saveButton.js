@@ -107,20 +107,34 @@ function saveCam() {
 
             return false;
         } else {
-            var countComments = [];
+            var countCommentsNode = [];
                 CAM.nodes.forEach((element) => {
                     if (element.isActive === true) {
 
                         if(element.comment.split(/\W+/).length >= 2){
-                            countComments.push(true);
+                            countCommentsNode.push(true);
                         }else{
-                            countComments.push(false);
+                            countCommentsNode.push(false);
                         }
                         console.log("element.comment", element.comment.split(/\W+/));
                         console.log("element.comment.length", element.comment.split(/\W+/).length);
                     }
                 });
-                console.log("countComments", countComments)
+                console.log("countCommentsNode", countCommentsNode)
+
+            var countCommentsConnector = [];
+                CAM.connectors.forEach((element) => {
+                    if (element.isActive === true) {
+                        if(element.comment.split(/\W+/).length >= 2){   
+                            countCommentsConnector.push(true);
+                        }   else{   
+                            countCommentsConnector.push(false);
+                        }
+                        console.log("element.comment", element.comment.split(/\W+/));
+                        console.log("element.comment.length", element.comment.split(/\W+/).length);
+                    }
+                });
+                console.log("countCommentsConnector", countCommentsConnector)
 
 
 

@@ -70,6 +70,17 @@ const interactionEdge = `
                     </div>
                 </div>
             </div>
+
+
+            <!-- > adjust comment !!! -->
+<div class="properties-align">
+    <div class="properties-size-naming">
+    Kommentar
+    </div>
+    <textarea id="inpcommentconnector"
+        style="width: 97%; text-align: left; margin: auto; display: block;"></textarea>
+</div>
+
             <!-- for researcher only -->
             <div id="hideResearcherButtonsConnector">
                 <div style="margin-top: 20px; font-size:16px; font-style: italic;">
@@ -81,9 +92,6 @@ const interactionEdge = `
                     </button>
                 </div>
             </div>
-
-
-            blub 123
 
         </div>`;
 
@@ -180,7 +188,11 @@ $(function () {
         CAM.draw();
     });
     
-
+    // > comment
+    $('#inpcommentconnector').on("input", function () {
+        CAM.updateElement("Connector", "comment", this.value);
+        CAM.draw();
+    });
 
 
     $("#bidirectional").on("click", () => {

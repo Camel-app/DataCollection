@@ -19,7 +19,7 @@ var config = {
 
     cameraFeature: false, // include camera / splotlight feature to move screen
 
-    setLanguage: "English", // set language of your CAM study, e.g. French 
+    setLanguage: "German", // set language of your CAM study, e.g. French 
 
     fullScreen: false, // if true = study in fullscreen mode + paradata
     showNotPopupStart: true, // true = no pop up shown; only working if fullScreen is set to true

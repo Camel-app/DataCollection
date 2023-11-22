@@ -5,6 +5,7 @@
 class ConnectorCAM {
     constructor(isDeletable = true) {
         this.id = uuid.v4(); // uuidv4.v4(); // to run "npm run test"
+        this.comment = "";  // comment
         this.value = null;
         this.source = null;
         this.target = null;
@@ -23,6 +24,11 @@ class ConnectorCAM {
     setValue(newValue) {
         this.value = newValue;
     }
+
+    setComment(newComment) {
+        this.comment = newComment;
+    }
+
     getIntensity() {
         return this.intensity;
     }
@@ -73,6 +79,10 @@ class ConnectorCAM {
         return this.id;
     }
 
+    getComment() {
+        return this.comment;
+    }
+
     getIsDeletable() {
         return this.isDeletable;
     }
@@ -84,11 +94,8 @@ class ConnectorCAM {
     }
 
     updateConnector(field, value) {
-        this.enterLog({
-            type: field,
-            value: value,
-        });
         if (field === "value") this.setValue(value);
+        if (field === "comment") this.setComment(value);
         if (field === "active") this.setIsActive(value);
         if (field === "selected") this.setIsSelected(value);
         if (field === "agreement") this.setAgreement(value);

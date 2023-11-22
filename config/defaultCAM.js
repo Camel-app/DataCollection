@@ -24,12 +24,34 @@ function defaultCAM() {
   if (!usingMangoDB) {
     /* MAKE CHANGES: start*/
 
-    CAM.addElement(new NodeCAM(0, "central (change me!)", {
-      x: 600,
+    CAM.addElement(new NodeCAM(3, "sustainability", {
+      x: 650,
       y: 400
-    }, true, true, true));
+  }, false, false, false));
 
 
+  CAM.addElement(new NodeCAM(0, "in economy", {
+      x: 850,
+      y: 400
+  }, true, false, false));
+
+  CAM.addElement(new NodeCAM(0, "in society", {
+      x: 450,
+      y: 400
+  }, true, false, false));
+  
+
+  var connector1 = new ConnectorCAM();
+  connector1.establishConnection(CAM.nodes[0], CAM.nodes[1], IncreaseSliderIntensity, true);
+  connector1.value = 1;
+  connector1.isDeletable = false;
+  CAM.addElement(connector1);
+
+  var connector2 = new ConnectorCAM();
+  connector2.establishConnection(CAM.nodes[0], CAM.nodes[2], IncreaseSliderIntensity, true);
+  connector2.value = 1
+  connector2.isDeletable = false;
+  CAM.addElement(connector2);
 
 
     /* MAKE Changes: end*/

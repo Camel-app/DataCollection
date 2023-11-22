@@ -281,6 +281,11 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
                 var changeAtTop = "top+" + MeanPositionY;
             }
 
+
+                        // get comment of current node
+                        document.getElementById("inpcommentconnector").value =
+                        CAM.currentConnector.getComment();
+
             $("#dialogInteractionEdge").dialog("open");
         }
 
