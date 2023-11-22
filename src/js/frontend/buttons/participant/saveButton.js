@@ -116,8 +116,8 @@ function saveCam() {
                         }else{
                             countCommentsNode.push(false);
                         }
-                        console.log("element.comment", element.comment.split(/\W+/));
-                        console.log("element.comment.length", element.comment.split(/\W+/).length);
+                        // console.log("element.comment", element.comment.split(/\W+/));
+                        // console.log("element.comment.length", element.comment.split(/\W+/).length);
                     }
                 });
                 console.log("countCommentsNode", countCommentsNode)
@@ -130,16 +130,39 @@ function saveCam() {
                         }   else{   
                             countCommentsConnector.push(false);
                         }
-                        console.log("element.comment", element.comment.split(/\W+/));
-                        console.log("element.comment.length", element.comment.split(/\W+/).length);
+                        // console.log("element.comment", element.comment.split(/\W+/));
+                        // console.log("element.comment.length", element.comment.split(/\W+/).length);
                     }
                 });
                 console.log("countCommentsConnector", countCommentsConnector)
 
 
+            var totalCountComments = countCommentsNode.concat(countCommentsConnector);
+            console.log("totalCountComments", totalCountComments)
 
-            // confirm saving
-            $("#dialogConfirmSave").dialog("open");
+            var trueCount = totalCountComments.filter(value => value === true).length;
+            if (trueCount > totalCountComments.length / 2) {
+                console.log("Over 50% of the array elements are true");
+                 // confirm saving
+                $("#dialogConfirmSave").dialog("open");
+            } else {
+                console.log("Less than or equal to 50% of the array elements are true");
+    
+
+                toastr.warning(
+                    "Fügen Sie weitere Kommentare zu Ihren Konzepten oder Verbindungen hinzu. Diese sollten aus mehreren Worten bestehen.",
+                    "Bitte kehren Sie zu Ihrer Cognitive-Affective Map zurück",
+                    {
+                        closeButton: true,
+                        timeOut: 5000,
+                        positionClass: "toast-top-center",
+                        preventDuplicates: true,
+                    }
+                );
+
+            }
+
+           
         }
     }
 }

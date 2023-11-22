@@ -40,6 +40,11 @@ function defaultCAM() {
       y: 400
   }, true, false, false));
   
+  CAM.addElement(new NodeCAM(10, "future times", {
+    x: 250,
+    y: 200
+}, true, true, true));
+
 
   var connector1 = new ConnectorCAM();
   connector1.establishConnection(CAM.nodes[0], CAM.nodes[1], IncreaseSliderIntensity, true);
@@ -53,6 +58,16 @@ function defaultCAM() {
   connector2.isDeletable = false;
   CAM.addElement(connector2);
 
+  var connector3 = new ConnectorCAM();
+  connector3.establishConnection(CAM.nodes[2], CAM.nodes[3], IncreaseSliderIntensity, true);
+  connector3.value = 1
+  connector3.isDeletable = false;
+  CAM.addElement(connector3);
+
+
+  CAM.nodes[0].comment = "Dave goes to school"
+  CAM.nodes[1].comment = "Jane goes to school"
+  CAM.connectors[0].comment = "Dave and Jane go to school"
 
     /* MAKE Changes: end*/
   } else {
