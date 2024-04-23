@@ -47,6 +47,26 @@ function saveCam() {
         );
         return false;
     }
+
+    // every concept should include at least 3 characters
+    var CAMnodesFewText = CAMnodes.filter(
+        (element) => element.text.length < 3
+    );
+
+    if (CAMnodesFewText.length > 0) {
+        toastr.warning(
+            languageFileOut.popSave_01insufficientCharsNodes,
+            CAMnodesFewText.length + languageFileOut.popSave_02insufficientCharsNodes,
+            {
+                closeButton: true,
+                timeOut: 2000,
+                positionClass: "toast-top-center",
+                preventDuplicates: true,
+            }
+        );
+        return false;
+    }
+
     // necessary # of concepts
     if (CAMnodes.length < config.ConNumNodes) {
         toastr.warning(
