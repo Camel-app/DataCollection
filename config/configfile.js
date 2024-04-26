@@ -4,8 +4,8 @@ var config = {
     CAMproject: "projectName", // "proj_" + uuid.v4(), // necessary for server (see ERM)
     ConNumNodes: 10, // number of nodes necessary to draw
     
-    hideArrows: false, // if false = possible to draw arrows
-    BidirectionalDefault: true, // if true the default connection is bidirectional
+    hideArrows: true, // if false = possible to draw arrows
+    BidirectionalDefault: false, // if true the default connection is bidirectional
 
     hideAmbivalent: false, // if false = possible to draw ambivalent node
     showOnlyPosSlid: false, // if true = show only slider for agreement (+1 - +3)
