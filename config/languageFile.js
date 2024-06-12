@@ -1005,6 +1005,22 @@ const languageFile_european = [
         "spanish": " concepto(s) está(n) vacío(s)."
     },
     {
+        "X_identifier": "popSave_01insufficientCharsNodes",
+        "X_location": "popup save button (popSave)",
+        "english": "Please return to your Cognitive-Affective Map and add text.",
+        "german": "Bitte kehren Sie zu Ihrer Cognitive-Affective Map zurück und ergänzen sie Text.",
+        "french": "",
+        "spanish": ""
+    },
+    {
+        "X_identifier": "popSave_02insufficientCharsNodes",
+        "X_location": "popup save button (popSave)",
+        "english": " contain less than 3 letters.",
+        "german": " Konzept(e) enthalten weniger als 3 Buchstaben.",
+        "french": "",
+        "spanish": ""
+    },
+    {
         "X_identifier": "popSave_01numNodes",
         "X_location": "popup save button (popSave)",
         "english": "Please return to your Cognitive-Affective Map and add additional concepts to it.",
