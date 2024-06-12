@@ -4,7 +4,7 @@
  */
 class ConnectorCAM {
     constructor(isDeletable = true) {
-        this.id = uuid.v4(); // uuidv4.v4(); // to run "npm run test"
+        this.id = uuid.v4(); // uuid4.v4(); // to run "npm run test"
         this.value = null;
         this.source = null;
         this.target = null;

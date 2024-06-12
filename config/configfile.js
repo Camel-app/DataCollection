@@ -2,7 +2,7 @@
 /* default values */
 var config = {
     CAMproject: "projectName", // "proj_" + uuid.v4(), // necessary for server (see ERM)
-    ConNumNodes: 10, // number of nodes necessary to draw
+    ConNumNodes: 1, // number of nodes necessary to draw
     
     hideArrows: true, // if false = possible to draw arrows
     BidirectionalDefault: false, // if true the default connection is bidirectional
@@ -33,7 +33,7 @@ var config = {
 }
 
 // global variable
-var usingMangoDB = false;
+var usingMangoDB = true;
 var usingJATOS = false;
 /* MAKE CHANGES: end*/
 
