@@ -33,7 +33,7 @@ var config = {
 }
 
 // global variable
-var usingMangoDB = true;
+var usingMangoDB = false;
 var usingJATOS = false;
 /* MAKE CHANGES: end*/
 
