@@ -276,6 +276,14 @@ $(function () {
         document.head.appendChild(script);
       })();
 
+      /*
+      (function () {
+        const script = document.createElement("script");
+        script.src = "extensions/unipolar_scale/colours.js";
+        script.async = false;
+        document.head.appendChild(script);
+      })();
+      */
 
       (function () {
         const script = document.createElement("script");
@@ -283,6 +291,10 @@ $(function () {
         script.async = false;
         document.head.appendChild(script);
       })();
+
+
+
+
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/draw.js";
@@ -290,12 +302,24 @@ $(function () {
         document.head.appendChild(script);
       })();
 
+      /*
+       (function () {
+        const script = document.createElement("script");
+        script.src = "extensions/unipolar_scale/interactionNode.js";
+        script.async = false;
+        document.head.appendChild(script);
+      })();
+      */
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/dialogs/interactionNode.js";
         script.async = false;
         document.head.appendChild(script);
       })();
+
+
+
+
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/dialogs/interactionEdge.js"; // hide researcher functionalities
