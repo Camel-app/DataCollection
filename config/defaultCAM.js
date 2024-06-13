@@ -25,11 +25,17 @@ function defaultCAM() {
     /* MAKE CHANGES: start*/
 
 
-    CAM.addElement(new NodeCAM(-3, "1", {
+    CAM.addElement(new NodeCAM(0, "Wünsche, Bedürfnisse der Einwanderer", {
       x: 650,
       y: 400
     }, true, true, true));
 
+    /*
+    CAM.addElement(new NodeCAM(0, "Erwartungen der Arbeitgeber", {
+      x: 650,
+      y: 400
+    }, true, true, true));
+*/
 
 
 /*

@@ -104,7 +104,7 @@ function getTextSVG(node) {
             }
         }
 
-        nodeText.setAttribute("y", -10);
+        nodeText.setAttribute("y", -20);
 
         nodeText.innerHTML = ArrayText.join(" ");
     } else {
