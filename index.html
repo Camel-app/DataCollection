@@ -265,10 +265,22 @@ $(function () {
       // frontend files
       (function () {
         const script = document.createElement("script");
+        script.src = "extensions/practice_CAM/eventListeners_backend.js";
+        script.async = false;
+        document.head.appendChild(script);
+      })();
+
+      /*
+      (function () {
+        const script = document.createElement("script");
         script.src = "./src/js/frontend/eventListeners_backend.js";
         script.async = false;
         document.head.appendChild(script);
       })();
+      */
+
+
+
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/connectorArrows.js";
@@ -276,27 +288,16 @@ $(function () {
         document.head.appendChild(script);
       })();
 
-
-      (function () {
-        const script = document.createElement("script");
-        script.src = "extensions/unipolar_scale/colours.js";
-        script.async = false;
-        document.head.appendChild(script);
-      })();
- 
-
-            /*
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/colours.js";
         script.async = false;
         document.head.appendChild(script);
       })();
-     */
 
      (function () {
         const script = document.createElement("script");
-        script.src = "extensions/unipolar_scale/draw.js";
+        script.src = "extensions/practice_CAM/draw.js";
         script.async = false;
         document.head.appendChild(script);
       })();
@@ -311,22 +312,12 @@ $(function () {
       */
 
 
-       (function () {
-        const script = document.createElement("script");
-        script.src = "extensions/unipolar_scale/interactionNode.js";
-        script.async = false;
-        document.head.appendChild(script);
-      })();
-
-
-            /*
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/dialogs/interactionNode.js";
         script.async = false;
         document.head.appendChild(script);
       })();
-      */
 
 
 
@@ -350,12 +341,24 @@ $(function () {
         script.async = false;
         document.head.appendChild(script);
       })();
+
+      /*
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/buttons/participant/saveButton.js";
         script.async = false;
         document.head.appendChild(script);
       })();
+      */
+
+      (function () {
+        const script = document.createElement("script");
+        script.src = "extensions/practice_CAM/saveButton.js";
+        script.async = false;
+        document.head.appendChild(script);
+      })();
+
+
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/buttons/participant/downloadSVGButton.js";
