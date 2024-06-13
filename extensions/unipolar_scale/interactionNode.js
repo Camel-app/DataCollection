@@ -24,9 +24,9 @@ const interaction = `
 </div>
 
 <div class="outerNodeSlider" style="margin-bottom: 25px;">
-    <div class="greenColorNodeSlider">
+    <div class="greenColorNodeSlider" style="background-color:hsl(0, 0%, 60%);">
         <div class="yellowColorNodeSlider" style="background-color:hsl(0, 0%, 65%);">
-            <div class="redColorNodeSlider">
+            <div class="redColorNodeSlider" style="background-color:hsl(0, 0%, 70%);">
                 <input type="range" min="1" max="7" step="1" id="nodeSlider" list="steplist">
             </div>
         </div>

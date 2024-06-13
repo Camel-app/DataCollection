@@ -24,61 +24,22 @@ function defaultCAM() {
   if (!usingMangoDB) {
     /* MAKE CHANGES: start*/
 
-    CAM.addElement(new NodeCAM(0, "central (change me!)", {
-      x: 900,
-      y: 700
-    }, true, true, true));
 
-    CAM.addElement(new NodeCAM(-1, "Löwen essen Äpfel", {
-      x: 100,
-      y: 300
-    }, true, true, true));
-
-    CAM.addElement(new NodeCAM(-2, "Pandabären Zentrum", {
-      x: 300,
-      y: 300
-    }, true, true, true));
-
-    CAM.addElement(new NodeCAM(-3, "Mentale Verwirrung", {
-      x: 500,
-      y: 300
-    }, true, true, true));
-
-    CAM.addElement(new NodeCAM(1, "Mentale Modelle Freiburgs", {
-      x: 300,
-      y: 400
-    }, true, true, true));
-
-    CAM.addElement(new NodeCAM(2, "doch!!!", {
-      x: 500,
-      y: 400
-    }, true, true, true));
-
-    CAM.addElement(new NodeCAM(3, "auf gehts SCF", {
-      x: 700,
+    CAM.addElement(new NodeCAM(-3, "1", {
+      x: 650,
       y: 400
     }, true, true, true));
 
 
-    var connector1 = new ConnectorCAM();
-    connector1.establishConnection(CAM.nodes[1], CAM.nodes[2], IncreaseSliderIntensity, true);
-    connector1.value = 1;
-    connector1.intensity = connector1.value * IncreaseSliderIntensity;
-    CAM.addElement(connector1);
 
+/*
     var connector1 = new ConnectorCAM();
-    connector1.establishConnection(CAM.nodes[2], CAM.nodes[3], IncreaseSliderIntensity, true);
-    connector1.value = 2;
-    connector1.intensity = connector1.value * IncreaseSliderIntensity;
-    CAM.addElement(connector1);
-
-    var connector1 = new ConnectorCAM();
-    connector1.establishConnection(CAM.nodes[4], CAM.nodes[5], IncreaseSliderIntensity, true);
+    connector1.establishConnection(CAM.nodes[0], CAM.nodes[1], IncreaseSliderIntensity, true);
     connector1.value = 3;
     connector1.intensity = connector1.value * IncreaseSliderIntensity;
     connector1.isDeletable = false;
     CAM.addElement(connector1);
-
+*/
 
     /* MAKE Changes: end*/
   } else {

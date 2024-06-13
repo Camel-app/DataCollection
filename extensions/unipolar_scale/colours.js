@@ -12,8 +12,8 @@ const COLOUR = {
     selected: "#03A3FF",
     adjacent: "rgb(163, 163, 163)",
 
-    positiveNode: "#B9F1B9",
-    positiveLine: "#22AA22",
+    positiveNode: "hsl(0, 0%, 73%)",
+    positiveLine: "hsl(0, 0%, 19%)",
 
     negativeNode: "#EB8989",
     negativeLine: "#E04848",
@@ -24,7 +24,7 @@ const COLOUR = {
     ambivalentNode: "rgb(247, 151, 226)",
     ambivalentLine: "rgb(142, 19, 146)",
 
-    relativeLine: 5,
+    relativeLine: 2,
     
     line: "#808080",
     outerLine: "rgba(255, 255, 255, 0)",
