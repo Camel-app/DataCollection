@@ -77,6 +77,8 @@ function getShapeSVG(node) {
     }
 }
 
+/* OLD: */
+
 function getTextSVG(node) {
     let nodeText = document.createElementNS(svgns, "text");
     nodeText.setAttribute("id", node.id);
@@ -101,20 +103,21 @@ function getTextSVG(node) {
         LengthText = LengthText.map(cumulativeSum);
 
         for (var i = 0; i <= LengthText.length; i++) {
-            if (LengthText[i] > LengthCumWords) {
+            if (LengthText[i] > LengthCumWords && i > 0) {
                 ArrayText[i] =
-                    " <tspan dy='1.1em' x='0'>" + ArrayText[i] + "</tspan>";
+                    " <tspan dy='1.0em' x='0'>" + ArrayText[i] + "</tspan>";
                 LengthCumWords += config.LengthWords;
             }
         }
 
-        nodeText.setAttribute("y", -20);
+        nodeText.setAttribute("y", -10);
 
         nodeText.innerHTML = ArrayText.join(" ");
     } else {
         nodeText.innerHTML = node.text;
         nodeText.setAttribute("y", 0);
     }
+
     return nodeText;
 }
 
@@ -129,9 +132,9 @@ function drawPositiveNode(node) {
     positiveNode.setAttribute("transform", "translate(0,0)"); // scale(0.1)
     positiveNode.setAttribute("fill", COLOUR.positiveNode);
     positiveNode.setAttribute("stroke", COLOUR.positiveLine);
-    positiveNode.setAttribute("stroke-width", Math.abs(node.value) * 3);
+    positiveNode.setAttribute("stroke-width", Math.abs(node.value) * COLOUR.relativeLine);
 
-    positiveNode.setAttribute("opacity", 1);
+   // positiveNode.setAttribute("opacity", Math.abs(node.value) / 3);
 
     if (node.isSelected === true) {
         positiveNode.setAttribute("fill", COLOUR.selected);
@@ -154,7 +157,9 @@ function drawNegativeNode(node) {
     negativeNode.setAttribute("transform", "translate(0,0)");
     negativeNode.setAttribute("fill", COLOUR.negativeNode);
     negativeNode.setAttribute("stroke", COLOUR.negativeLine);
-    negativeNode.setAttribute("stroke-width", Math.abs(node.value) * 3);
+    negativeNode.setAttribute("stroke-width", Math.abs(node.value) * COLOUR.relativeLine);
+
+   // negativeNode.setAttribute("opacity", Math.abs(node.value) / 3);
 
     if (node.isSelected === true) {
         negativeNode.setAttribute("fill", COLOUR.selected);
@@ -390,6 +395,7 @@ function drawOuter(connector, daughter, dist, angle, compensation) {
     outerConnector.setAttribute("stroke", COLOUR.outerLine);
     outerConnector.setAttribute("stroke-width", 30);
 
+
     return outerConnector;
 }
 
@@ -420,9 +426,17 @@ function drawConnector(connector, mother, daughter) {
     };
     const angle =
         dir.x === 0 ? Math.atan(dir.y / 0.001) : Math.atan(dir.y / dir.x);
-    const motherD = Math.sqrt(
-        (Math.cos(angle) * 40) ** 2 + (Math.sin(angle) * 20) ** 2
-    );
+
+let motherD;
+        if(config.hideArrows){
+            motherD = Math.sqrt(
+                (Math.cos(angle) * 1) ** 2 + (Math.sin(angle) * 1) ** 2
+            );
+        }else{
+            motherD = Math.sqrt(
+                (Math.cos(angle) * 40) ** 2 + (Math.sin(angle) * 20) ** 2
+            );
+        }
     const dist = Math.sqrt(vec.x ** 2 + vec.y ** 2) - motherD;
     const compensation = dir.x >= 0 ? 1 : -1;
     const position = {

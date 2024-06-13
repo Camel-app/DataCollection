@@ -4,7 +4,7 @@
 // Text elements
 const TEXT = {
     colour: "black",
-    size: "26px",
+    size: "22px", // 28px
 };
 
 const COLOUR = {
@@ -23,6 +23,8 @@ const COLOUR = {
 
     ambivalentNode: "rgb(247, 151, 226)",
     ambivalentLine: "rgb(142, 19, 146)",
+
+    relativeLine: 5,
     
     line: "#808080",
     outerLine: "rgba(255, 255, 255, 0)",

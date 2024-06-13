@@ -12,7 +12,7 @@ var config = {
     
     MaxLengthWords: 3, // maximum number of words for each concept
     MaxLengthChars: 40, // maximum number of characters for each concept
-    LengthSentence: 20, // include breaklines if >= X characters
+    LengthSentence: 14, // include breaklines if >= X characters
     LengthWords: 8, // include breaklines after each word with cumsum >= X characters
 
     ShowResearcherButtons: false, // if true = show researcher functionalities
