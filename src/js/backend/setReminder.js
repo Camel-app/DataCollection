@@ -19,8 +19,8 @@ Bitte schließen Sie das Zeichnen der <i>kognitiv-affektive Karte</i> (CAM) nun 
 `;
 
 var startTimeMS = 0; // EPOCH Time of event count started
-var timerStepFirst = 5000; // Time first reminder
-var timerStepFinal = 10000; // Time final reminder
+var timerStepFirst = 720000; // Time first reminder
+var timerStepFinal = 900000; // Time final reminder
 
 function firstReminder() {
     $("#dialogReminder").dialog("open");

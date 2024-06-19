@@ -63,10 +63,10 @@ crossorigin="anonymous"
       <div class="properties" style="font-size: 12px;">
         Die folgenden Regeln gelten für die <i>kognitiv-affektive Karte</i> (CAM), die Sie zeichnen sollten:
         <ul  style="font-size: 12px;">
-                 <li>Zeichnen Sie insgesamt mindestens 8 Konzepte.</li>
+                 <li>Zeichnen Sie insgesamt mindestens 10 Konzepte.</li>
                  <li>Verwenden Sie nicht mehr als drei Wörter pro Begriff.</li>
                  <li>Verbinden Sie alle gezeichneten Begriffe miteinander.</li>
-                 <li>Sie haben insgesamt 12 Minuten Zeit.</li>
+                 <li>Sie haben insgesamt 15 Minuten Zeit.</li>
              </ul>
             Wenn Sie Hilfe benötigen, klicken Sie auf den grünen Referenzknopf oben rechts. Um Ihr CAM zu speichern, klicken Sie auf das Diskettensymbol.
              <br>
@@ -265,15 +265,17 @@ $(function () {
       // frontend files
       (function () {
         const script = document.createElement("script");
-        script.src = "extensions/practice_CAM/eventListeners_backend.js";
+        script.src = "./src/js/frontend/eventListeners_backend.js";
         script.async = false;
         document.head.appendChild(script);
       })();
 
+
+
       /*
       (function () {
         const script = document.createElement("script");
-        script.src = "./src/js/frontend/eventListeners_backend.js";
+        script.src = "extensions/practice_CAM/eventListeners_backend.js";
         script.async = false;
         document.head.appendChild(script);
       })();
@@ -295,17 +297,19 @@ $(function () {
         document.head.appendChild(script);
       })();
 
-     (function () {
+
+      (function () {
         const script = document.createElement("script");
-        script.src = "extensions/practice_CAM/draw.js";
+        script.src = "./src/js/frontend/draw.js";
         script.async = false;
         document.head.appendChild(script);
       })();
 
+
 /*
-      (function () {
+     (function () {
         const script = document.createElement("script");
-        script.src = "./src/js/frontend/draw.js";
+        script.src = "extensions/practice_CAM/draw.js";
         script.async = false;
         document.head.appendChild(script);
       })();
