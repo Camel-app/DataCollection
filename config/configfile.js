@@ -8,7 +8,7 @@ var config = {
     BidirectionalDefault: false, // if true the default connection is bidirectional
 
     hideAmbivalent: false, // if false = possible to draw ambivalent node
-    showOnlyPosSlid: true, // if true = show only slider for agreement (+1 - +3)
+    showOnlyPosSlid: false, // if true = show only slider for agreement (+1 - +3)
     
     MaxLengthWords: 3, // maximum number of words for each concept
     MaxLengthChars: 40, // maximum number of characters for each concept
