@@ -170,12 +170,13 @@ crossorigin="anonymous"
   <script
     src="./src/js/backend/initialisationConfig.js"
     crossorigin="anonymous"
+            script.async = false;
     defer></script>
 
      <!-- paradata file -->
      <script>
 $(function () {
-  if(!usingMangoDB){
+  if(!usingSupabase){
         (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/paradata_focus.js";
@@ -198,7 +199,7 @@ $(function () {
     })();
 
     delay(function () {
-      if(usingMangoDB){
+      if(usingSupabase){
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/paradata_focus.js";
@@ -346,22 +347,21 @@ $(function () {
         document.head.appendChild(script);
       })();
 
-      /*
       (function () {
         const script = document.createElement("script");
         script.src = "./src/js/frontend/buttons/participant/saveButton.js";
         script.async = false;
         document.head.appendChild(script);
       })();
-      */
 
+        /*
       (function () {
         const script = document.createElement("script");
         script.src = "extensions/practice_CAM/saveButton.js";
         script.async = false;
         document.head.appendChild(script);
       })();
-
+      */
 
       (function () {
         const script = document.createElement("script");

@@ -19,22 +19,22 @@ var config = {
 
     cameraFeature: false, // include camera / splotlight feature to move screen
 
-    setLanguage: "German", // set language of your CAM study, e.g. French 
+    setLanguage: "English", // set language of your CAM study, e.g. French 
 
-    fullScreen: true, // if true = study in fullscreen mode + paradata
-    showNotPopupStart: false, // true = no pop up shown; only working if fullScreen is set to true
+    fullScreen: false, // if true = study in fullscreen mode + paradata
+    showNotPopupStart: true, // true = no pop up shown; only working if fullScreen is set to true
 
     AdaptiveStudy: true, // run as adaptive study 
     ADAPTIVESTUDYurl: "http://example.org/", // URL the CAM data should be append to !!!
 
-    setReminder: true, // if true = after X ms 2 reminder pop up
+    setReminder: false, // if true = after X ms 2 reminder pop up
 
     surpressSaveCAMpopup: false // if set to true no popup is shown when downloading a vector graphic of the CAM (for automation via the CAM2Image tool)
 }
 
 // global variable
-var usingMangoDB = false;
-var usingJATOS = true;
+var usingSupabase = true;
+var usingJATOS = false;
 /* MAKE CHANGES: end*/
 
 console.log("config config file:", config)
@@ -44,6 +44,6 @@ console.log("config config file:", config)
 
 
 // ! not change
-const webAddress = "https://drawyourminds.de/API/"; // "https://drawyourminds.de/API/"; // "http://localhost:3001/"; 
+const webAddress = "http://localhost:3002/api/"; // "https://drawyourminds.de/API/"; // "http://localhost:3001/"; 
 
 

@@ -211,8 +211,8 @@ function saveCAMsuccess() {
         }
 
         /* if server is >>> MangoDB <<< */
-        console.log("usingMangoDB: ", usingMangoDB);
-        if (usingMangoDB) {
+        console.log("usingSupabase: ", usingSupabase);
+        if (usingSupabase) {
             async function pushData() {
                 let info = {
                     method: "POST",
@@ -251,7 +251,7 @@ token +
         }
 
         /* if NO server >>> <<< */
-        if (!usingJATOS && !usingMangoDB) {
+        if (!usingJATOS && !usingSupabase) {
             toastr.success(languageFileOut.popSave_01notSavedData, {
                 closeButton: true,
                 timeOut: 4000,

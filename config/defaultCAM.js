@@ -21,7 +21,7 @@ console.log("index_ConceptsCAM:", index_ConceptsCAM);
  */
 
 function defaultCAM() {
-  if (!usingMangoDB) {
+  if (!usingSupabase) {
     /* MAKE CHANGES: start*/
 
 
