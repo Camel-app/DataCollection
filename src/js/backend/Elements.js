@@ -1,8 +1,15 @@
+import { uuidv4, toastr } from "../app/vendor.js";
+import { store } from "../app/store.js";
+import { WEBSOCKET, IncreaseSliderIntensity } from "../app/constants.js";
+import { draw } from "../frontend/draw.js";
+import { ConnectorCAM } from "./connectorCAM.js";
+import { NodeCAM } from "./nodeCAM.js";
+
 class Elements {
     constructor() {
-        this.idCAM = uuid.v4();
-        this.creator = uuid.v4(); // id of the maker
-        this.projectCAM = config.CAMproject;
+        this.idCAM = uuidv4();
+        this.creator = uuidv4(); // id of the maker
+        this.projectCAM = store.config.CAMproject;
         this.defocusCAM = null;
         this.date = new Date().getTime(); // representing the milliseconds elapsed between 1 January 1970 00:00:00 UTC and the given date
         this.nodes = [];
@@ -69,7 +76,7 @@ class Elements {
 
     addConnector(connector) {
         if (this.isConnectorIn(connector) == false) {
-            if (config.BidirectionalDefault || config.enableArrows) {
+            if (store.config.BidirectionalDefault || store.config.enableArrows) {
                 connector.setBidirectional(true);
             }
 
@@ -113,8 +120,8 @@ class Elements {
             console.log("This element cannot be deleted.");
 
             toastr.info(
-                languageFileOut.edw_01notDeleteConnector,
-                languageFileOut.edw_02notDeleteConnector,
+                store.language.edw_01notDeleteConnector,
+                store.language.edw_02notDeleteConnector,
                 {
                     closeButton: true,
                     timeOut: 2000,
@@ -154,8 +161,8 @@ class Elements {
             console.log("This element cannot be deleted.");
 
             toastr.info(
-                languageFileOut.edw_01notDeleteNode,
-                languageFileOut.edw_02notDeleteNode,
+                store.language.edw_01notDeleteNode,
+                store.language.edw_02notDeleteNode,
                 {
                     closeButton: true,
                     timeOut: 2000,
@@ -304,3 +311,5 @@ class Elements {
         this.draw();
     }
 }
+
+export { Elements };

@@ -1,10 +1,13 @@
+import { uuidv4 } from "../app/vendor.js";
+import { IncreaseSliderIntensity } from "../app/constants.js";
+
 /**
  * Brief description of the class here
  * @extends ParentClassNameHereIfAny
  */
 class ConnectorCAM {
     constructor(isDeletable = true) {
-        this.id = uuid.v4(); // uuid4.v4(); // to run "npm run test"
+        this.id = uuidv4(); // uuid4.v4(); // to run "npm run test"
         this.value = null;
         this.source = null;
         this.target = null;
@@ -159,3 +162,5 @@ class ConnectorCAM {
         });
     }
 }
+
+export { ConnectorCAM };

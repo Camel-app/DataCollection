@@ -1,27 +1,32 @@
-console.log("starting paradata")
-console.log("config.fullScreen - paradata", config.fullScreen)
+import { store } from "../app/store.js";
 
-if (config.fullScreen == true) { // || usingSupabase  to late loaded
-console.log("config.fullScreen - paradata", config.fullScreen)
+function enterFullscreen() {
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+    }
+}
 
+function initParadataFocus() {
+    console.log("starting paradata");
+    console.log("config.fullScreen - paradata", store.config.fullScreen);
 
-    var paradefocuscount = 0;
-    var arraydefocusevent = [];
-    var lastBlurTimestamp;
+    window.enterFullscreen = enterFullscreen;
 
-    function enterFullscreen() {
-        if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else if (document.documentElement.msRequestFullscreen) {
-            // for IE11 (remove June 15, 2022)
-            document.documentElement.msRequestFullscreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-            // iOS Safari
-            document.documentElement.webkitRequestFullscreen();
-        }
+    if (store.config.fullScreen != true) {
+        return;
     }
 
-    window.addEventListener("load", (e) => {
+    console.log("config.fullScreen - paradata", store.config.fullScreen);
+
+    var paradefocuscount = 0;
+    var lastBlurTimestamp;
+    store.ui.defocusEvents = [];
+
+    window.addEventListener("load", () => {
         document.getElementById("alert").style.visibility = "visible";
         document.getElementById("hideall").style.visibility = "hidden";
     });
@@ -35,14 +40,14 @@ console.log("config.fullScreen - paradata", config.fullScreen)
 
     window.addEventListener("focus", (e) => {
         var durDefocus = e.timeStamp - lastBlurTimestamp;
-        //console.log('duration:', duration)
-        //console.log('sender', this.state.sender)
-        arraydefocusevent.push(durDefocus);
+        store.ui.defocusEvents.push(durDefocus);
         console.log(
             "durDefocus: ",
             durDefocus,
             "arraydefocusevent: ",
-            arraydefocusevent
+            store.ui.defocusEvents
         );
     });
 }
+
+export { initParadataFocus, enterFullscreen };

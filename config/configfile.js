@@ -1,8 +1,8 @@
 /* MAKE CHANGES: start*/
 /* default values */
-var config = {
+const config = {
     CAMproject: "projectName", // "proj_" + uuid.v4(), // necessary for server (see ERM) !!!
-    MinNumNodes: 10, // number of nodes necessary to draw # !!! 8
+    MinNumNodes: 1, // number of nodes necessary to draw # !!! 8
     
     enableArrows: false, // if false = possible to draw arrows
     BidirectionalDefault: true, // if true the default connection is bidirectional
@@ -30,18 +30,17 @@ var config = {
     setReminder: false, // if true = after X ms 2 reminder pop up
 
     surpressSaveCAMpopup: false // if set to true no popup is shown when downloading a vector graphic of the CAM (for automation via the CAM2Image tool)
-}
+};
 
-// global variable
-var usingSupabase = false;
-var usingJATOS = true;
+const defaultFlags = {
+    usingSupabase: false,
+    usingJATOS: true,
+};
 /* MAKE CHANGES: end*/
 
-console.log("config config file:", config)
-
-
-
-
+console.log("config config file:", config);
 
 // ! not change
 const webAddress = "https://camadministrative.vercel.app/api/"; // "https://drawyourminds.de/API/"; // "http://localhost:3001/";
+
+export { config, defaultFlags, webAddress };

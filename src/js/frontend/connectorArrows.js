@@ -1,3 +1,6 @@
+import { svgns } from "../app/constants.js";
+import { store } from "../app/store.js";
+
 let arrow = document.createElementNS(svgns, "defs");
 
 let arrowRight = document.createElementNS(svgns, "marker");
@@ -10,7 +13,7 @@ arrowRight.setAttribute("orient", "auto");
 arrowRight.setAttribute("markerUnits", "userSpaceOnUse");
 
 let polyR = document.createElementNS(svgns, "polygon");
-if (config.enableArrows == true) {
+if (store.config.enableArrows == true) {
     polyR.setAttribute("points", "0 0, 0 0, 0 0");
 } else {
     polyR.setAttribute("points", "30 0, 30 15, 0 7.5");
@@ -30,7 +33,7 @@ arrowLeft.setAttribute("orient", "auto");
 arrowLeft.setAttribute("markerUnits", "userSpaceOnUse");
 
 let polyL = document.createElementNS(svgns, "polygon");
-if (config.enableArrows == true) {
+if (store.config.enableArrows == true) {
     polyL.setAttribute("points", "0 0, 0 0, 0 0");
 } else {
     polyL.setAttribute("points", "0 0, 30 7.5, 0 15");
@@ -38,3 +41,5 @@ if (config.enableArrows == true) {
 polyL.setAttribute("fill", "#8c8c8c");
 arrowLeft.appendChild(polyL);
 arrow.appendChild(arrowLeft);
+
+export { arrow, arrowRight, arrowLeft };

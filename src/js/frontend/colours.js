@@ -38,3 +38,5 @@ const COLOUR = {
     green1: "hsl(110, 100%, 40%)",
     white: "hsl(255, 100%, 100%)",
 };
+
+export { TEXT, COLOUR };

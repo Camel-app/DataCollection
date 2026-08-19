@@ -1,3 +1,5 @@
+import { uuidv4 } from "../app/vendor.js";
+
 class NodeCAM {
     constructor(
         value,
@@ -7,7 +9,7 @@ class NodeCAM {
         isDeletable = true,
         isTextChangeable = true
     ) {
-        this.id = uuid.v4();
+        this.id = uuidv4();
         this.value = value;
         this.text = text;
         this.comment = "";
@@ -144,3 +146,5 @@ class NodeCAM {
         return true;
     }
 }
+
+export { NodeCAM };

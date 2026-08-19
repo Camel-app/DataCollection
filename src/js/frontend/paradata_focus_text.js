@@ -1,6 +1,12 @@
-// language file
-$(function () {
-    document.getElementById("alert-text").innerHTML = languageFileOut.ls_01; // leaving fullscreen
-    
-    document.getElementById("alert-button-text").innerText =   languageFileOut.continueButtonFullscreen; // fullscreen continue button
-});
+import { $ } from "../app/vendor.js";
+import { store } from "../app/store.js";
+
+function initParadataFocusText() {
+    $(function () {
+        document.getElementById("alert-text").innerHTML = store.language.ls_01;
+        document.getElementById("alert-button-text").innerText =
+            store.language.continueButtonFullscreen;
+    });
+}
+
+export { initParadataFocusText };

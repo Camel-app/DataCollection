@@ -1274,24 +1274,27 @@ const languageFile_european =[
 
 
 
-var languageFileOut = {};
-if (config.setLanguage == "Chinese") {
-    languageFile_chinese.forEach(element => {
-        languageFileOut[element.X_identifier] = element.chinese;
-    });
-  } else if (config.setLanguage != "Chinese") {
-    languageFile_european.forEach(element => {
-        // change language here
-        if (config.setLanguage == "English") {
-          languageFileOut[element.X_identifier] = element.english;
-        } else if (config.setLanguage == "German") {
-          languageFileOut[element.X_identifier] = element.german;
-        } else if (config.setLanguage == "Spanish") {
-          languageFileOut[element.X_identifier] = element.spanish;
-        } else if (config.setLanguage == "French") {
-          languageFileOut[element.X_identifier] = element.french;
-        } 
-      });
-  }
+function buildLanguageFileOut(config) {
+    const languageFileOut = {};
+    if (config.setLanguage == "Chinese") {
+        languageFile_chinese.forEach((element) => {
+            languageFileOut[element.X_identifier] = element.chinese;
+        });
+    } else if (config.setLanguage != "Chinese") {
+        languageFile_european.forEach((element) => {
+            if (config.setLanguage == "English") {
+                languageFileOut[element.X_identifier] = element.english;
+            } else if (config.setLanguage == "German") {
+                languageFileOut[element.X_identifier] = element.german;
+            } else if (config.setLanguage == "Spanish") {
+                languageFileOut[element.X_identifier] = element.spanish;
+            } else if (config.setLanguage == "French") {
+                languageFileOut[element.X_identifier] = element.french;
+            }
+        });
+    }
 
-console.log(languageFileOut)
+    return languageFileOut;
+}
+
+export { languageFile_chinese, languageFile_european, buildLanguageFileOut };

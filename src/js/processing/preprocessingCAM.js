@@ -3,10 +3,13 @@ Class for pre-processing CAM data used to
 - check necessary conditions (like #nodes)
 */
 
+import { cytoscape } from "../app/vendor.js";
+import { store } from "../app/store.js";
+
 console.log("Preprocessing step");
 
 // set cytoscape container to add elements
-var cy = cytoscape({
+const cy = cytoscape({
     //very commonly used options
     //container: document.getElementById('cy'), // container to render in
     elements: [
@@ -58,7 +61,7 @@ function addElementsCy() {
 
     // console.log("connectors within Cy: ", CAMconnectorsCy);
     // add nodes
-    CAM.nodes.forEach((elt) => {
+    store.cam.nodes.forEach((elt) => {
         //  CAM.nodes -> only active nodes here
         //(new Node(elt))
         if (elt.getIsActive()) {
@@ -80,7 +83,7 @@ function addElementsCy() {
 
     // add connectors
     var h = 0;
-    CAM.connectors.forEach((elt) => {
+    store.cam.connectors.forEach((elt) => {
         //   CAM.connectors -> only active connectors here
         //(new Node(elt))
         if (elt.getIsActive()) {
@@ -137,6 +140,8 @@ function bfsAlgorithm(rootsnode) {
 
     return timesRun;
 }
+
+export { cy, addElementsCy, bfsAlgorithm };
 
 /* add centrality algorithms: 
 https://js.cytoscape.org/#collection/centrality

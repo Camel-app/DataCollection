@@ -20,11 +20,16 @@ const index_ConceptsCAM = shuffle(ConceptsCAM);
 console.log("index_ConceptsCAM:", index_ConceptsCAM);
  */
 
+import { NodeCAM } from "../src/js/backend/nodeCAM.js";
+import { ConnectorCAM } from "../src/js/backend/connectorCAM.js";
+import { IncreaseSliderIntensity } from "../src/js/app/constants.js";
+import { store } from "../src/js/app/store.js";
+
 function defaultCAM() {
-  if (!usingSupabase) {
+  if (!store.flags.usingSupabase) {
     /* MAKE CHANGES: start*/
 
-    CAM.addElement(new NodeCAM(0, "Central Concept", {
+    store.cam.addElement(new NodeCAM(0, "Central Concept", {
       x: 650,
       y: 400
     }, false, false, false));
@@ -52,22 +57,24 @@ function defaultCAM() {
 */
   } else {
     // add nodes from fetched data
-    camMother.nodes.forEach((element) => {
+    store.env.camMother.nodes.forEach((element) => {
       element.kind = "Node";
       element.comment = "";
       element.eventLog = [];
       element.isActive = true;
       element.isConnectorSelected = false;
       element.isSelected = false;
-      CAM.importElement(element);
+      store.cam.importElement(element);
     });
     // add connectors from fetched data
-    camMother.connectors.forEach((element) => {
+    store.env.camMother.connectors.forEach((element) => {
       element.kind = "Connector";
       element.eventLog = "";
-      CAM.importElement(element);
+      store.cam.importElement(element);
     });
   }
 
-  CAM.draw();
+  store.cam.draw();
 }
+
+export { defaultCAM };

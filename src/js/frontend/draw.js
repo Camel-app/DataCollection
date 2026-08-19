@@ -1,8 +1,13 @@
+import { svgns, zoomScaleNode } from "../app/constants.js";
+import { store } from "../app/store.js";
+import { COLOUR, TEXT } from "./colours.js";
+import { arrowRight, arrowLeft } from "./connectorArrows.js";
+
 function draw(CAM) {
     const board = document.querySelector("#CAMSVG");
     board.innerHTML = "";
 
-    board.appendChild(this.drawBackground());
+    board.appendChild(drawBackground());
 
     board.appendChild(arrowRight);
     board.appendChild(arrowLeft);
@@ -89,12 +94,12 @@ function getTextSVG(node) {
     nodeText.setAttribute("text-anchor", "middle");
     nodeText.setAttribute("font-size", TEXT.size);
 
-    if (node.text.length >= config.LengthSentence) {
+    if (node.text.length >= store.config.LengthSentence) {
         const cumulativeSum = (
             (sum) => (value) =>
                 (sum += value)
         )(0);
-        var LengthCumWords = config.LengthWords;
+        var LengthCumWords = store.config.LengthWords;
         var LengthText = [];
         var ArrayText = node.text.split(" ");
 
@@ -106,7 +111,7 @@ function getTextSVG(node) {
             if (LengthText[i] > LengthCumWords && i > 0) {
                 ArrayText[i] =
                     " <tspan dy='1.0em' x='0'>" + ArrayText[i] + "</tspan>";
-                LengthCumWords += config.LengthWords;
+                LengthCumWords += store.config.LengthWords;
             }
         }
 
@@ -269,19 +274,19 @@ function drawLine(connector, motherD, position, angle, dist, compensation) {
     ); // ${zoomScaleConnector}
     lineConnector.setAttribute(
         "x1",
-        (motherD + DistanceArrows) * Math.cos(angle) * compensation
+        (motherD + store.ui.distanceArrows) * Math.cos(angle) * compensation
     );
     lineConnector.setAttribute(
         "y1",
-        (motherD + DistanceArrows) * Math.sin(angle) * compensation
+        (motherD + store.ui.distanceArrows) * Math.sin(angle) * compensation
     );
     lineConnector.setAttribute(
         "x2",
-        (dist - DistanceArrows) * Math.cos(angle) * compensation
+        (dist - store.ui.distanceArrows) * Math.cos(angle) * compensation
     );
     lineConnector.setAttribute(
         "y2",
-        (dist - DistanceArrows) * Math.sin(angle) * compensation
+        (dist - store.ui.distanceArrows) * Math.sin(angle) * compensation
     );
     lineConnector.setAttribute("stroke", COLOUR.line);
     lineConnector.setAttribute("stroke-width", connector.intensity);
@@ -365,14 +370,14 @@ const vec = {
     y: (mother.position.y - daughter.position.y),
 };
 
-var x1 = (motherD + DistanceArrows) * Math.cos(angle) * compensation;
-var y1 = (motherD + DistanceArrows) * Math.sin(angle) * compensation;
-var x2 = (dist - DistanceArrows) * Math.cos(angle) * compensation;
-var y2 = (dist - DistanceArrows) * Math.sin(angle) * compensation;
+    var x1 = (motherD + store.ui.distanceArrows) * Math.cos(angle) * compensation;
+    var y1 = (motherD + store.ui.distanceArrows) * Math.sin(angle) * compensation;
+    var x2 = (dist - store.ui.distanceArrows) * Math.cos(angle) * compensation;
+    var y2 = (dist - store.ui.distanceArrows) * Math.sin(angle) * compensation;
 
 let drawCross = document.createElementNS(svgns, "circle");
-drawCross.setAttribute("cx", vec.x + DistanceArrows * Math.cos(angle) * compensation );
-drawCross.setAttribute("cy", vec.y  + DistanceArrows * Math.sin(angle) * compensation);
+    drawCross.setAttribute("cx", vec.x + store.ui.distanceArrows * Math.cos(angle) * compensation );
+    drawCross.setAttribute("cy", vec.y  + store.ui.distanceArrows * Math.sin(angle) * compensation);
 drawCross.setAttribute("r", "22");
 drawCross.setAttribute("fill", "red");
 */
@@ -427,8 +432,8 @@ function drawConnector(connector, mother, daughter) {
     const angle =
         dir.x === 0 ? Math.atan(dir.y / 0.001) : Math.atan(dir.y / dir.x);
 
-let motherD;
-        if(config.enableArrows){
+    let motherD;
+        if(store.config.enableArrows){
             motherD = Math.sqrt(
                 (Math.cos(angle) * 1) ** 2 + (Math.sin(angle) * 1) ** 2
             );
@@ -448,16 +453,11 @@ let motherD;
 
     /* change ordering to enable click on ability "node selected -> connector"*/
     if (mother.isSelected || daughter.isSelected) {
-        const selectedDraw = this.drawSelected(
-            daughter,
-            dist,
-            angle,
-            compensation
-        );
+        const selectedDraw = drawSelected(daughter, dist, angle, compensation);
         group.appendChild(selectedDraw);
     }
 
-    const line = this.drawLine(
+    const line = drawLine(
         connector,
         motherD,
         position,
@@ -467,7 +467,7 @@ let motherD;
     );
     group.appendChild(line);
 
-    const outer = this.drawOuter(
+    const outer = drawOuter(
         connector,
         daughter,
         dist,
@@ -500,3 +500,5 @@ function drawOverlay() {
 
     svg.appendChild(setOverlay());
 }
+
+export { draw };

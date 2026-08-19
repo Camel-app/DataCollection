@@ -3,10 +3,12 @@ Class for post-processing CAM data used to
 - adaptive study designs
 applying in the future: https://js.cytoscape.org/#collection/centrality
 */
+
+import { store } from "../app/store.js";
 // get array with active nodes
 function getActiveListNodes() {
     var listOfNodes = [];
-    CAM.nodes.forEach((elt) => {
+    store.cam.nodes.forEach((elt) => {
         //(new Node(elt))
         if (elt.getIsActive()) {
             listOfNodes.push({
@@ -125,3 +127,11 @@ function getMeanValenceNodes(listOfNodes) {
 
     return avg;
 }
+
+export {
+    getActiveListNodes,
+    getAllNodesOfValence,
+    getHighestDegree,
+    getHighestLowestText,
+    getMeanValenceNodes,
+};

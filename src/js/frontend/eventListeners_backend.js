@@ -1,16 +1,24 @@
+import { $ } from "../app/vendor.js";
+import { store } from "../app/store.js";
+import { IncreaseSliderIntensity, moveCAMSpeed } from "../app/constants.js";
+import { COLOUR } from "./colours.js";
+import { NodeCAM } from "../backend/nodeCAM.js";
+
+function initEventListenersBackend() {
+
 $(document).on("mousedown", ".node", function (event) {
-    arrayPositions = [];
+    store.ui.arrayPositions = [];
     /* if double click */
     if (event.detail == 2) {
-        CAM.selecteNode($(this)[0].id);
+        store.cam.selecteNode($(this)[0].id);
 
-        if (CAM.currentNode != null) {
+        if (store.cam.currentNode != null) {
             // get text of current node
             document.getElementById("inptextnode").value =
-                CAM.currentNode.getText();
+                store.cam.currentNode.getText();
             // get comment of current node
             document.getElementById("inpcommentnode").value =
-                CAM.currentNode.getComment();
+                store.cam.currentNode.getComment();
             // get value slider, hide / show graphics / change colors
             var backendGreenColorNodeSlider = document.querySelector(
                 ".greenColorNodeSlider"
@@ -19,7 +27,7 @@ $(document).on("mousedown", ".node", function (event) {
                 ".redColorNodeSlider"
             );
 
-            if (CAM.currentNode.value == 0) {
+            if (store.cam.currentNode.value == 0) {
                 document.getElementById("nodeSlider").value = 4;
 
                 document.getElementById("checkboxAmbivalent").checked = false;
@@ -27,71 +35,71 @@ $(document).on("mousedown", ".node", function (event) {
 
                 backendRedColorNodeSlider.style.backgroundColor = COLOUR.red3; // "hsl(0, 50%, 60%)";
                 backendGreenColorNodeSlider.style.backgroundColor = COLOUR.green3; // "hsl(110, 50%, 60%)";
-            } else if (CAM.currentNode.value == 10) {
+            } else if (store.cam.currentNode.value == 10) {
                 document.getElementById("nodeSlider").value = 4;
                 backendRedColorNodeSlider.style.backgroundColor = COLOUR.red3; // "hsl(0, 50%, 60%)";
                 backendGreenColorNodeSlider.style.backgroundColor = COLOUR.green3; // "hsl(110, 50%, 60%)";
 
                 document.getElementById("checkboxAmbivalent").checked = true;
                 document.getElementById("nodeSlider").disabled = true;
-            } else if (CAM.currentNode.value < 0) {
+            } else if (store.cam.currentNode.value < 0) {
                 document.getElementById("checkboxAmbivalent").checked = false;
                 document.getElementById("nodeSlider").disabled = false;
-                if (CAM.currentNode.value == -1) {
+                if (store.cam.currentNode.value == -1) {
                     document.getElementById("nodeSlider").value = 3;
                     backendRedColorNodeSlider.style.backgroundColor = COLOUR.red3; // "hsl(0, 50%, 60%)";
-                } else if (CAM.currentNode.value == -2) {
+                } else if (store.cam.currentNode.value == -2) {
                     document.getElementById("nodeSlider").value = 2;
                     backendRedColorNodeSlider.style.backgroundColor = COLOUR.red2; // "hsl(0, 50%, 50%)";
-                } else if (CAM.currentNode.value == -3) {
+                } else if (store.cam.currentNode.value == -3) {
                     document.getElementById("nodeSlider").value = 1;
                     backendRedColorNodeSlider.style.backgroundColor = COLOUR.red1; // "hsl(0, 50%, 40%)";
                 }
             } else if (
-                CAM.currentNode.value > 0 &&
-                CAM.currentNode.value <= 4
+                store.cam.currentNode.value > 0 &&
+                store.cam.currentNode.value <= 4
             ) {
                 document.getElementById("checkboxAmbivalent").checked = false;
                 document.getElementById("nodeSlider").disabled = false;
-                if (CAM.currentNode.value == 1) {
+                if (store.cam.currentNode.value == 1) {
                     document.getElementById("nodeSlider").value = 5;
                     backendGreenColorNodeSlider.style.backgroundColor = COLOUR.green3; // "hsl(110, 50%, 60%)";
-                } else if (CAM.currentNode.value == 2) {
+                } else if (store.cam.currentNode.value == 2) {
                     document.getElementById("nodeSlider").value = 6;
                     backendGreenColorNodeSlider.style.backgroundColor = COLOUR.green2; // "hsl(110, 50%, 50%)";
-                } else if (CAM.currentNode.value == 3) {
+                } else if (store.cam.currentNode.value == 3) {
                     document.getElementById("nodeSlider").value = 7;
                     backendGreenColorNodeSlider.style.backgroundColor = COLOUR.green1;  // "hsl(110, 100%, 40%)";
                 }
             }
 
             /* change position of pop up */
-            if (CAM.currentNode.position.x - 380 < 0) {
-                var changeAtLeft = "left+" + (CAM.currentNode.position.x + 70); // to far left position to right
+            if (store.cam.currentNode.position.x - 380 < 0) {
+                var changeAtLeft = "left+" + (store.cam.currentNode.position.x + 70); // to far left position to right
             } else {
-                var changeAtLeft = "left+" + (CAM.currentNode.position.x - 360); // position to left
+                var changeAtLeft = "left+" + (store.cam.currentNode.position.x - 360); // position to left
             }
-            var changeAtTop = "top+" + (CAM.currentNode.position.y - 10);
+            var changeAtTop = "top+" + (store.cam.currentNode.position.y - 10);
 
             $("#dialogInteractionNode").dialog("open");
         }
     } else {
-        CAM.readyToMove = true;
+        store.cam.readyToMove = true;
         resetConnectorSelection();
-        CAM.selecteNode($(this)[0].id);
+        store.cam.selecteNode($(this)[0].id);
     }
 
-    CAM.draw();
+    store.cam.draw();
 });
 
 $(document).on("mouseup", ".node", function (event) {
     // save position data for only every 150px difference of X or Y
     var newArrX = [];
-    var tmpArrayPosX = arrayPositions[0];
-    for (var i = 1; i < arrayPositions.length; i++) {
-        if (Math.abs(arrayPositions[i].value.x - tmpArrayPosX.value.x) >= 150) {
+    var tmpArrayPosX = store.ui.arrayPositions[0];
+    for (var i = 1; i < store.ui.arrayPositions.length; i++) {
+        if (Math.abs(store.ui.arrayPositions[i].value.x - tmpArrayPosX.value.x) >= 150) {
             newArrX.push(1);
-            tmpArrayPosX = arrayPositions[i];
+            tmpArrayPosX = store.ui.arrayPositions[i];
         } else {
             newArrX.push(0);
         }
@@ -99,11 +107,11 @@ $(document).on("mouseup", ".node", function (event) {
     newArrX.unshift(0);
 
     var newArrY = [];
-    var tmpArrayPosY = arrayPositions[0];
-    for (var i = 1; i < arrayPositions.length; i++) {
-        if (Math.abs(arrayPositions[i].value.y - tmpArrayPosY.value.y) >= 150) {
+    var tmpArrayPosY = store.ui.arrayPositions[0];
+    for (var i = 1; i < store.ui.arrayPositions.length; i++) {
+        if (Math.abs(store.ui.arrayPositions[i].value.y - tmpArrayPosY.value.y) >= 150) {
             newArrY.push(1);
-            tmpArrayPosY = arrayPositions[i];
+            tmpArrayPosY = store.ui.arrayPositions[i];
         } else {
             newArrY.push(0);
         }
@@ -111,29 +119,31 @@ $(document).on("mouseup", ".node", function (event) {
     newArrY.unshift(0);
 
     var newArrayPositions = [];
-    newArrayPositions.unshift(arrayPositions[0]);
+    newArrayPositions.unshift(store.ui.arrayPositions[0]);
 
     // simple check that no 2 undefined entries are included (non-moved element)
-    if (arrayPositions.length > 2) {
-        for (var i = 1; i < arrayPositions.length; i++) {
+    if (store.ui.arrayPositions.length > 2) {
+        for (var i = 1; i < store.ui.arrayPositions.length; i++) {
             if (newArrX[i] == 1 || newArrY[i] == 1) {
-                newArrayPositions.push(arrayPositions[i]);
+                newArrayPositions.push(store.ui.arrayPositions[i]);
             }
         }
 
         newArrayPositions.forEach((element) => {
-            CAM.currentNode.eventLog.push(element);
+            store.cam.currentNode.eventLog.push(element);
         });
     }
 
-    newArrayPositions.push(arrayPositions[arrayPositions.length - 1]);
+    newArrayPositions.push(
+        store.ui.arrayPositions[store.ui.arrayPositions.length - 1]
+    );
 
-    CAM.readyToMove = false;
-    if (CAM.hasElementMoved) {
+    store.cam.readyToMove = false;
+    if (store.cam.hasElementMoved) {
         resetConnectorSelection();
         resetNodeSelection();
-        CAM.hasElementMoved = false;
-        CAM.draw();
+        store.cam.hasElementMoved = false;
+        store.cam.draw();
     }
 });
 
@@ -142,17 +152,17 @@ $(document).on("mouseup", ".node", function (event) {
 $(document).on("click", ".connector", function (event) {
     resetConnectorSelection();
     resetNodeSelection();
-    CAM.selectConnection($(this)[0].id);
+    store.cam.selectConnection($(this)[0].id);
 
-    CAM.draw();
+    store.cam.draw();
 });
 
 $(document).on("click", ".outer-connector", function (event) {
     resetConnectorSelection();
     resetNodeSelection();
-    CAM.selectConnection($(this)[0].id);
+    store.cam.selectConnection($(this)[0].id);
 
-    CAM.draw();
+    store.cam.draw();
 });
 
 $(document).on("mousedown", ".connector, .outer-connector", function (event) {
@@ -163,9 +173,9 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
     if (event.detail == 2) {
         resetConnectorSelection();
         resetNodeSelection();
-        CAM.selectConnection($(this)[0].id);
+        store.cam.selectConnection($(this)[0].id);
 
-        if (CAM.currentConnector != null) {
+        if (store.cam.currentConnector != null) {
             var backendGreenColorSlider = document.querySelector(
                 ".greenConnectorColorSlider"
             );
@@ -177,12 +187,12 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
             );
             var backendRedColorTick = document.querySelector(".redColorTick");
 
-            if (CAM.currentConnector.agreement) {
+            if (store.cam.currentConnector.agreement) {
                 backendRedColorSlider.style.backgroundColor = "white";
                 backendRedColorTick.style.backgroundColor = "white";
 
                 document.getElementById("edgeSlider").value =
-                    CAM.currentConnector.getIntensity() /
+                    store.cam.currentConnector.getIntensity() /
                         IncreaseSliderIntensity +
                     3;
                 if (document.getElementById("edgeSlider").value == 4) {
@@ -202,12 +212,12 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
                     backendGreenColorTick.style.backgroundColor =
                         "hsl(110, 100%, 40%)";
                 }
-            } else if (!CAM.currentConnector.agreement) {
+            } else if (!store.cam.currentConnector.agreement) {
                 backendGreenColorSlider.style.backgroundColor = "white";
                 backendGreenColorTick.style.backgroundColor = "white";
 
                 if (
-                    CAM.currentConnector.getIntensity() ==
+                    store.cam.currentConnector.getIntensity() ==
                     IncreaseSliderIntensity
                 ) {
                     document.getElementById("edgeSlider").value = 3;
@@ -216,7 +226,7 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
                     backendRedColorTick.style.backgroundColor =
                         "hsl(0, 100%, 70%)";
                 } else if (
-                    CAM.currentConnector.getIntensity() ==
+                    store.cam.currentConnector.getIntensity() ==
                     IncreaseSliderIntensity * 2
                 ) {
                     document.getElementById("edgeSlider").value = 2;
@@ -225,7 +235,7 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
                     backendRedColorTick.style.backgroundColor =
                         "hsl(0, 100%, 50%)";
                 } else if (
-                    CAM.currentConnector.getIntensity() ==
+                    store.cam.currentConnector.getIntensity() ==
                     IncreaseSliderIntensity * 3
                 ) {
                     document.getElementById("edgeSlider").value = 1;
@@ -238,11 +248,11 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
 
             /* change position of pop up */
             // > get current mother / daugther
-            var currentMotherNode = CAM.nodes.filter(
-                (el) => el.id === CAM.currentConnector.source
+            var currentMotherNode = store.cam.nodes.filter(
+                (el) => el.id === store.cam.currentConnector.source
             )[0];
-            var currentDaughterNode = CAM.nodes.filter(
-                (el) => el.id === CAM.currentConnector.target
+            var currentDaughterNode = store.cam.nodes.filter(
+                (el) => el.id === store.cam.currentConnector.target
             )[0];
             // > get midpoint of connector
             var MeanPositionX =
@@ -274,7 +284,7 @@ $(document).on("mousedown", ".connector, .outer-connector", function (event) {
             $("#dialogInteractionEdge").dialog("open");
         }
 
-        CAM.draw();
+        store.cam.draw();
     }
 });
 
@@ -285,10 +295,10 @@ $(document).on("click", "#background", function (event) {
             y: event.clientY - $("#CAMSVG").position().top, // / zoomScale
         };
 
-        CAM.addElement(new NodeCAM(0, "", positionClick, 1, 1, 1));
+        store.cam.addElement(new NodeCAM(0, "", positionClick, 1, 1, 1));
     }
 
-    CAM.draw();
+    store.cam.draw();
 });
 
 $(document).on("mousemove", "#CAMSVG", function (event) {
@@ -297,46 +307,48 @@ $(document).on("mousemove", "#CAMSVG", function (event) {
         y: event.clientY - $("#CAMSVG").position().top, // / zoomScale
     };
 
-    if (CAM.readyToMove) {
-        CAM.hasElementMoved = true;
-        CAM.updateElement("Node", "position", positionClick);
+    if (store.cam.readyToMove) {
+        store.cam.hasElementMoved = true;
+        store.cam.updateElement("Node", "position", positionClick);
 
-        arrayPositions.push({
+        store.ui.arrayPositions.push({
             time: new Date(),
             type: "position",
             value: positionClick,
         });
     }
 
-    CAM.draw();
+    store.cam.draw();
 });
 
 $(document).on("mouseup", "#CAMSVG", function (event) {
-    if (CAM.readyToMove) {
-        CAM.readyToMove = false;
+    if (store.cam.readyToMove) {
+        store.cam.readyToMove = false;
         resetNodeSelection();
-        CAM.draw();
+        store.cam.draw();
     }
 });
 
+}
+
 function resetConnectorSelection() {
-    if (CAM.hasSelectedConnector) {
-        CAM.unselectConnection();
+    if (store.cam.hasSelectedConnector) {
+        store.cam.unselectConnection();
         return true;
     }
     return false;
 }
 
 function resetNodeSelection() {
-    if (CAM.hasSelectedNode) {
-        CAM.unselectNode();
+    if (store.cam.hasSelectedNode) {
+        store.cam.unselectNode();
         return true;
     }
     return false;
 }
 
 /* Add camera feature */
-if (config.cameraFeature) {
+if (store.config.cameraFeature) {
     $(document).on("mouseover", "#background", function (event) {
         var positionMouse = {
             x: event.clientX - $("#CAMSVG").position().left, // / zoomScale,
@@ -362,33 +374,35 @@ if (config.cameraFeature) {
             //console.log("stopConY: ", stopConY);
             // $("body").css("cursor", "move");
 
-            if (stopConX > -500 && positionMouse.x > 1290) {
-                CAM.nodes.forEach((element) => {
+            if (store.ui.stopConX > -500 && positionMouse.x > 1290) {
+                store.cam.nodes.forEach((element) => {
                     element.position.x -= moveCAMSpeed;
                 });
-                stopConX -= moveCAMSpeed;
-            } else if (stopConX < 500 && positionMouse.x < 10) {
-                CAM.nodes.forEach((element) => {
+                store.ui.stopConX -= moveCAMSpeed;
+            } else if (store.ui.stopConX < 500 && positionMouse.x < 10) {
+                store.cam.nodes.forEach((element) => {
                     element.position.x += moveCAMSpeed;
                 });
-                stopConX += moveCAMSpeed;
+                store.ui.stopConX += moveCAMSpeed;
             }
 
-            if (stopConY > -250 && positionMouse.y > 755) {
-                CAM.nodes.forEach((element) => {
+            if (store.ui.stopConY > -250 && positionMouse.y > 755) {
+                store.cam.nodes.forEach((element) => {
                     element.position.y -= moveCAMSpeed;
                 });
-                stopConY -= moveCAMSpeed;
-            } else if (stopConY < 250 && positionMouse.y < 10) {
-                CAM.nodes.forEach((element) => {
+                store.ui.stopConY -= moveCAMSpeed;
+            } else if (store.ui.stopConY < 250 && positionMouse.y < 10) {
+                store.cam.nodes.forEach((element) => {
                     element.position.y += moveCAMSpeed;
                 });
-                stopConY += moveCAMSpeed;
+                store.ui.stopConY += moveCAMSpeed;
             }
 
-            CAM.draw();
+            store.cam.draw();
         } else {
             $("body").css("cursor", "default");
         }
     });
 }
+
+export { initEventListenersBackend, resetConnectorSelection, resetNodeSelection };

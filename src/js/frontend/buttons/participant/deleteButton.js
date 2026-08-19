@@ -1,21 +1,33 @@
-/* add button: */
-const buttonDelete = `<button id="deleteCAM" class="material-icons" style="color:red;" title="Delete CAM" onclick="deleteCam()"> delete</button>`;
-var target = document.getElementById("rightButton");
-target.innerHTML += buttonDelete;
+import { $, toastr } from "../../../app/vendor.js";
+import { store } from "../../../app/store.js";
+import { defaultCAM } from "../../../../../config/defaultCAM.js";
 
-// language file
-$(function () {
-    document.getElementById("deleteCAM").title = languageFileOut.btr_04; // buttons top right (btr)
-});
+function initDeleteButton() {
+    /* add button: */
+    const buttonDelete = `<button id="deleteCAM" class="material-icons" style="color:red;" title="Delete CAM" onclick="deleteCam()"> delete</button>`;
+    var target = document.getElementById("rightButton");
+    target.innerHTML += buttonDelete;
 
-function deleteCam() {
-    let confirmdel = confirm(languageFileOut.confirmDeleting_01text);
-    if (confirmdel == true) {
-        CAM.connectors = [];
-        CAM.nodes = [];
-        toastr.error(languageFileOut.confirmDeleting_02message);
+    // language file
+    $(function () {
+        document.getElementById("deleteCAM").title = store.language.btr_04;
+    });
+
+    function deleteCam() {
+        $("#dialogConfirmDelete").dialog("open");
+    }
+
+    function deleteCamConfirmed() {
+        store.cam.connectors = [];
+        store.cam.nodes = [];
+        toastr.error(store.language.confirmDeleting_02message);
         console.log("complete CAM has been deleted");
 
         defaultCAM();
     }
+
+    window.deleteCam = deleteCam;
+    window.deleteCamConfirmed = deleteCamConfirmed;
 }
+
+export { initDeleteButton };

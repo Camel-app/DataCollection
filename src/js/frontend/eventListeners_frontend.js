@@ -1,3 +1,9 @@
+import { $ } from "../app/vendor.js";
+import { store } from "../app/store.js";
+import { resetNodeSelection } from "./eventListeners_backend.js";
+
+function initEventListenersFrontend() {
+
 // only add to event log if value has been changed:
 var currentText = null;
 var currentValue = null;
@@ -46,7 +52,7 @@ $(function () {
             of: $(".boxCAMSVG"),
         },
     });
-    $("#CloseButton").button("option", "label", languageFileOut.closeButton);
+    $("#CloseButton").button("option", "label", store.language.closeButton);
 
     // reminder dialog
     $("#dialogReminder").dialog({
@@ -135,9 +141,73 @@ $(function () {
         },
     });
 
-    $("#YesButtonConfirm").button("option", "label", languageFileOut.yesButton);
-    $("#NoButtonConfirm").button("option", "label", languageFileOut.noButton);
+    $("#YesButtonConfirm").button("option", "label", store.language.yesButton);
+    $("#NoButtonConfirm").button("option", "label", store.language.noButton);
     // dialog confirm save END
+
+    // dialog confirm delete START
+    $("#dialogConfirmDelete").dialog({
+        autoOpen: false,
+        modal: true,
+        show: "fade",
+        hide: false,
+        resizable: false,
+        draggable: true,
+        width: 400,
+        maxWidth: 400,
+        height: "auto",
+
+        open: function () {
+            $(".ui-dialog-titlebar").show();
+            $(this)
+                .dialog({
+                    draggable: false,
+                })
+                .parent()
+                .draggable();
+
+            $(".ui-widget-overlay").on("click", function () {
+                $("#dialogConfirmDelete").dialog("close");
+            });
+        },
+        close: function () {
+            console.log("dialog got closed");
+        },
+        buttons: [
+            {
+                id: "YesButtonConfirmDelete",
+                click: function () {
+                    console.log("clicked dialogConfirmDelete Yes");
+                    deleteCamConfirmed();
+                    $("#dialogConfirmDelete").dialog("close");
+                },
+            },
+            {
+                id: "NoButtonConfirmDelete",
+                click: function () {
+                    console.log("clicked dialogConfirmDelete No");
+                    $("#dialogConfirmDelete").dialog("close");
+                },
+            },
+        ],
+        position: {
+            my: "center",
+            at: "center",
+            of: $(".boxCAMSVG"),
+        },
+    });
+
+    $("#YesButtonConfirmDelete").button(
+        "option",
+        "label",
+        store.language.yesButton
+    );
+    $("#NoButtonConfirmDelete").button(
+        "option",
+        "label",
+        store.language.noButton
+    );
+    // dialog confirm delete END
 
     $("#dialogReference").dialog({
         autoOpen: false,
@@ -200,7 +270,7 @@ $(function () {
                 .parent()
                 .draggable(); // see: https://stackoverflow.com/questions/6410720/jquery-ui-dialog-draggable-on-entire-dialog-not-just-title
 
-            CAM.currentConnector.isSelected = true;
+            store.cam.currentConnector.isSelected = true;
 
             console.log("dialog connector got open");
             $(".ui-widget-overlay").on("click", function () {
@@ -208,7 +278,7 @@ $(function () {
                 $("#dialogInteractionEdge").dialog("close");
             });
 
-            CAM.currentConnector.enterLog({
+            store.cam.currentConnector.enterLog({
                 type: "selected",
                 value: true,
             });
@@ -217,23 +287,23 @@ $(function () {
             console.log("dialog got closed");
 
             // if connector got deleted
-            if (CAM.currentConnector !== null) {
-                CAM.currentConnector.isSelected = false;
-                CAM.draw();
+            if (store.cam.currentConnector !== null) {
+                store.cam.currentConnector.isSelected = false;
+                store.cam.draw();
 
-                if (CAM.currentConnector.agreement) {
-                    CAM.currentConnector.enterLog({
+                if (store.cam.currentConnector.agreement) {
+                    store.cam.currentConnector.enterLog({
                         type: "change intensity of connector",
-                        value: CAM.currentConnector.intensity,
+                        value: store.cam.currentConnector.intensity,
                     });
                 } else {
-                    CAM.currentConnector.enterLog({
+                    store.cam.currentConnector.enterLog({
                         type: "change intensity of connector",
-                        value: CAM.currentConnector.intensity * -1,
+                        value: store.cam.currentConnector.intensity * -1,
                     });
                 }
 
-                CAM.currentConnector.enterLog({
+                store.cam.currentConnector.enterLog({
                     type: "selected",
                     value: false,
                 });
@@ -264,17 +334,17 @@ $(function () {
                 .parent()
                 .draggable();
 
-            CAM.currentNode.isSelected = true;
+            store.cam.currentNode.isSelected = true;
 
-            CAM.currentNode.enterLog({
+            store.cam.currentNode.enterLog({
                 type: "selected",
                 value: true,
             });
 
             // only add to event log if value has been changed:
-            currentText = CAM.currentNode.getText();
-            currentValue = CAM.currentNode.getValue();
-            currentComment = CAM.currentNode.getComment();
+            currentText = store.cam.currentNode.getText();
+            currentValue = store.cam.currentNode.getValue();
+            currentComment = store.cam.currentNode.getComment();
 
             console.log("dialog got open");
 
@@ -289,33 +359,33 @@ $(function () {
 
             /*        */
             // if node got deleted
-            if (CAM.currentNode !== null) {
-                CAM.currentNode.isSelected = false;
-                CAM.draw();
+            if (store.cam.currentNode !== null) {
+                store.cam.currentNode.isSelected = false;
+                store.cam.draw();
 
                 // adjust event Log
-                if (currentText !== CAM.currentNode.getText()) {
-                    CAM.currentNode.enterLog({
+                if (currentText !== store.cam.currentNode.getText()) {
+                    store.cam.currentNode.enterLog({
                         type: "text",
-                        value: CAM.currentNode.getText(),
+                        value: store.cam.currentNode.getText(),
                     });
                 }
 
-                if (currentValue !== CAM.currentNode.getValue()) {
-                    CAM.currentNode.enterLog({
+                if (currentValue !== store.cam.currentNode.getValue()) {
+                    store.cam.currentNode.enterLog({
                         type: "value",
-                        value: CAM.currentNode.getValue(),
+                        value: store.cam.currentNode.getValue(),
                     });
                 }
 
-                if (currentComment !== CAM.currentNode.getComment()) {
-                    CAM.currentNode.enterLog({
+                if (currentComment !== store.cam.currentNode.getComment()) {
+                    store.cam.currentNode.enterLog({
                         type: "comment",
-                        value: CAM.currentNode.getComment(),
+                        value: store.cam.currentNode.getComment(),
                     });
                 }
 
-                CAM.currentNode.enterLog({
+                store.cam.currentNode.enterLog({
                     type: "selected",
                     value: false,
                 });
@@ -364,3 +434,9 @@ function closeTab() {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
 }
+
+window.openTab = openTab;
+window.closeTab = closeTab;
+}
+
+export { initEventListenersFrontend };
