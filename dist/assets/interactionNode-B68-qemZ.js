@@ -1,4 +1,4 @@
-import{s as e,j as t,t as o}from"./index-CtKsMTB8.js";import{COLOUR as l}from"./colours-CDAOdoal.js";function m(){const r=`
+import{s as e,j as t,t as o}from"./index-BXAM292y.js";import{COLOUR as l}from"./colours-CDAOdoal.js";function m(){const r=`
 <div class="properties" id="interactionNode">
 <!-- delete node: -->
 <div style="padding-bottom: 30px;">

@@ -1,4 +1,4 @@
-import{s as n}from"./index-CtKsMTB8.js";function o(){const i=`
+import{s as n}from"./index-BXAM292y.js";function o(){const i=`
 <div class="reference">
 <div id="informationDefault" class="confirm-save">
 ${n.language.confirmSaving_02_text}

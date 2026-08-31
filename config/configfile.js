@@ -1,7 +1,7 @@
 /* MAKE CHANGES: start*/
 /* default values */
 const config = {
-    CAMproject: "projectName", // "proj_" + uuid.v4(), // necessary for server (see ERM) !!!
+    CAMproject: "projetName", // "proj_" + uuid.v4(), // necessary for server (see ERM) !!!
     MinNumNodes: 1, // number of nodes necessary to draw # !!! 8
     
     enableArrows: false, // if false = possible to draw arrows
@@ -25,7 +25,7 @@ const config = {
     showNotPopupStart: true, // true = no pop up shown; only working if fullScreen is set to true
 
     AdaptiveStudy: true, // run as adaptive study 
-    ADAPTIVESTUDYurl: "http://example.org/", // URL the CAM data should be append to !!!
+    ADAPTIVESTUDYurl: "http://example.org/", // !!! URL the CAM data should be append to !!!
 
     setReminder: false, // if true = after X ms 2 reminder pop up
 

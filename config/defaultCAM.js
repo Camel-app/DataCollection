@@ -29,32 +29,24 @@ function defaultCAM() {
   if (!store.flags.usingSupabase) {
     /* MAKE CHANGES: start*/
 
-    store.cam.addElement(new NodeCAM(0, "Central Concept", {
+    store.cam.addElement(new NodeCAM(10, "Central Concept", {
       x: 650,
       y: 400
     }, false, false, false));
 
 
-    /* MAKE Changes: end*/
-/*
-
-    CAM.addElement(new NodeCAM(0, "Central Concept", {
-      x: 650,
+    store.cam.addElement(new NodeCAM(3, "positive", {
+      x: 350,
       y: 400
     }, false, false, false));
 
-
-    CAM.addElement(new NodeCAM(0, "concept2", {
-      x: 800,
-      y: 400
-    }, false, false, false));
 
     var connector1 = new ConnectorCAM();
-    connector1.establishConnection(CAM.nodes[0], CAM.nodes[1], IncreaseSliderIntensity, false);
+    connector1.establishConnection(store.cam.nodes[0], store.cam.nodes[1], IncreaseSliderIntensity, false);
     connector1.value = 1;
     connector1.isDeletable = false;
-    CAM.addElement(connector1);
-*/
+    store.cam.addElement(connector1);
+    
   } else {
     // add nodes from fetched data
     store.env.camMother.nodes.forEach((element) => {

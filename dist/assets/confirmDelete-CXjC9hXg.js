@@ -1,4 +1,4 @@
-import{s as t}from"./index-CtKsMTB8.js";function o(){const e=`
+import{s as t}from"./index-BXAM292y.js";function o(){const e=`
 <div class="reference">
 <div id="informationDefault" class="confirm-save">
 ${t.language.confirmDeleting_01text}
