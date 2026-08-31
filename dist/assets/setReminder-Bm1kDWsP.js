@@ -1,4 +1,4 @@
-import{s as r,j as e}from"./index-DbBKAd7U.js";const l=`
+import{s as r,j as e}from"./index-CtKsMTB8.js";const l=`
 You have only <b>3 minutes</b> left to draw your <i>Cognitive-Affective Map</i> (CAM). Please begin to wrap up and keep the following in mind:
 <ul style="font-size: 14px;">
   <li>Use no more than three words per concept and do not leave any drawn concept blank.</li>

@@ -1,4 +1,4 @@
-import{s as n,j as e,t as d}from"./index-DbBKAd7U.js";import{I as a}from"./constants-pT0QuXi6.js";import{COLOUR as o}from"./colours-CDAOdoal.js";function C(){const s=`
+import{s as n,j as e,t as d}from"./index-CtKsMTB8.js";import{I as a}from"./constants-pT0QuXi6.js";import{COLOUR as o}from"./colours-CDAOdoal.js";function C(){const s=`
 <div class="properties" id="interactionEdge">
             <div style="padding-bottom: 30px;">
                 <button id="deleteEdge" class="material-icons deleteButton" style="color:red;" title="Delete Connector">

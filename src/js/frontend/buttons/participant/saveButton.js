@@ -205,18 +205,9 @@ function initSaveButton() {
                 }
             }
 
-            /* if server is >>> MangoDB <<< */
+            /* if server is >>> admin panel (Supabase-backed) <<< */
             console.log("usingSupabase: ", store.flags.usingSupabase);
             if (store.flags.usingSupabase) {
-                async function getData() {
-                    const url = webAddress + "try";
-
-                    const get = await fetch(url)
-                        .then((response) => response.json())
-                        .then((data) => console.log(data))
-                        .catch((error) => console.error("Error:", error));
-                }
-
                 async function postData() {
                     const url = webAddress + "poststudy";
                     const headers = { "Content-Type": "application/json" };
@@ -254,26 +245,6 @@ function initSaveButton() {
                         store.cam.creator;
                 }
                 postData();
-
-                async function postData2() {
-                    const url = webAddress + "try";
-                    const headers = { "Content-Type": "application/json" };
-
-                    console.log("postData");
-                    const post = await fetch(url, {
-                        method: "POST",
-                        headers: headers,
-                        body: JSON.stringify({
-                            name: "France",
-                            cam: store.cam,
-                            welcomeYourGirl: "Hello Sarah",
-                        }),
-                    })
-                        .then((response) => response.json())
-                        .then((data) => console.log(data))
-                        .catch((error) => console.error("Error:", error));
-                }
-                //postData2()
             }
 
             /* if NO server >>> <<< */

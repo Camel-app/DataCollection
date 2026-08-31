@@ -11,6 +11,10 @@ function parseFeatureParams() {
 
     console.log("url params: ", params);
 
+    if (urlSearchParams.has("link")) {
+        flagsOverrides.usingSupabase = true;
+    }
+
     if (
         urlSearchParams.has("external") &&
         urlSearchParams.get("external") === "true"

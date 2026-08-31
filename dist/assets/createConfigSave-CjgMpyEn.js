@@ -1,4 +1,4 @@
-import{j as e,s as n}from"./index-DbBKAd7U.js";function f(){const u=`
+import{j as e,s as n}from"./index-CtKsMTB8.js";function f(){const u=`
 <span style="font-size: 12px; vertical-align: super; margin-left: 5px;">to set up your study click:</span>
 <button id="createConfigSave" title="set up your config file and cope & paste the resulting code to set up the experiment" class="material-icons" style="margin-left: 0px; margin-right: -5px">settings</button>
 `;var g=document.getElementById("hideResearcherButtonsTop");g.innerHTML+=u;const v=`
